@@ -103,6 +103,16 @@
             ],
             "scripts": []
           }
+        },
+        "deploy": {
+          "builder": "@angular/fire:deploy",
+          "options": {
+            "prerender": false,
+            "ssr": false,
+            "browserTarget": "Airline-Booking-System:build:production",
+            "firebaseProject": "airline-booking-system-c9d55",
+            "firebaseHostingSite": "airline-booking-system-c9d55"
+          }
         }
       }
     }

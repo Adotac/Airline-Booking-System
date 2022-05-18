@@ -1,0 +1,14 @@
+{
+  "targets": {
+    "airline-booking-system-c9d55": {
+      "hosting": {
+        "Airline-Booking-System": [
+          "airline-booking-system-c9d55"
+        ]
+      }
+    }
+  },
+  "projects": {
+    "default": "airline-booking-system-c9d55"
+  }
+}

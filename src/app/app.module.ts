@@ -7,7 +7,7 @@ import { initializeApp,provideFirebaseApp } from '@angular/fire/app';
 import { environment } from '../environments/environment';
 import { provideAuth,getAuth } from '@angular/fire/auth';
 import { provideFirestore,getFirestore } from '@angular/fire/firestore';
-import { UserpageComponent } from './screens/user/userpage/userpage.component';
+import { UserpageComponent } from './screens/userpage/userpage.component';
 import { AdminpageComponent } from './screens/adminpage/adminpage.component';
 
 @NgModule({

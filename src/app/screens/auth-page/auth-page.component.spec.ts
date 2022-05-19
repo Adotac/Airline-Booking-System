@@ -8,9 +8,8 @@ describe('AuthPageComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ AuthPageComponent ]
-    })
-    .compileComponents();
+      declarations: [AuthPageComponent],
+    }).compileComponents();
   });
 
   beforeEach(() => {
@@ -23,3 +22,6 @@ describe('AuthPageComponent', () => {
     expect(component).toBeTruthy();
   });
 });
+// lesly
+// saber
+// bane

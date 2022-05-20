@@ -4,6 +4,7 @@ import { AppComponent } from './app.component';
 import { AuthPageComponent } from './screens/auth-page/auth-page.component';
 import { LoginComponent } from './screens/auth-page/login/login.component';
 import { RegisterComponent } from './screens/auth-page/register/register.component';
+import { UserpageComponent } from './screens/userpage/userpage.component';
 
 const routes: Routes = [
   {
@@ -20,6 +21,10 @@ const routes: Routes = [
         component: RegisterComponent,
       },
     ],
+  },
+  {
+    path: 'user',
+    component: UserpageComponent,
   },
 ];
 

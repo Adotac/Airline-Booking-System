@@ -1,14 +1,13 @@
 $sideNavWidth: 13.5vw;
-$PoppinFont: 'Poppins', sans-serif;
-
-#big-box{
+$PoppinFont: 'Poppins',
+sans-serif;
+#big-box {
     --sideNavWidth: #{$sideNavWidth};
     --PoppinFont: #{$PoppinFont};
     display: flex;
     flex-direction: row;
     margin: 0;
     padding: 0;
-
     height: 100vh;
     width: 100vw;
 }
@@ -23,16 +22,12 @@ $PoppinFont: 'Poppins', sans-serif;
     margin-left: 0;
     transition: margin 0.25s ease-out;
     font-family: var(--PoppinFont);
-
-    #sidebar-btn{
+    #sidebar-btn {
         margin: 1.5rem 1.9rem 0rem 1.9rem;
         padding: 0.8rem;
         text-align: left;
         font-size: 17px;
-
     }
-    
-
     .sidebar-heading {
         padding: 12px 0px;
         font-size: 25px;
@@ -41,14 +36,12 @@ $PoppinFont: 'Poppins', sans-serif;
         color: #ffffff;
         text-align: center;
     }
-
     .list-group {
         display: flex;
         flex-direction: column;
         padding-left: 0;
         margin-bottom: 0;
-        
-        #logout-btn{
+        #logout-btn {
             position: absolute;
             bottom: 29px;
             margin: 20vh 1.9rem 0rem 1.9rem;
@@ -57,18 +50,17 @@ $PoppinFont: 'Poppins', sans-serif;
             text-align: left;
             font-size: 20px;
             background-color: rgba(255, 0, 0, 0);
-            border-color: var(--bs-dark);;
+            border-color: var(--bs-dark);
+            ;
         }
     }
     .list-group-flush {
         border-radius: 0;
     }
-
     // side-bar list css
     .p-3 {
         padding: 1rem !important;
     }
-
     .list-group-item {
         margin: 0rem 1.5rem 0rem 1.5rem;
         position: relative;
@@ -79,7 +71,6 @@ $PoppinFont: 'Poppins', sans-serif;
         text-decoration: none;
         border-bottom: 1px solid rgb(243, 238, 238);
     }
-
     .list-group-item-action {
         width: inherit;
         color: #ffffff;
@@ -96,7 +87,6 @@ $PoppinFont: 'Poppins', sans-serif;
     display: block;
     width: calc(100vw - var(--sideNavWidth)) !important;
     min-height: 100vh;
-
     .navbar {
         position: relative;
         display: flex;
@@ -107,10 +97,7 @@ $PoppinFont: 'Poppins', sans-serif;
         justify-content: space-between;
         padding: 0rem;
         padding-bottom: 0.5rem;
-
-        
-
-        .navbar-heading{
+        .navbar-heading {
             padding: 10px 0px;
             // font-family: var(--PoppinFont);
             font-size: 28px;
@@ -118,16 +105,66 @@ $PoppinFont: 'Poppins', sans-serif;
             text-align: left, center;
             letter-spacing: 1px;
         }
-
-        
     }
-
-    .flight-container{
+    .flight-container {
         position: relative;
         width: 50%;
     }
 }
 
+#wrapper {
+    padding-left: 200px;
+    transition: all 0.4s ease 0s;
+}
 
+#sidebar-wrapper {
+    margin-left: -200px;
+    left: 200px;
+    width: 200px;
+    background: #CCCCCC;
+    position: fixed;
+    height: 100%;
+    overflow-y: auto;
+    z-index: 1000;
+    transition: all 0.4s ease 0s;
+}
 
+#page-content-wrapper {
+    width: 100%;
+}
 
+@media (max-width:767px) {
+    #wrapper {
+        padding-left: 0;
+    }
+    #sidebar-wrapper {
+        left: 0;
+    }
+    #wrapper.active {
+        position: relative;
+        left: 200px;
+    }
+    #wrapper.active #sidebar-wrapper {
+        left: 200px;
+        width: 200px;
+        transition: all 0.4s ease 0s;
+    }
+}
+
+// 
+.nav-link:hover {
+    background-color: #525252 !important
+}
+
+.nav-link .fa {
+    transition: all 1s
+}
+
+.nav-link:hover .fa {
+    transform: rotate(360deg)
+}
+
+.below-navbar {
+    margin: 4vh;
+    width: auto;
+}

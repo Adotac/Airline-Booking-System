@@ -12,6 +12,8 @@ import { AdminpageComponent } from './screens/adminpage/adminpage.component';
 import { AuthPageComponent } from './screens/auth-page/auth-page.component';
 import { LoginComponent } from './screens/auth-page/login/login.component';
 import { RegisterComponent } from './screens/auth-page/register/register.component';
+import { AdminFlightsComponent } from './screens/adminpage/admin-flights/admin-flights.component';
+import { AdminBookingsComponent } from './screens/adminpage/admin-bookings/admin-bookings.component';
 
 @NgModule({
   declarations: [
@@ -20,7 +22,9 @@ import { RegisterComponent } from './screens/auth-page/register/register.compone
     AdminpageComponent,
     AuthPageComponent,
     LoginComponent,
-    RegisterComponent
+    RegisterComponent,
+    AdminFlightsComponent,
+    AdminBookingsComponent
   ],
   imports: [
     BrowserModule,

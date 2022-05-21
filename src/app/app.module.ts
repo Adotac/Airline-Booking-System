@@ -14,6 +14,8 @@ import { LoginComponent } from './screens/auth-page/login/login.component';
 import { RegisterComponent } from './screens/auth-page/register/register.component';
 import { AdminFlightsComponent } from './screens/adminpage/admin-flights/admin-flights.component';
 import { AdminBookingsComponent } from './screens/adminpage/admin-bookings/admin-bookings.component';
+import { UserFlightsComponent } from './screens/userpage/user-flights/user-flights.component';
+import { UserBookingsComponent } from './screens/userpage/user-bookings/user-bookings.component';
 
 @NgModule({
   declarations: [
@@ -24,7 +26,9 @@ import { AdminBookingsComponent } from './screens/adminpage/admin-bookings/admin
     LoginComponent,
     RegisterComponent,
     AdminFlightsComponent,
-    AdminBookingsComponent
+    AdminBookingsComponent,
+    UserFlightsComponent,
+    UserBookingsComponent
   ],
   imports: [
     BrowserModule,

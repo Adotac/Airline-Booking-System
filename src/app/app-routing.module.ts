@@ -8,6 +8,9 @@ import { AuthPageComponent } from './screens/auth-page/auth-page.component';
 import { LoginComponent } from './screens/auth-page/login/login.component';
 import { RegisterComponent } from './screens/auth-page/register/register.component';
 import { UserpageComponent } from './screens/userpage/userpage.component';
+import { UserBookingsComponent } from './screens/userpage/user-bookings/user-bookings.component';
+import { UserFlightsComponent } from './screens/userpage/user-flights/user-flights.component';
+
 
 const routes: Routes = [
   {
@@ -28,6 +31,17 @@ const routes: Routes = [
   {
     path: 'user',
     component: UserpageComponent,
+    children: [
+      { path: '', redirectTo: 'flights', pathMatch: 'full' },
+      {
+        path: 'flights',
+        component: UserFlightsComponent,
+      },
+      {
+        path: 'bookings',
+        component: UserBookingsComponent,
+      },
+    ],
   },
   {
     path: 'admin',

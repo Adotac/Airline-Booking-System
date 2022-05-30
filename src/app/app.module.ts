@@ -16,7 +16,7 @@ import { AdminFlightsComponent } from './screens/adminpage/admin-flights/admin-f
 import { AdminBookingsComponent } from './screens/adminpage/admin-bookings/admin-bookings.component';
 import { UserFlightsComponent } from './screens/userpage/user-flights/user-flights.component';
 import { UserBookingsComponent } from './screens/userpage/user-bookings/user-bookings.component';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import {
   NgxMatDatetimePickerModule,
@@ -38,6 +38,7 @@ import {
     UserBookingsComponent,
   ],
   imports: [
+    ReactiveFormsModule,
     MatDatepickerModule,
     FormsModule,
     NgxMatNativeDateModule,

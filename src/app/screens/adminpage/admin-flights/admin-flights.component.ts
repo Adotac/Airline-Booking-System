@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import * as moment from 'moment';
 
 @Component({
@@ -7,74 +8,63 @@ import * as moment from 'moment';
   styleUrls: ['./admin-flights.component.scss'],
 })
 export class AdminFlightsComponent implements OnInit {
-  // constructor() {}
-  // @ViewChild('picker') picker: any;
+  ngOnInit(): void {}
 
-  date!: Date;
-  ngOnInit(): void {
-    this.date = new Date(2021, 9, 4, 5, 6, 7);
+  createFlightForm: FormGroup = new FormGroup({
+    origin: new FormControl('', Validators.required),
+    destination: new FormControl('', Validators.required),
+    arivalDate: new FormControl('', Validators.required),
+    arivalTime: new FormControl('', Validators.required),
+    departureDate: new FormControl('', Validators.required),
+    departureTime: new FormControl('', Validators.required),
+  });
+
+  formTest() {
+    // console.log(this.isGoodDate(this.createFlightForm.value.departureDate));
+    // console.log(this.isGoodDate(this.createFlightForm.value.arivalDate));
+
+    console.log(this.isGoodTime(this.createFlightForm.value.departureTime));
+    console.log(this.isGoodTime(this.createFlightForm.value.arivalTime));
+    // console.log(this.createFlightForm.value.origin);
+    // console.log(this.createFlightForm.value.destination);
+    // console.log(this.createFlightForm.value.arivalDate);
+    // console.log(this.createFlightForm.value.arivalTime);
+    // console.log(this.createFlightForm.value.departureDate);
+    // console.log(this.createFlightForm.value.departureTime);
+    this.stringToDateTime(
+      this.createFlightForm.value.departureDate,
+      this.createFlightForm.value.departureTime
+    );
   }
-  //   (function () {
-  //     var dateTimeController = function ($scope:any, $rootScope :any) {
-  //         $scope.vm = {
-  //             message: "Bootstrap DateTimePicker Directive",
-  //             dateTime: {}
-  //         };
 
-  //         $scope.$watch('change', function(){
-  //             console.log($scope.vm.dateTime);
-  //         });
+  isGoodDate(dt: string) {
+    var reGoodDate =
+      /^\b((0?[1-9]|1[012])[- /.](0?[1-9]|[12][0-9]|3[01])[- /.](19|20)?[0-9]{2})*$/;
+    return reGoodDate.test(dt);
+  }
 
-  //         /*
-  //            $scope.$on('emit:dateTimePicker', function (e, value) {
-  //            $scope.vm.dateTime = value.dateTime;
-  //            console.log(value);
-  //            })
-  //         */
-  //     };
-  //     var dateTimePicker = function ($rootScope :any) {
+  isGoodTime(dt: string) {
+    var reGoodDate = /^([01]\d|2[0-3]):([0-5]\d)$/;
+    return reGoodDate.test(dt);
+  }
 
-  //         return {
-  //             require: '?ngModel',
-  //             restrict: 'AE',
-  //             scope: {
-  //                 pick12HourFormat: '@',
-  //                 language: '@',
-  //                 useCurrent: '@',
-  //                 location: '@'
-  //             },
-  //             link: function (scope :any, elem:any, attrs:any) {
-  //                 elem.datetimepicker({
-  //                     pick12HourFormat: scope.pick12HourFormat,
-  //                     language: scope.language,
-  //                     useCurrent: scope.useCurrent
-  //                 })
+  stringToDateTime(date: string, time: string) {
+    const [month, day, year] = date.split('/');
+    const [hours, minutes] = time.split(':');
 
-  //                 //Local event change
-  //                 elem.on('blur', function () {
+    const newDate = new Date(+year, +month - 1, +day, +hours, +minutes, +0);
 
-  //                     console.info('this', this);
-  //                     console.info('scope', scope);
-  //                     console.info('attrs', attrs);
+    return newDate;
+  }
 
-  //                     /*// returns moments.js format object
-  //                     scope.dateTime = new Date(elem.data("DateTimePicker").getDate().format());
-  //                     // Global change propagation
+  generateFlightCode() {
+    var dateNow = new Date().valueOf().toString();
+    var id = dateNow.substring(dateNow.length - 5, dateNow.length);
 
-  //                     $rootScope.$broadcast("emit:dateTimePicker", {
-  //                         location: scope.location,
-  //                         action: 'changed',
-  //                         dateTime: scope.dateTime,
-  //                         example: scope.useCurrent
-  //                     });
-  //                     scope.$apply();*/
-  //                 })
-  //             }
-  //         };
-  //     }
+    const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    var A = alphabet[Math.floor(Math.random() * alphabet.length)];
+    var B = alphabet[Math.floor(Math.random() * alphabet.length)];
 
-  //     angular.module('dateTimeSandbox', []).run(['$rootScope', function ($rootScope:any) {
-  //     }]).controller('dateTimeController', ['$scope', '$http', dateTimeController
-  //     ]).directive('dateTimePicker', dateTimePicker);
-  // })();
+    console.log(A + B + '-' + id);
+  }
 }

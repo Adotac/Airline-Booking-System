@@ -9,9 +9,9 @@
                             <tr>
                                 <th scope="col">Code</th>
                                 <th scope="col">Origin</th>
-                                <th scope="col">Dest</th>
-                                <th scope="col">dept</th>
-                                <th scope="col">arival</th>
+                                <th scope="col">Destination</th>
+                                <th scope="col">Departure</th>
+                                <th scope="col">Arival</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -197,37 +197,37 @@
                 <h3 class="fw-bold"> Create Flight</h3>
                 <div class="border border-dark p-3">
 
-                    <form class="row g-3">
+                    <form class="row g-3" [formGroup]="createFlightForm">
                         <div class="col-6 ">
                             <label for="inputEmail4" class="form-label">Flight Code</label>
                             <input type="email" class="form-control" id="inputEmail4" placeholder="1234" disabled>
                         </div>
                         <div class="col-12 ">
                             <label for="inputAddress" class="form-label">Origin</label>
-                            <input type="text" class="form-control" id="inputAddress" placeholder="Cebu, Philippines ">
+                            <input type="text" class="form-control" id="inputAddress" formControlName="origin" placeholder="Cebu, Philippines ">
                         </div>
                         <div class="col-12 ">
                             <label for="inputAddress2" class="form-label">Destination</label>
-                            <input type="text" class="form-control" id="inputAddress2" placeholder="Tokyo, Japan">
+                            <input type="text" class="form-control" id="inputAddress2" formControlName="destination" placeholder="Tokyo, Japan">
                         </div>
                         <div class="col-md-6 ">
-                            <label for="inputCity" class="form-label">Destination</label>
-                            <input type="text" class="form-control" id="inputCity" placeholder="MM-DD-YYYY">
+                            <label for="inputCity" class="form-label">Departure</label>
+                            <input type="text" class="form-control" id="inputCity" formControlName="departureDate" placeholder="07/02/2022">
                         </div>
                         <div class="col-md-6 ">
                             <label style="visibility:hidden" for="inputCity" class="form-label">Date</label>
-                            <input type="text" class="form-control" id="inputCity" placeholder="Thh:mm Aime">
+                            <input type="text" class="form-control" id="inputCity" formControlName="departureTime" placeholder="13:35">
                         </div>
                         <div class="col-md-6 ">
                             <label for="inputEmail4" class="form-label">Arival</label>
-                            <input type="email" class="form-control" id="inputEmail4" placeholder="MM-DD-YYYY">
+                            <input type="text" class="form-control" id="inputEmail4" formControlName="arivalDate" placeholder="07/02/2022">
                         </div>
                         <div class="col-md-6 ">
                             <label style="visibility:hidden" for="inputPassword4" class="form-label">time </label>
-                            <input type="password" class="form-control" id="inputPassword4" placeholder="hh:mm A">
+                            <input type="text" class="form-control" id="inputPassword4" formControlName="arivalTime" placeholder="15:35">
                         </div>
                         <div class="col-12 ">
-                            <button type="submit" class="btn btn-primary">Submit</button>
+                            <button type="submit" class="btn btn-primary" (click)="formTest()">Create</button>
                         </div>
                     </form>
                 </div>

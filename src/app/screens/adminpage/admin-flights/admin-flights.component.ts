@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import * as moment from 'moment';
+
+import { DatabaseQuery } from 'src/app/firebase.database';
 
 @Component({
   selector: 'app-admin-flights',
@@ -10,7 +11,7 @@ import * as moment from 'moment';
 export class AdminFlightsComponent implements OnInit {
   ngOnInit(): void {}
 
-  createFlightForm: FormGroup = new FormGroup({
+  flightForm: FormGroup = new FormGroup({
     origin: new FormControl('', Validators.required),
     destination: new FormControl('', Validators.required),
     arivalDate: new FormControl('', Validators.required),
@@ -22,19 +23,19 @@ export class AdminFlightsComponent implements OnInit {
   formTest() {
     // console.log(this.isGoodDate(this.createFlightForm.value.departureDate));
     // console.log(this.isGoodDate(this.createFlightForm.value.arivalDate));
-
-    console.log(this.isGoodTime(this.createFlightForm.value.departureTime));
-    console.log(this.isGoodTime(this.createFlightForm.value.arivalTime));
+    this.addFlightToDB();
+    // console.log(this.isGoodTime(this.createFlightForm.value.departureTime));
+    // console.log(this.isGoodTime(this.createFlightForm.value.arivalTime));
     // console.log(this.createFlightForm.value.origin);
     // console.log(this.createFlightForm.value.destination);
     // console.log(this.createFlightForm.value.arivalDate);
     // console.log(this.createFlightForm.value.arivalTime);
     // console.log(this.createFlightForm.value.departureDate);
     // console.log(this.createFlightForm.value.departureTime);
-    this.stringToDateTime(
-      this.createFlightForm.value.departureDate,
-      this.createFlightForm.value.departureTime
-    );
+    // this.stringToDateTime(
+    //   this.createFlightForm.value.departureDate,
+    //   this.createFlightForm.value.departureTime
+    // );
   }
 
   isGoodDate(dt: string) {
@@ -53,7 +54,6 @@ export class AdminFlightsComponent implements OnInit {
     const [hours, minutes] = time.split(':');
 
     const newDate = new Date(+year, +month - 1, +day, +hours, +minutes, +0);
-
     return newDate;
   }
 
@@ -65,6 +65,65 @@ export class AdminFlightsComponent implements OnInit {
     var A = alphabet[Math.floor(Math.random() * alphabet.length)];
     var B = alphabet[Math.floor(Math.random() * alphabet.length)];
 
-    console.log(A + B + '-' + id);
+    // console.log(A + B + '-' + id);
+    return `${A}${B}-${id} `;
+  }
+
+  addFlightToDB() {
+    console.log(this.formToJson());
+  }
+
+  // createFlightForm: FormGroup = new FormGroup({
+  //   origin: new FormControl('', Validators.required),
+  //   destination: new FormControl('', Validators.required),
+  //   arivalDate: new FormControl('', Validators.required),
+  //   arivalTime: new FormControl('', Validators.required),
+  //   departureDate: new FormControl('', Validators.required),
+  //   departureTime: new FormControl('', Validators.required),
+  // });
+
+  private formToJson(): any {
+    var attributes = new Map<string, any>();
+
+    if (this.flightForm.value.origin && this.flightForm.value.origin.trim())
+      attributes.set('origin', this.flightForm.value.origin.trim());
+
+    if (
+      this.flightForm.value.destination &&
+      this.flightForm.value.destination.trim()
+    )
+      attributes.set('destination', this.flightForm.value.destination.trim());
+
+    var departure = this.stringToDateTime(
+      this.flightForm.value.departureDate,
+      this.flightForm.value.departureTime
+    );
+    var arival = this.stringToDateTime(
+      this.flightForm.value.arivalDate,
+      this.flightForm.value.arivalTime
+    );
+    attributes.set('id', this.generateFlightCode());
+    attributes.set('departure', departure);
+    attributes.set('arival', arival);
+
+    console.log(attributes.size);
+    if (attributes.size <= 0) {
+      // this.requestResult = 'empty fields';
+      return null;
+    }
+
+    // DatabaseQuery.commitFlight(this.mapToObject(attributes));
+  }
+
+  private mapToObject(map: any) {
+    const out = Object.create(null);
+    map.forEach((value: any, key: string | number) => {
+      if (value instanceof Map) {
+        out[key] = this.mapToObject(value);
+      } else {
+        out[key] = value;
+      }
+    });
+    return out;
   }
 }

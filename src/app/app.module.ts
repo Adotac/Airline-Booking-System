@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { RouterModule } from '@angular/router';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -18,11 +19,6 @@ import { UserFlightsComponent } from './screens/userpage/user-flights/user-fligh
 import { UserBookingsComponent } from './screens/userpage/user-bookings/user-bookings.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatDatepickerModule } from '@angular/material/datepicker';
-import {
-  NgxMatDatetimePickerModule,
-  NgxMatNativeDateModule,
-  NgxMatTimepickerModule,
-} from '@angular-material-components/datetime-picker';
 
 @NgModule({
   declarations: [
@@ -38,12 +34,10 @@ import {
     UserBookingsComponent,
   ],
   imports: [
+    RouterModule,
     ReactiveFormsModule,
     MatDatepickerModule,
     FormsModule,
-    NgxMatNativeDateModule,
-    NgxMatDatetimePickerModule,
-    NgxMatTimepickerModule,
     BrowserModule,
     AppRoutingModule,
     provideFirebaseApp(() => initializeApp(environment.firebase)),

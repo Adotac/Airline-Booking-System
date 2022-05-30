@@ -1,6 +1,6 @@
 <div class=" d-flex row w-100 body">
     <div class="d-flex flex-row align-items-stretch w-100 p-3">
-        <div class=" d-flex w-75 ">
+        <div class=" d-flex w-75 ps-3">
             <div class=" w-100 p-2 ">
                 <h3 class="fw-bold"> Fight List</h3>
                 <div class="border border-dark table-wrapper-scroll-y my-custom-scrollbar">
@@ -197,34 +197,57 @@
                 <h3 class="fw-bold"> Create Flight</h3>
                 <div class="border border-dark p-3">
 
+                    <form class="row g-3">
+                        <div class="col-6 ">
+                            <label for="inputEmail4" class="form-label">Flight Code</label>
+                            <input type="email" class="form-control" id="inputEmail4" placeholder="1234" disabled>
+                        </div>
+                        <div class="col-12 ">
+                            <label for="inputAddress" class="form-label">Origin</label>
+                            <input type="text" class="form-control" id="inputAddress" placeholder="Cebu, Philippines ">
+                        </div>
+                        <div class="col-12 ">
+                            <label for="inputAddress2" class="form-label">Destination</label>
+                            <input type="text" class="form-control" id="inputAddress2" placeholder="Tokyo, Japan">
+                        </div>
+                        <div class="col-md-6 ">
+                            <label for="inputCity" class="form-label">Destination</label>
+                            <input type="text" class="form-control" id="inputCity" placeholder="MM-DD-YYYY">
+                        </div>
+                        <div class="col-md-6 ">
+                            <label style="visibility:hidden" for="inputCity" class="form-label">Date</label>
+                            <input type="text" class="form-control" id="inputCity" placeholder="Thh:mm Aime">
+                        </div>
+                        <div class="col-md-6 ">
+                            <label for="inputEmail4" class="form-label">Arival</label>
+                            <input type="email" class="form-control" id="inputEmail4" placeholder="MM-DD-YYYY">
+                        </div>
+                        <div class="col-md-6 ">
+                            <label style="visibility:hidden" for="inputPassword4" class="form-label">time </label>
+                            <input type="password" class="form-control" id="inputPassword4" placeholder="hh:mm A">
+                        </div>
+                        <div class="col-12 ">
+                            <button type="submit" class="btn btn-primary">Submit</button>
+                        </div>
+                    </form>
+                </div>
 
-
-                    <ngx-mat-timepicker [(ngModel)]="date"></ngx-mat-timepicker>
-                    <div class="mb-1 w-25">
-                        <label for="formGroupExampleInput" class="form-label">Origin</label>
-                        <input type="text" class="form-control" id="formGroupExampleInput" placeholder="code" disabled="true">
-                    </div>
-                    <div class="mb-1">
-                        <label for="formGroupExampleInput2" class="form-label">Destination</label>
-                        <input type="text" class="form-control" id="formGroupExampleInput2" placeholder="Another input placeholder">
-                    </div>
-                    <div class="mb-1">
-                        <label for="formGroupExampleInput" class="form-label">Departure Time</label>
-                        <input type="text" class="form-control" id="formGroupExampleInput" placeholder="Example input placeholder">
-                    </div>
-                    <div class="mb-1">
-                        <label for="formGroupExampleInput2" class="form-label"> label</label>
-                        <input type="text" class="form-control" id="formGroupExampleInput2" placeholder="Another input placeholder">
-                    </div>
-                    <div class="container">
-
+                <div class=" ">
+                    <h3 class="fw-bold pt-3"> Cancel Flight</h3>
+                    <div class="border border-dark p-3 ">
+                        <form class="row g-3">
+                            <div class="col-6 ">
+                                <label for="inputEmail4" class="form-label">Flight Code</label>
+                                <input type="email" class="form-control" id="inputEmail4" placeholder="1234" disabled>
+                            </div>
+                            <div class="col-12 ">
+                                <button type="submit" class="btn btn-danger">Delete</button>
+                            </div>
+                        </form>
                     </div>
                 </div>
-                <div class="">
-                    <h3 class="fw-bold"> Cancel Flight</h3>
-                    <div class="border border-dark h-100">tesst</div>
-                </div>
-
             </div>
+
         </div>
     </div>
+</div>

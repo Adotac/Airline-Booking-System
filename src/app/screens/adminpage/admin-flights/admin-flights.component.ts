@@ -13,10 +13,14 @@ import { Flights } from 'src/app/models/flights.mpodel';
 })
 export class AdminFlightsComponent implements OnInit {
   flights?: Flights[];
-
+  flightCode?: string;
+  searchflightCode = '';
+  errorCodeInput = '';
+  errorFormInput = '';
   constructor(private ABS_service: ABSFirebaseService) {}
   ngOnInit(): void {
     this.retrieveFlights();
+    this.generateFlightCode();
   }
 
   flightForm: FormGroup = new FormGroup({
@@ -29,12 +33,12 @@ export class AdminFlightsComponent implements OnInit {
   });
 
   formTest() {
-    this.flightForm.value.origin = 'Kyiv, Ukraine';
-    this.flightForm.value.destination = 'Moscow, Russia';
-    this.flightForm.value.departureDate = '06/03/2022';
-    this.flightForm.value.departureTime = '16:52';
-    this.flightForm.value.arivalDate = '06/04/2022';
-    this.flightForm.value.arivalTime = '01:20';
+    // this.flightForm.value.origin = 'Rome, Italy';
+    // this.flightForm.value.destination = 'Amman, Jordan';
+    // this.flightForm.value.departureDate = '06/05/2022';
+    // this.flightForm.value.departureTime = '08:15';
+    // this.flightForm.value.arivalDate = '06/06/2022';
+    // this.flightForm.value.arivalTime = '12:02';
 
     // console.log(this.isGoodDate(this.createFlightForm.value.departureDate));
     // console.log(this.isGoodDate(this.createFlightForm.value.arivalDate));
@@ -80,8 +84,7 @@ export class AdminFlightsComponent implements OnInit {
     var A = alphabet[Math.floor(Math.random() * alphabet.length)];
     var B = alphabet[Math.floor(Math.random() * alphabet.length)];
 
-    // console.log(A + B + '-' + id);
-    return `${A}${B}-${id} `;
+    this.flightCode = `${A}${B}-${id}`;
   }
 
   addFlightToDB() {
@@ -117,7 +120,7 @@ export class AdminFlightsComponent implements OnInit {
       this.flightForm.value.arivalDate,
       this.flightForm.value.arivalTime
     );
-    attributes.set('flight_code', this.generateFlightCode());
+    attributes.set('flight_code', this.flightCode);
     attributes.set('depart_time', departure);
     attributes.set('arrival_time', arival);
     attributes.set('status', 'Active');
@@ -142,7 +145,20 @@ export class AdminFlightsComponent implements OnInit {
     return out;
   }
 
-  retrieveFlights() {
+  public async cancelFlight(code: string) {
+    for (let flight of this.flights!) {
+      if (flight.flight_code == code.trim()) {
+        await this.ABS_service.updateFlightStatus(code);
+        flight.status = 'Cancelled';
+        this.errorCodeInput = '';
+        return;
+      }
+    }
+
+    this.errorCodeInput = 'flight code not found';
+    console.log(this.errorCodeInput);
+  }
+  private retrieveFlights() {
     console.log('retrieve flights!!');
     this.ABS_service.getAllFlights()
       .snapshotChanges()

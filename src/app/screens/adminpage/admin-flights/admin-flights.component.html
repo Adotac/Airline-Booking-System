@@ -25,7 +25,9 @@
                                 </td>
                                 <td>{{flight.arrival_time.toDate().toDateString()+' | '+ flight.arrival_time.toDate().toLocaleTimeString()}}
                                 </td>
-                                <td>{{flight.status}}</td>
+                                <td [ngClass]="flight.status == 'Active' ? 'text-success': 'text-danger' ">
+                                    {{flight.status}}
+                                </td>
                             </tr>
 
                         </tbody>
@@ -41,7 +43,7 @@
                     <form class="row g-3" [formGroup]="flightForm">
                         <div class="col-6 ">
                             <label for="inputEmail4" class="form-label">Flight Code</label>
-                            <input type="email" class="form-control" id="inputEmail4" placeholder="1234" disabled>
+                            <input type="email" class="form-control" id="inputEmail4" placeholder="{{flightCode}}" disabled>
                         </div>
                         <div class="col-12 ">
                             <label for="inputAddress" class="form-label">Origin</label>
@@ -67,8 +69,11 @@
                             <label style="visibility:hidden" for="inputPassword4" class="form-label">time </label>
                             <input type="text" class="form-control" id="inputPassword4" formControlName="arivalTime" placeholder="15:35">
                         </div>
-                        <div class="col-12 ">
+                        <div class="col-3 ">
                             <button type="submit" class="btn btn-primary" (click)="formTest()">Create</button>
+                        </div>
+                        <div class="col-9 d-flex align-items-center  ">
+                            <label class="text-danger">{{errorFormInput}}</label>
                         </div>
                     </form>
                 </div>
@@ -79,10 +84,16 @@
                         <form class="row g-3">
                             <div class="col-6 ">
                                 <label for="inputEmail4" class="form-label">Flight Code</label>
-                                <input type="email" class="form-control" id="inputEmail4" placeholder="1234" disabled>
+                                <input #term type="email" class="form-control" id="SearchflightCode" placeholder="Code">
                             </div>
-                            <div class="col-12 ">
-                                <button type="submit" class="btn btn-danger">Delete</button>
+                            <div class="col-6 ">
+
+                            </div>
+                            <div class="col-3  ">
+                                <button type="submit" class="btn btn-danger" (click)="cancelFlight(term.value)">Cancel</button>
+                            </div>
+                            <div class="col-9  d-flex align-items-center ">
+                                <label class="text-danger">{{errorCodeInput}}</label>
                             </div>
                         </form>
                     </div>

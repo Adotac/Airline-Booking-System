@@ -31,4 +31,15 @@ export class ABSFirebaseService {
       console.log(error);
     }
   }
+
+  updateFlightStatus(flightCode: string) {
+    try {
+      this.afs
+        .collection('Flights')
+        .doc(flightCode)
+        .update({ status: 'Cancelled' });
+    } catch (error) {
+      console.log(error);
+    }
+  }
 }

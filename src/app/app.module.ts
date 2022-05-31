@@ -7,7 +7,7 @@ import { AppComponent } from './app.component';
 import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
 import { environment } from '../environments/environment';
 import { provideAuth, getAuth } from '@angular/fire/auth';
-import { provideFirestore, getFirestore } from '@angular/fire/firestore';
+import { provideFirestore, getFirestore, } from '@angular/fire/firestore';
 import { UserpageComponent } from './screens/userpage/userpage.component';
 import { AdminpageComponent } from './screens/adminpage/adminpage.component';
 import { AuthPageComponent } from './screens/auth-page/auth-page.component';
@@ -19,6 +19,11 @@ import { UserFlightsComponent } from './screens/userpage/user-flights/user-fligh
 import { UserBookingsComponent } from './screens/userpage/user-bookings/user-bookings.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatDatepickerModule } from '@angular/material/datepicker';
+
+// test angularfire
+import { AngularFireModule } from '@angular/fire/compat';
+import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
+import { AngularFireAuthModule } from '@angular/fire/compat/auth';
 
 @NgModule({
   declarations: [
@@ -43,8 +48,13 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
     provideFirebaseApp(() => initializeApp(environment.firebase)),
     provideAuth(() => getAuth()),
     provideFirestore(() => getFirestore()),
+
+    AngularFireModule.initializeApp(environment.firebase),
+    AngularFireAuthModule,
+    AngularFirestoreModule,
   ],
   providers: [],
   bootstrap: [AppComponent],
 })
 export class AppModule {}
+ 

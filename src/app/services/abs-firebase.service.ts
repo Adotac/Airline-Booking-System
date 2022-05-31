@@ -38,6 +38,7 @@ export class ABSFirebaseService {
         .collection('Flights')
         .doc(flightCode)
         .update({ status: 'Cancelled' });
+      console.log(flightCode);
     } catch (error) {
       console.log(error);
     }

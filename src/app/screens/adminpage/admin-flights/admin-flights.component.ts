@@ -32,31 +32,6 @@ export class AdminFlightsComponent implements OnInit {
     departureTime: new FormControl('', Validators.required),
   });
 
-  formTest() {
-    // this.flightForm.value.origin = 'Rome, Italy';
-    // this.flightForm.value.destination = 'Amman, Jordan';
-    // this.flightForm.value.departureDate = '06/05/2022';
-    // this.flightForm.value.departureTime = '08:15';
-    // this.flightForm.value.arivalDate = '06/06/2022';
-    // this.flightForm.value.arivalTime = '12:02';
-
-    // console.log(this.isGoodDate(this.createFlightForm.value.departureDate));
-    // console.log(this.isGoodDate(this.createFlightForm.value.arivalDate));
-    this.addFlightToDB();
-    // console.log(this.isGoodTime(this.createFlightForm.value.departureTime));
-    // console.log(this.isGoodTime(this.createFlightForm.value.arivalTime));
-    // console.log(this.createFlightForm.value.origin);
-    // console.log(this.createFlightForm.value.destination);
-    // console.log(this.createFlightForm.value.arivalDate);
-    // console.log(this.createFlightForm.value.arivalTime);
-    // console.log(this.createFlightForm.value.departureDate);
-    // console.log(this.createFlightForm.value.departureTime);
-    // this.stringToDateTime(
-    //   this.createFlightForm.value.departureDate,
-    //   this.createFlightForm.value.departureTime
-    // );
-  }
-
   isGoodDate(dt: string) {
     var reGoodDate =
       /^\b((0?[1-9]|1[012])[- /.](0?[1-9]|[12][0-9]|3[01])[- /.](19|20)?[0-9]{2})*$/;
@@ -88,29 +63,44 @@ export class AdminFlightsComponent implements OnInit {
   }
 
   addFlightToDB() {
-    console.log(this.formToJson());
+    this.flightForm.value.origin = 'Moscow, Russia';
+    this.flightForm.value.destination = 'Kyiv, Ukraine';
+    this.flightForm.value.departureDate = '06/02/2022';
+    this.flightForm.value.departureTime = '10:11';
+    this.flightForm.value.arivalDate = '06/03/2022';
+    this.flightForm.value.arivalTime = '13:42';
+    this.formToJson();
   }
-
-  // createFlightForm: FormGroup = new FormGroup({
-  //   origin: new FormControl('', Validators.required),
-  //   destination: new FormControl('', Validators.required),
-  //   arivalDate: new FormControl('', Validators.required),
-  //   arivalTime: new FormControl('', Validators.required),
-  //   departureDate: new FormControl('', Validators.required),
-  //   departureTime: new FormControl('', Validators.required),
-  // });
 
   private async formToJson(): Promise<any> {
     var attributes = new Map<string, any>();
 
-    if (this.flightForm.value.origin && this.flightForm.value.origin.trim())
-      attributes.set('origin_name', this.flightForm.value.origin.trim());
+    // if (
+    //   !(
+    //     this.flightForm.value.origin &&
+    //     this.flightForm.value.origin.trim() &&
+    //     this.flightForm.value.destination &&
+    //     this.flightForm.value.destination.trim()
+    //   )
+    // ) {
+    //   this.errorFormInput = 'empty fields';
+    //   return;
+    // }
 
-    if (
-      this.flightForm.value.destination &&
-      this.flightForm.value.destination.trim()
-    )
-      attributes.set('dest_name', this.flightForm.value.destination.trim());
+    // if (
+    //   !(
+    //     this.isGoodDate(this.flightForm.value.departureDate) &&
+    //     this.isGoodDate(this.flightForm.value.arivalDate) &&
+    //     this.isGoodTime(this.flightForm.value.departureTime) &&
+    //     this.isGoodTime(this.flightForm.value.arivalTime)
+    //   )
+    // ) {
+    //   this.errorFormInput = 'date or/and time is not valid';
+    //   return;
+    // }
+
+    attributes.set('origin_name', this.flightForm.value.origin.trim());
+    attributes.set('dest_name', this.flightForm.value.destination.trim());
 
     var departure = this.stringToDateTime(
       this.flightForm.value.departureDate,
@@ -127,22 +117,11 @@ export class AdminFlightsComponent implements OnInit {
 
     console.log(attributes.size);
     if (attributes.size <= 0) {
-      // this.requestResult = 'empty fields';
+      this.errorFormInput = 'empty fields';
       return null;
     }
+    this.errorFormInput = '';
     await this.ABS_service.addNewFlight(this.mapToObject(attributes));
-  }
-
-  private mapToObject(map: any) {
-    const out = Object.create(null);
-    map.forEach((value: any, key: string | number) => {
-      if (value instanceof Map) {
-        out[key] = this.mapToObject(value);
-      } else {
-        out[key] = value;
-      }
-    });
-    return out;
   }
 
   public async cancelFlight(code: string) {
@@ -173,5 +152,17 @@ export class AdminFlightsComponent implements OnInit {
       .subscribe((data) => {
         this.flights = data;
       });
+  }
+
+  private mapToObject(map: any) {
+    const out = Object.create(null);
+    map.forEach((value: any, key: string | number) => {
+      if (value instanceof Map) {
+        out[key] = this.mapToObject(value);
+      } else {
+        out[key] = value;
+      }
+    });
+    return out;
   }
 }

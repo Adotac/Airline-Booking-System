@@ -5,6 +5,7 @@ import { DatabaseQuery } from 'src/app/firebase.database';
 import { ABSFirebaseService } from 'src/app/services/abs-firebase.service';
 import { filter, find, map, tap } from 'rxjs/operators';
 import { Flights } from 'src/app/models/flights.mpodel';
+import { setTokenAutoRefreshEnabled } from '@firebase/app-check';
 
 @Component({
   selector: 'app-admin-flights',
@@ -32,6 +33,9 @@ export class AdminFlightsComponent implements OnInit {
     departureTime: new FormControl('', Validators.required),
   });
 
+  printSelected(selected: any) {
+    console.log(selected);
+  }
   isGoodDate(dt: string) {
     var reGoodDate =
       /^\b((0?[1-9]|1[012])[- /.](0?[1-9]|[12][0-9]|3[01])[- /.](19|20)?[0-9]{2})*$/;

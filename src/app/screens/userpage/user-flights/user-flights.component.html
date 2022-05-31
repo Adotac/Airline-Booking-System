@@ -21,8 +21,8 @@
                                 <td>{{flight.flight_code}}</td>
                                 <td>{{flight.origin_name}}</td>
                                 <td>{{flight.dest_name}}</td>
-                                <td>DateNotyetconverted</td>
-                                <td>DateNotyetconverted</td>
+                                <td>{{flight.depart_time.toDate().toDateString() +' | '+ flight.depart_time.toDate().toLocaleTimeString()}}</td>
+                                <td>{{flight.arrival_time.toDate().toDateString()+' | '+ flight.arrival_time.toDate().toLocaleTimeString()}}</td>
                             </tr>
 
                         </tbody>

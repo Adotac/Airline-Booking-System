@@ -7,6 +7,7 @@
                     <table class="table table-responsive table-hover table-striped">
                         <thead>
                             <tr>
+                                <th scope="col">Index</th>
                                 <th scope="col">Code</th>
                                 <th scope="col">Origin</th>
                                 <th scope="col">Dest</th>
@@ -15,20 +16,15 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <th scope="row">1</th>
-                                <td>Mark</td>
-                                <td>Otto</td>
-                                <td>@mdo</td>
-                                <td>@mdo</td>
+                            <tr *ngFor="let flight of flights; let i = index">
+                                <th scope="row">{{i+1}}</th>
+                                <td>{{flight.flight_code}}</td>
+                                <td>{{flight.origin_name}}</td>
+                                <td>{{flight.dest_name}}</td>
+                                <td>DateNotyetconverted</td>
+                                <td>DateNotyetconverted</td>
                             </tr>
-                            <tr>
-                                <th scope="row">2</th>
-                                <td>Jacob</td>
-                                <td>Thornton</td>
-                                <td>@fat</td>
-                                <td>@mdo</td>
-                            </tr>
+
                         </tbody>
                     </table>
                 </div>
@@ -36,10 +32,18 @@
         </div>
         <div class=" d-flex  w-25 flex-column  p-2">
             <div class="">
-                <h3 class="fw-bold"> Create Flight</h3>
+                <h3 class="fw-bold">Flight search</h3>
                 <div class="border border-dark p-3">
 
+                    <!--  
+                        This should be a form to be auto filled when user clicks on a flight
+                        then display flight details
 
+                        or
+
+                        A flight search board
+                    
+                    -->
 
                     <ngx-mat-timepicker [(ngModel)]="date"></ngx-mat-timepicker>
                     <div class="mb-1 w-25">
@@ -63,10 +67,9 @@
                     </div>
                 </div>
                 <div class="">
-                    <h3 class="fw-bold"> Cancel Flight</h3>
                     <div class="border border-dark h-100">
                         <button>
-                            Cancel
+                            Search
                         </button>
                     </div>
                 </div>

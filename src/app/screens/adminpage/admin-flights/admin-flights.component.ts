@@ -2,6 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 import { DatabaseQuery } from 'src/app/firebase.database';
+import { ABSFirebaseService } from 'src/app/services/abs-firebase.service';
+import { filter, find, map, tap } from 'rxjs/operators';
+import { Flights } from 'src/app/models/flights.mpodel';
 
 @Component({
   selector: 'app-admin-flights',
@@ -9,7 +12,12 @@ import { DatabaseQuery } from 'src/app/firebase.database';
   styleUrls: ['./admin-flights.component.scss'],
 })
 export class AdminFlightsComponent implements OnInit {
-  ngOnInit(): void {}
+  flights?: Flights[];
+
+  constructor(private ABS_service: ABSFirebaseService) {}
+  ngOnInit(): void {
+    this.retrieveFlights();
+  }
 
   flightForm: FormGroup = new FormGroup({
     origin: new FormControl('', Validators.required),
@@ -21,6 +29,13 @@ export class AdminFlightsComponent implements OnInit {
   });
 
   formTest() {
+    this.flightForm.value.origin = 'Kyiv, Ukraine';
+    this.flightForm.value.destination = 'Moscow, Russia';
+    this.flightForm.value.departureDate = '06/03/2022';
+    this.flightForm.value.departureTime = '16:52';
+    this.flightForm.value.arivalDate = '06/04/2022';
+    this.flightForm.value.arivalTime = '01:20';
+
     // console.log(this.isGoodDate(this.createFlightForm.value.departureDate));
     // console.log(this.isGoodDate(this.createFlightForm.value.arivalDate));
     this.addFlightToDB();
@@ -82,17 +97,17 @@ export class AdminFlightsComponent implements OnInit {
   //   departureTime: new FormControl('', Validators.required),
   // });
 
-  private formToJson(): any {
+  private async formToJson(): Promise<any> {
     var attributes = new Map<string, any>();
 
     if (this.flightForm.value.origin && this.flightForm.value.origin.trim())
-      attributes.set('origin', this.flightForm.value.origin.trim());
+      attributes.set('origin_name', this.flightForm.value.origin.trim());
 
     if (
       this.flightForm.value.destination &&
       this.flightForm.value.destination.trim()
     )
-      attributes.set('destination', this.flightForm.value.destination.trim());
+      attributes.set('dest_name', this.flightForm.value.destination.trim());
 
     var departure = this.stringToDateTime(
       this.flightForm.value.departureDate,
@@ -102,17 +117,17 @@ export class AdminFlightsComponent implements OnInit {
       this.flightForm.value.arivalDate,
       this.flightForm.value.arivalTime
     );
-    attributes.set('id', this.generateFlightCode());
-    attributes.set('departure', departure);
-    attributes.set('arival', arival);
+    attributes.set('flight_code', this.generateFlightCode());
+    attributes.set('depart_time', departure);
+    attributes.set('arrival_time', arival);
+    attributes.set('status', 'Active');
 
     console.log(attributes.size);
     if (attributes.size <= 0) {
       // this.requestResult = 'empty fields';
       return null;
     }
-
-    // DatabaseQuery.commitFlight(this.mapToObject(attributes));
+    await this.ABS_service.addNewFlight(this.mapToObject(attributes));
   }
 
   private mapToObject(map: any) {
@@ -125,5 +140,22 @@ export class AdminFlightsComponent implements OnInit {
       }
     });
     return out;
+  }
+
+  retrieveFlights() {
+    console.log('retrieve flights!!');
+    this.ABS_service.getAllFlights()
+      .snapshotChanges()
+      .pipe(
+        map((changes) =>
+          changes.map((c) => ({
+            id: c.payload.doc.id,
+            ...c.payload.doc.data(),
+          }))
+        )
+      )
+      .subscribe((data) => {
+        this.flights = data;
+      });
   }
 }

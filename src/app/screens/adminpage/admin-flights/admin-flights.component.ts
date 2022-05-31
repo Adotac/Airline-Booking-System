@@ -63,41 +63,41 @@ export class AdminFlightsComponent implements OnInit {
   }
 
   addFlightToDB() {
-    this.flightForm.value.origin = 'Moscow, Russia';
-    this.flightForm.value.destination = 'Kyiv, Ukraine';
-    this.flightForm.value.departureDate = '06/02/2022';
-    this.flightForm.value.departureTime = '10:11';
-    this.flightForm.value.arivalDate = '06/03/2022';
-    this.flightForm.value.arivalTime = '13:42';
+    // this.flightForm.value.origin = 'Moscow, Russia';
+    // this.flightForm.value.destination = 'Kyiv, Ukraine';
+    // this.flightForm.value.departureDate = '06/02/2022';
+    // this.flightForm.value.departureTime = '10:11';
+    // this.flightForm.value.arivalDate = '06/03/2022';
+    // this.flightForm.value.arivalTime = '13:42';
     this.formToJson();
   }
 
   private async formToJson(): Promise<any> {
     var attributes = new Map<string, any>();
 
-    // if (
-    //   !(
-    //     this.flightForm.value.origin &&
-    //     this.flightForm.value.origin.trim() &&
-    //     this.flightForm.value.destination &&
-    //     this.flightForm.value.destination.trim()
-    //   )
-    // ) {
-    //   this.errorFormInput = 'empty fields';
-    //   return;
-    // }
+    if (
+      !(
+        this.flightForm.value.origin &&
+        this.flightForm.value.origin.trim() &&
+        this.flightForm.value.destination &&
+        this.flightForm.value.destination.trim()
+      )
+    ) {
+      this.errorFormInput = 'empty fields';
+      return;
+    }
 
-    // if (
-    //   !(
-    //     this.isGoodDate(this.flightForm.value.departureDate) &&
-    //     this.isGoodDate(this.flightForm.value.arivalDate) &&
-    //     this.isGoodTime(this.flightForm.value.departureTime) &&
-    //     this.isGoodTime(this.flightForm.value.arivalTime)
-    //   )
-    // ) {
-    //   this.errorFormInput = 'date or/and time is not valid';
-    //   return;
-    // }
+    if (
+      !(
+        this.isGoodDate(this.flightForm.value.departureDate) &&
+        this.isGoodDate(this.flightForm.value.arivalDate) &&
+        this.isGoodTime(this.flightForm.value.departureTime) &&
+        this.isGoodTime(this.flightForm.value.arivalTime)
+      )
+    ) {
+      this.errorFormInput = 'date or/and time is not valid';
+      return;
+    }
 
     attributes.set('origin_name', this.flightForm.value.origin.trim());
     attributes.set('dest_name', this.flightForm.value.destination.trim());

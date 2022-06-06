@@ -17,15 +17,15 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr *ngFor="let flight of flights; let i = index">
+                            <tr *ngFor="let flight of retrieveFlights(); let i = index">
                                 <th scope="row">{{i+1}}</th>
                                 <td>{{flight.flight_code}}</td>
                                 <td>{{flight.origin_name}}</td>
                                 <td>{{flight.dest_name}}</td>
                                 <td>{{flight.depart_time.toDate().toDateString() +' | '+ flight.depart_time.toDate().toLocaleTimeString()}}</td>
                                 <td>{{flight.arrival_time.toDate().toDateString()+' | '+ flight.arrival_time.toDate().toLocaleTimeString()}}</td>
-                                <td>
-                                    <button type="button" class="btn btn-primary"  >Book Flight</button>
+                                <td *ngIf="{code: flight.flight_code} as variable">
+                                    <button type="button" class="btn btn-primary"  (click)="addBookingToUser(variable.code, 'ZL4BwNXyxrl89EtdI9ac')">Book Flight</button>
                                 </td>
                             </tr>
 

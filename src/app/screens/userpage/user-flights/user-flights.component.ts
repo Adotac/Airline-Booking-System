@@ -1,9 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { Flights } from 'src/app/models/flights.mpodel';
-import { ABSFirebaseService } from 'src/app/services/abs-firebase.service';
 import { filter, find, map, tap } from 'rxjs/operators';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 
+import { CrudReturn } from 'src/app/models/crud-return';
+import { Flights } from 'src/app/models/flights.model';
+import { ABSFirebaseService } from 'src/app/services/abs-firebase.service';
+import { UserAccount } from 'src/app/models/user-account.model';
 
 @Component({
   selector: 'app-user-flights',
@@ -11,7 +13,8 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
   styleUrls: ['./user-flights.component.scss']
 })
 export class UserFlightsComponent implements OnInit {
-  flights?: Flights[];
+  // flights?: Flights[];
+  // users?: UserAccount[];
   selectedFlight?: Flights;
   current_index = -1;
 
@@ -22,7 +25,6 @@ export class UserFlightsComponent implements OnInit {
   date!: Date;
   ngOnInit(): void {
     this.date = new Date(2021, 9, 4, 5, 6, 7);
-    this.retrieveFlights()
   }
 
   flightForm: FormGroup = new FormGroup({
@@ -35,16 +37,12 @@ export class UserFlightsComponent implements OnInit {
   });
 
   retrieveFlights(){
-    console.log("retrieve flights!!")
-    this.ABS_service.getAllFlights().snapshotChanges().pipe(
-      map(changes => 
-        changes.map(c=>
-          ({id: c.payload.doc.id, ...c.payload.doc.data()})  
-        )  
-      )
-    ).subscribe(data=>{
-      this.flights = data;
-    })
+    // console.log("retrieve flights!!")
+    return this.ABS_service.getAllFlights();
+  }
+  retrieveUsers(){
+    // console.log("retrieve users!!")
+    return this.ABS_service.getAllUsers();
   }
 
   searchFlights(){
@@ -80,8 +78,15 @@ export class UserFlightsComponent implements OnInit {
     else{
       this.errorFormInput = '';
     }
+  }
 
-    
+
+
+  async addBookingToUser(flightCode: any, userID:string){
+    var tempID = "ZL4BwNXyxrl89EtdI9ac";
+    var crud = this.ABS_service.getFlight(flightCode);
+      if (crud.data.flight_code == flightCode)
+        await this.ABS_service.updateUserBookings(crud.data, tempID);
 
   }
 

@@ -4,18 +4,18 @@
             <div class=" container-fluid d-flex flex-row">
                 <div class=" d-flex flex-row align-items-center justify-content-center">
 
-                    <a class=" navbar-brand " href=" # ">
+                    <a (click)='flights()' class=" navbar-brand" style="cursor: pointer;">
                         <span class=" fs-4 fw-bold ">Ryuku Airlines</span>
                     </a>
                 </div>
                 <ul class="nav nav-pills flex-row mb-auto">
                     <li>
-                        <a (click)='flights()' class="nav-link text-white" [ngClass]="flightsClicked ? 'active' : ''">
+                        <a (click)='flights()' class="nav-link text-white" [ngClass]="flightsClicked ? 'active' : ''"  style="cursor: pointer;">
                             <i class=" fa fa-dashboard "></i><span class=" ms-2 ">Flights</span>
                         </a>
                     </li>
                     <li class=" nav-item ">
-                        <a (click)='bookings()' class=" nav-link text-white " aria-current=" page " [ngClass]="bookingClicked ? 'active' : ''">
+                        <a (click)='bookings()' class=" nav-link text-white " aria-current=" page " [ngClass]="bookingClicked ? 'active' : ''"  style="cursor: pointer;">
                             <i class=" fa fa-home "></i><span class=" ms-2 ">My Bookings</span>
                         </a>
                     </li>

@@ -4,7 +4,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { DatabaseQuery } from 'src/app/firebase.database';
 import { ABSFirebaseService } from 'src/app/services/abs-firebase.service';
 import { filter, find, map, tap } from 'rxjs/operators';
-import { Flights } from 'src/app/models/flights.mpodel';
+import { Flights } from 'src/app/models/flights.model';
 import { setTokenAutoRefreshEnabled } from '@firebase/app-check';
 
 @Component({
@@ -20,7 +20,6 @@ export class AdminFlightsComponent implements OnInit {
   errorFormInput = '';
   constructor(private ABS_service: ABSFirebaseService) {}
   ngOnInit(): void {
-    this.retrieveFlights();
     this.generateFlightCode();
   }
 
@@ -132,21 +131,10 @@ export class AdminFlightsComponent implements OnInit {
     this.errorCodeInput = 'flight code not found';
     console.log(this.errorCodeInput);
   }
-  private retrieveFlights() {
-    console.log('retrieve flights!!');
-    this.ABS_service.getAllFlights()
-      .snapshotChanges()
-      .pipe(
-        map((changes) =>
-          changes.map((c) => ({
-            id: c.payload.doc.id,
-            ...c.payload.doc.data(),
-          }))
-        )
-      )
-      .subscribe((data) => {
-        this.flights = data;
-      });
+  retrieveFlights(){
+    // console.log("retrieve flights!!")
+    this.flights = this.ABS_service.getAllFlights(); // redundancy kay kailangan nimo ang flights sa cancel?
+    return this.flights;
   }
 
   private mapToObject(map: any) {

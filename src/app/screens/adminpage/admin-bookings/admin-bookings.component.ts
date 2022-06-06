@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Flights } from 'src/app/models/flights.mpodel';
+import { Flights } from 'src/app/models/flights.model';
 
 @Component({
   selector: 'app-admin-bookings',

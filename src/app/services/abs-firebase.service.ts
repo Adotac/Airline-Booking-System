@@ -6,22 +6,67 @@ import {
 import { Observable, pipe } from 'rxjs';
 import { filter, find, map, tap } from 'rxjs/operators';
 
-import { Flights } from '../models/flights.mpodel';
+import { CrudReturn } from '../models/crud-return';
+import { Flights } from '../models/flights.model';
+import { UserAccount } from '../models/user-account.model';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ABSFirebaseService {
   private flightsCollection: AngularFirestoreCollection<Flights>;
-  flight$?: Observable<Flights[]>;
+  private userCollection: AngularFirestoreCollection<UserAccount>;
+
+  private flights?: Flights[];
+  private users?: UserAccount[];
 
   constructor(private afs: AngularFirestore) {
     this.flightsCollection = this.afs.collection<Flights>('Flights');
-    this.flight$ = this.flightsCollection.valueChanges();
+    this.userCollection = this.afs.collection<UserAccount>('UserAccounts');
+  
   }
 
-  getAllFlights(): AngularFirestoreCollection<Flights> {
-    return this.flightsCollection;
+  getAllFlights(){
+    this.flightsCollection.snapshotChanges().pipe(
+      map(changes => 
+        changes.map(c=>
+          ({id: c.payload.doc.id, ...c.payload.doc.data()})  
+        )  
+      )
+    ).subscribe(data=>{
+      this.flights = data;
+    });
+
+    return this.flights;
+  }
+  getAllUsers(){
+    this.userCollection.snapshotChanges().pipe(
+      map(changes => 
+        changes.map(c=>
+          ({id: c.payload.doc.id, ...c.payload.doc.data()})  
+        )  
+      )
+    ).subscribe(data=>{
+      this.users = data;
+    });
+
+    return this.users;
+  }
+  getUser(userID: string): CrudReturn{
+    for (let user of this.users!) {
+      if (user.userID == userID) {
+        return {success:true, data:user};
+      }
+    }
+    return {success:true, data:'error GetFlight'};
+  }
+  getFlight(flightCode: string): CrudReturn{
+    for (let flight of this.flights!) {
+      if (flight.flight_code == flightCode) {
+        return {success:true, data:flight};
+      }
+    }
+    return {success:true, data:'error GetFlight'};
   }
 
   addNewFlight(flight: Flights) {
@@ -43,6 +88,22 @@ export class ABSFirebaseService {
       console.log(error);
     }
   }
+
+  updateUserBookings(flight: Flights, userID: string) {
+    
+    try {
+      var codes = this.getUser(userID).data.flightCode_bookings;
+      codes.push(flight.flight_code);
+
+      this.afs
+        .collection('UserAccounts')
+        .doc(userID)
+        .update({ flightCode_bookings: codes });
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
 
   /////--- Miscellaneous -------////
   isGoodDate(dt: string) {

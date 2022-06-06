@@ -43,4 +43,16 @@ export class ABSFirebaseService {
       console.log(error);
     }
   }
+
+  /////--- Miscellaneous -------////
+  isGoodDate(dt: string) {
+    var reGoodDate =
+      /^\b((0?[1-9]|1[012])[- /.](0?[1-9]|[12][0-9]|3[01])[- /.](19|20)?[0-9]{2})*$/;
+    return reGoodDate.test(dt);
+  }
+
+  isGoodTime(dt: string) {
+    var reGoodDate = /^([01]\d|2[0-3]):([0-5]\d)$/;
+    return reGoodDate.test(dt);
+  }
 }

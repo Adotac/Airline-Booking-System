@@ -1,5 +1,5 @@
 export class UserAccount {
-    flightCode_bookings?: string;
+    flightCode_bookings?: string[];
     userID?: string;
     username?: string;
 }

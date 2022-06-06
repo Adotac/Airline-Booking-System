@@ -36,16 +36,7 @@ export class AdminFlightsComponent implements OnInit {
   printSelected(selected: any) {
     console.log(selected);
   }
-  isGoodDate(dt: string) {
-    var reGoodDate =
-      /^\b((0?[1-9]|1[012])[- /.](0?[1-9]|[12][0-9]|3[01])[- /.](19|20)?[0-9]{2})*$/;
-    return reGoodDate.test(dt);
-  }
-
-  isGoodTime(dt: string) {
-    var reGoodDate = /^([01]\d|2[0-3]):([0-5]\d)$/;
-    return reGoodDate.test(dt);
-  }
+  
 
   stringToDateTime(date: string, time: string) {
     const [month, day, year] = date.split('/');
@@ -93,10 +84,10 @@ export class AdminFlightsComponent implements OnInit {
 
     if (
       !(
-        this.isGoodDate(this.flightForm.value.departureDate) &&
-        this.isGoodDate(this.flightForm.value.arivalDate) &&
-        this.isGoodTime(this.flightForm.value.departureTime) &&
-        this.isGoodTime(this.flightForm.value.arivalTime)
+        this.ABS_service.isGoodDate(this.flightForm.value.departureDate) &&
+        this.ABS_service.isGoodDate(this.flightForm.value.arivalDate) &&
+        this.ABS_service.isGoodTime(this.flightForm.value.departureTime) &&
+        this.ABS_service.isGoodTime(this.flightForm.value.arivalTime)
       )
     ) {
       this.errorFormInput = 'date or/and time is not valid';

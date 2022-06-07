@@ -89,16 +89,19 @@ export class UserFlightsComponent implements OnInit {
 
 
   addBookingToUser(flightCode: any, userID:string){
-    var tempID = "ZL4BwNXyxrl89EtdI9ac";
-    console.log("PRESSEEDDD!!!");
-    // var crud = this.ABS_service.getFlight(flightCode);
-    // if (crud.success && crud.data.flight_code == flightCode){
-    //   alert("Flight is now Booked!!");
-    //   this.ABS_service.updateUserBookings(crud.data, tempID);
-    // }
-    // else{
-    //   alert("Booking failed, please try again...");
-    // }
+    console.log(flightCode);
+
+    var temp:Flights;
+    this.ABS_service.getFlight(flightCode).subscribe( (sdata) =>{
+      console.log("get flight subscribe after filter!");
+      // console.log(sdata);
+      temp = sdata[0];
+      console.log("user flight");
+      console.log(temp);
+
+      this.ABS_service.updateUserBookings(temp, userID);
+    });;
+      
 
   }
 

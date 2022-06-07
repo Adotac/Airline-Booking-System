@@ -3,8 +3,9 @@ import {
   AngularFirestore,
   AngularFirestoreCollection,
 } from '@angular/fire/compat/firestore';
-import { Observable, pipe } from 'rxjs';
-import { filter, find, map, tap } from 'rxjs/operators';
+import { type } from 'os';
+import { Observable, pipe, forkJoin } from 'rxjs';
+import { filter, find, map, tap, mergeMap  } from 'rxjs/operators';
 
 import { CrudReturn } from '../models/crud-return';
 import { Flights } from '../models/flights.model';
@@ -48,45 +49,77 @@ export class ABSFirebaseService {
     return o;
   }
 
-  getUser(userID: string): CrudReturn{
-    try{
-      this.userCollection.snapshotChanges().pipe(
-        map(changes => 
-          changes.map(c=>
-            ({id: c.payload.doc.id, ...c.payload.doc.data()})  
-          ).filter( (selectedUser:UserAccount) => selectedUser.userID == userID)
+  getUser(id: string){
+    // try{
+    //   this.userCollection.snapshotChanges().pipe(
+    //     map(changes => 
+    //       changes.map(c=>
+    //         ({id: c.payload.doc.id, ...c.payload.doc.data()})  
+    //       ).filter( (selectedUser:UserAccount) => selectedUser.userID == userID)
+    //     )
+    //   ).subscribe( sdata =>{
+    //     console.log("get flight subscribe after filter!");
+    //     console.log(sdata);
+    //     return {success:true, data:sdata};
+    //   });
+
+
+    // }
+    // catch(error){
+    //   console.log(error);
+    // }
+    // return {success:false, data:'error getFlight'};
+
+    const o = this.userCollection.snapshotChanges().pipe(
+      map(changes => 
+        changes.map(c=>
+          ({id: c.payload.doc.id, ...c.payload.doc.data()})  
+        ).filter( (selectedUser:UserAccount) => 
+        selectedUser.userID == id)
         )
-      ).subscribe( sdata =>{
-        console.log("get flight subscribe after filter!");
-        console.log(sdata);
-        return {success:true, data:sdata};
-      });
-
-
-    }
-    catch(error){
-      console.log(error);
-    }
-    return {success:false, data:'error getFlight'};
+      );
+    
+    return o;
   }
-  getFlight(flightCode: string): CrudReturn{
-    try{
-      this.flightsCollection.snapshotChanges().pipe(
-        map(changes => 
-          changes.map(c=>
-            ({id: c.payload.doc.id, ...c.payload.doc.data()})  
-          ).filter( (selectedFlight:Flights) => selectedFlight.flight_code == flightCode)
+  getFlight(flightCode: string) {
+    // fuck this subscribe shit HAHAHAH
+    // var tempData:any;
+    // var tempBool:boolean = false;
+    // try{
+    //   this.flightsCollection.snapshotChanges().pipe(
+    //     map(changes => 
+    //       changes.map(c=>
+    //         ({id: c.payload.doc.id, ...c.payload.doc.data()})  
+    //       ).filter( (selectedFlight:Flights) => 
+    //       selectedFlight.flight_code == flightCode
+    //       )
+    //     )
+    //   ).subscribe( sdata =>{
+    //     console.log("get flight subscribe after filter!");
+    //     console.log(sdata);
+    //     tempData = sdata;
+    //     tempBool = true;
+    //   });
+    // }
+    // catch(error){
+    //   console.log(error);
+    //   tempData = error;
+    //   tempBool = false;
+    // }
+
+    const o = this.flightsCollection.snapshotChanges().pipe(
+      map(changes => 
+        changes.map(c=>
+          ({id: c.payload.doc.id, ...c.payload.doc.data()})  
+        ).filter( (selectedFlight:Flights) => 
+        selectedFlight.flight_code == flightCode
         )
-      ).subscribe( sdata =>{
-        console.log("get flight subscribe after filter!");
-        console.log(sdata);
-        return {success:true, data:sdata};
-      });
-    }
-    catch(error){
-      console.log(error);
-    }
-    return {success:false, data:'error getFlight'};
+      )
+    );
+    
+    return o;
+    // console.log(tempData);
+    // return {success:tempBool, data:tempData};
   }
 
   addNewFlight(flight: Flights) {
@@ -111,20 +144,23 @@ export class ABSFirebaseService {
 
   updateUserBookings(flight: Flights, userID: string) {
     try {
-      var user = this.getUser(userID);
-      if(user.success){
-        var codes = [];
-        codes.push(user.data.flightCode_bookings);
-        codes.push(flight.flight_code);
-        console.log(codes);
-        // this.afs
-        //   .collection('UserAccounts')
-        //   .doc(userID)
-        //   .update({ flightCode_bookings: codes });
-      }
-      else{
-        console.log(user);
-      }
+      let newCodes, tempData;
+      const test = this.getUser(userID).subscribe( (sdata) => {
+        tempData = sdata[0];
+        const codes:any = sdata[0].flightCode_bookings;
+        // codes.push(flight.flight_code);
+        console.log(typeof(sdata));
+        console.log(sdata[0].id);
+
+        newCodes = [...codes, flight.flight_code]
+        console.log(newCodes);
+        this.afs
+          .collection('UserAccounts')
+          .doc(sdata[0].id)
+          .update({ flightCode_bookings: newCodes });
+
+          test.unsubscribe();
+      });
     } catch (error) {
       console.log(error);
     }
@@ -142,4 +178,5 @@ export class ABSFirebaseService {
     var reGoodDate = /^([01]\d|2[0-3]):([0-5]\d)$/;
     return reGoodDate.test(dt);
   }
+
 }

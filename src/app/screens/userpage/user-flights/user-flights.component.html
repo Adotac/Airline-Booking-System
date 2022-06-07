@@ -25,7 +25,7 @@
                                 <td>{{flight.depart_time.toDate().toDateString() +' | '+ flight.depart_time.toDate().toLocaleTimeString()}}</td>
                                 <td>{{flight.arrival_time.toDate().toDateString()+' | '+ flight.arrival_time.toDate().toLocaleTimeString()}}</td>
                                 <td *ngIf="{code: flight.flight_code} as variable">
-                                    <button type="button" class="btn btn-primary"  (click)="addBookingToUser(variable.code, 'ZL4BwNXyxrl89EtdI9ac')">Book Flight</button>
+                                    <button type="button" class="btn btn-primary"  (click)="addBookingToUser(variable.code, 'random')">Book Flight</button>
                                 </td>
                                 <!-- <td>
                                     <button type="button" class="btn btn-primary" >Book Flight</button>

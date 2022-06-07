@@ -36,7 +36,6 @@ export class AdminFlightsComponent implements OnInit {
   printSelected(selected: any) {
     console.log(selected);
   }
-  
 
   stringToDateTime(date: string, time: string) {
     const [month, day, year] = date.split('/');
@@ -58,18 +57,14 @@ export class AdminFlightsComponent implements OnInit {
   }
 
   addFlightToDB() {
-    // this.flightForm.value.origin = 'Moscow, Russia';
-    // this.flightForm.value.destination = 'Kyiv, Ukraine';
-    // this.flightForm.value.departureDate = '06/02/2022';
-    // this.flightForm.value.departureTime = '10:11';
-    // this.flightForm.value.arivalDate = '06/03/2022';
-    // this.flightForm.value.arivalTime = '13:42';
-    this.formToJson();
+    if (!this.isFormValid()) return;
+
+    if (!this.isDateValid()) return;
+
+    this.setFlightToDB();
   }
 
-  private async formToJson(): Promise<any> {
-    var attributes = new Map<string, any>();
-
+  private isFormValid(): boolean {
     if (
       !(
         this.flightForm.value.origin &&
@@ -78,21 +73,14 @@ export class AdminFlightsComponent implements OnInit {
         this.flightForm.value.destination.trim()
       )
     ) {
-      this.errorFormInput = 'empty fields';
-      return;
+      this.errorFormInput = 'fields should not be empty';
+      return false;
     }
+    return true;
+  }
 
-    if (
-      !(
-        this.ABS_service.isGoodDate(this.flightForm.value.departureDate) &&
-        this.ABS_service.isGoodDate(this.flightForm.value.arivalDate) &&
-        this.ABS_service.isGoodTime(this.flightForm.value.departureTime) &&
-        this.ABS_service.isGoodTime(this.flightForm.value.arivalTime)
-      )
-    ) {
-      this.errorFormInput = 'date or/and time is not valid';
-      return;
-    }
+  private async setFlightToDB(): Promise<any> {
+    var attributes = new Map<string, any>();
 
     attributes.set('origin_name', this.flightForm.value.origin.trim());
     attributes.set('dest_name', this.flightForm.value.destination.trim());
@@ -105,18 +93,38 @@ export class AdminFlightsComponent implements OnInit {
       this.flightForm.value.arivalDate,
       this.flightForm.value.arivalTime
     );
+
     attributes.set('flight_code', this.flightCode);
     attributes.set('depart_time', departure);
     attributes.set('arrival_time', arival);
-    attributes.set('status', 'Active');
+    attributes.set('status', 'Available');
 
-    console.log(attributes.size);
+    if (!(arival > departure)) {
+      this.errorFormInput = 'arival should be greater than departure ';
+    }
+
     if (attributes.size <= 0) {
       this.errorFormInput = 'empty fields';
       return null;
     }
     this.errorFormInput = '';
-    await this.ABS_service.addNewFlight(this.mapToObject(attributes));
+    // await this.ABS_service.addNewFlight(this.mapToObject(attributes))\;
+  }
+
+  private isDateValid(): boolean {
+    if (
+      !(
+        this.ABS_service.isGoodDate(this.flightForm.value.departureDate) &&
+        this.ABS_service.isGoodDate(this.flightForm.value.arivalDate) &&
+        this.ABS_service.isGoodTime(this.flightForm.value.departureTime) &&
+        this.ABS_service.isGoodTime(this.flightForm.value.arivalTime)
+      )
+    ) {
+      this.errorFormInput = 'date or/and time is not valid';
+      return false;
+    }
+
+    return true;
   }
 
   public async cancelFlight(code: string) {
@@ -133,10 +141,9 @@ export class AdminFlightsComponent implements OnInit {
     console.log(this.errorCodeInput);
   }
 
-  retrieveFlights(){
-    this.ABS_service.getAllFlights().subscribe(data=>{
+  retrieveFlights() {
+    this.ABS_service.getAllFlights().subscribe((data) => {
       this.flights = data;
-      // console.log(data)
     });
   }
 

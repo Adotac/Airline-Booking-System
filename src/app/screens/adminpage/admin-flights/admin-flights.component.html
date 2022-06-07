@@ -25,7 +25,7 @@
                                 </td>
                                 <td>{{flight.arrival_time.toDate().toDateString()+' | '+ flight.arrival_time.toDate().toLocaleTimeString()}}
                                 </td>
-                                <td [ngClass]="flight.status == 'Active' ? 'text-success': 'text-danger' ">
+                                <td [ngClass]="flight.status == 'Available' ? 'text-success': 'text-danger' ">
                                     {{flight.status}}
                                 </td>
                             </tr>

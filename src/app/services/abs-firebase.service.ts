@@ -25,55 +25,61 @@ export class ABSFirebaseService {
     this.userCollection = this.afs.collection<UserAccount>('UserAccounts');
   }
 
-  getAllFlights(){
-    const o = this.flightsCollection.snapshotChanges().pipe(
-      map(changes => 
-        changes.map(c=>
-          ({id: c.payload.doc.id, ...c.payload.doc.data()})  
-        )  
-      )
-    );
-    
+  getAllFlights() {
+    const o = this.flightsCollection
+      .snapshotChanges()
+      .pipe(
+        map((changes) =>
+          changes.map((c) => ({
+            id: c.payload.doc.id,
+            ...c.payload.doc.data(),
+          }))
+        )
+      );
+
     return o;
   }
-  getAllUsers(){
-    const o = this.userCollection.snapshotChanges().pipe(
-      map(changes => 
-        changes.map(c=>
-          ({id: c.payload.doc.id, ...c.payload.doc.data()})  
-        )  
-      )
-    );
+  getAllUsers() {
+    const o = this.userCollection
+      .snapshotChanges()
+      .pipe(
+        map((changes) =>
+          changes.map((c) => ({
+            id: c.payload.doc.id,
+            ...c.payload.doc.data(),
+          }))
+        )
+      );
 
     return o;
   }
 
-  getUser(userID: string): CrudReturn{
-    var users:any;
-    this.getAllUsers().subscribe(data=>{
+  getUser(userID: string): CrudReturn {
+    var users: any;
+    this.getAllUsers().subscribe((data) => {
       users = data;
       // console.log(data)
     });
 
     for (let user of users!) {
       if (user.userID == userID) {
-        return {success:true, data:user};
+        return { success: true, data: user };
       }
     }
-    return {success:true, data:'error GetFlight'};
+    return { success: true, data: 'error GetFlight' };
   }
-  getFlight(flightCode: string): CrudReturn{
-    var flights:any;
-    this.getAllFlights().subscribe(data=>{
+  getFlight(flightCode: string): CrudReturn {
+    var flights: any;
+    this.getAllFlights().subscribe((data) => {
       flights = data;
       // console.log(data)
     });
     for (let flight of flights!) {
       if (flight.flight_code == flightCode) {
-        return {success:true, data:flight};
+        return { success: true, data: flight };
       }
     }
-    return {success:true, data:'error GetFlight'};
+    return { success: true, data: 'error GetFlight' };
   }
 
   addNewFlight(flight: Flights) {
@@ -99,7 +105,7 @@ export class ABSFirebaseService {
   updateUserBookings(flight: Flights, userID: string) {
     try {
       var user = this.getUser(userID);
-      if(user.success){
+      if (user.success) {
         var codes = [];
         codes.push(user.data.flightCode_bookings);
         codes.push(flight.flight_code);
@@ -108,15 +114,13 @@ export class ABSFirebaseService {
         //   .collection('UserAccounts')
         //   .doc(userID)
         //   .update({ flightCode_bookings: codes });
-      }
-      else{
+      } else {
         console.log(user);
       }
     } catch (error) {
       console.log(error);
     }
   }
-
 
   /////--- Miscellaneous -------////
   isGoodDate(dt: string) {

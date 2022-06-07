@@ -14,9 +14,10 @@ export class AdminFlightsComponent implements OnInit {
   searchflightCode = '';
   errorCodeInput = '';
   errorFormInput = '';
+
   constructor(private ABS_service: ABSFirebaseService) {}
   ngOnInit(): void {
-    this.generateFlightCode();
+    this.flightCode = this.generateFlightCode();
     this.retrieveFlights();
   }
 
@@ -41,7 +42,7 @@ export class AdminFlightsComponent implements OnInit {
     return newDate;
   }
 
-  generateFlightCode() {
+  generateFlightCode(): string {
     var dateNow = new Date().valueOf().toString();
     var id = dateNow.substring(dateNow.length - 5, dateNow.length);
 
@@ -49,7 +50,7 @@ export class AdminFlightsComponent implements OnInit {
     var A = alphabet[Math.floor(Math.random() * alphabet.length)];
     var B = alphabet[Math.floor(Math.random() * alphabet.length)];
 
-    this.flightCode = `${A}${B}-${id}`;
+    return `${A}${B}-${id}`;
   }
 
   addFlightToDB() {

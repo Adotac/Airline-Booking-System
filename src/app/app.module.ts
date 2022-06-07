@@ -7,7 +7,7 @@ import { AppComponent } from './app.component';
 import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
 import { environment } from '../environments/environment';
 import { provideAuth, getAuth } from '@angular/fire/auth';
-import { provideFirestore, getFirestore, } from '@angular/fire/firestore';
+import { provideFirestore, getFirestore } from '@angular/fire/firestore';
 import { UserpageComponent } from './screens/userpage/userpage.component';
 import { AdminpageComponent } from './screens/adminpage/adminpage.component';
 import { AuthPageComponent } from './screens/auth-page/auth-page.component';
@@ -19,9 +19,10 @@ import { UserFlightsComponent } from './screens/userpage/user-flights/user-fligh
 import { UserBookingsComponent } from './screens/userpage/user-bookings/user-bookings.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatDatepickerModule } from '@angular/material/datepicker';
-
+import { RouterTestingModule } from '@angular/router/testing';
 // test angularfire
-import { AngularFireModule } from '@angular/fire/compat';
+// import { AngularFirestore } from '@angular/fire/firestore';
+import { AngularFireModule, FIREBASE_OPTIONS } from '@angular/fire/compat';
 import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
 import { AngularFireAuthModule } from '@angular/fire/compat/auth';
 
@@ -39,6 +40,7 @@ import { AngularFireAuthModule } from '@angular/fire/compat/auth';
     UserBookingsComponent,
   ],
   imports: [
+    RouterTestingModule,
     RouterModule,
     ReactiveFormsModule,
     MatDatepickerModule,
@@ -57,4 +59,3 @@ import { AngularFireAuthModule } from '@angular/fire/compat/auth';
   bootstrap: [AppComponent],
 })
 export class AppModule {}
- 

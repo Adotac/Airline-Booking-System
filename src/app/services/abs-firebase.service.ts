@@ -30,7 +30,7 @@ export class ABSFirebaseService {
       map(changes => 
         changes.map(c=>
           ({id: c.payload.doc.id, ...c.payload.doc.data()})  
-        )  
+        )
       )
     );
     
@@ -49,31 +49,44 @@ export class ABSFirebaseService {
   }
 
   getUser(userID: string): CrudReturn{
-    var users:any;
-    this.getAllUsers().subscribe(data=>{
-      users = data;
-      // console.log(data)
-    });
+    try{
+      this.userCollection.snapshotChanges().pipe(
+        map(changes => 
+          changes.map(c=>
+            ({id: c.payload.doc.id, ...c.payload.doc.data()})  
+          ).filter( (selectedUser:UserAccount) => selectedUser.userID == userID)
+        )
+      ).subscribe( sdata =>{
+        console.log("get flight subscribe after filter!");
+        console.log(sdata);
+        return {success:true, data:sdata};
+      });
 
-    for (let user of users!) {
-      if (user.userID == userID) {
-        return {success:true, data:user};
-      }
+
     }
-    return {success:true, data:'error GetFlight'};
+    catch(error){
+      console.log(error);
+    }
+    return {success:false, data:'error getFlight'};
   }
   getFlight(flightCode: string): CrudReturn{
-    var flights:any;
-    this.getAllFlights().subscribe(data=>{
-      flights = data;
-      // console.log(data)
-    });
-    for (let flight of flights!) {
-      if (flight.flight_code == flightCode) {
-        return {success:true, data:flight};
-      }
+    try{
+      this.flightsCollection.snapshotChanges().pipe(
+        map(changes => 
+          changes.map(c=>
+            ({id: c.payload.doc.id, ...c.payload.doc.data()})  
+          ).filter( (selectedFlight:Flights) => selectedFlight.flight_code == flightCode)
+        )
+      ).subscribe( sdata =>{
+        console.log("get flight subscribe after filter!");
+        console.log(sdata);
+        return {success:true, data:sdata};
+      });
     }
-    return {success:true, data:'error GetFlight'};
+    catch(error){
+      console.log(error);
+    }
+    return {success:false, data:'error getFlight'};
   }
 
   addNewFlight(flight: Flights) {

@@ -14,9 +14,10 @@ export class AdminFlightsComponent implements OnInit {
   searchflightCode = '';
   errorCodeInput = '';
   errorFormInput = '';
+
   constructor(private ABS_service: ABSFirebaseService) {}
   ngOnInit(): void {
-    this.generateFlightCode();
+    this.flightCode = this.generateFlightCode();
     this.retrieveFlights();
   }
 
@@ -29,19 +30,18 @@ export class AdminFlightsComponent implements OnInit {
     departureTime: new FormControl('', Validators.required),
   });
 
-  printSelected(selected: any) {
-    console.log(selected);
-  }
-
-  stringToDateTime(date: string, time: string) {
+  //done
+  stringToDateTime(date: string, time: string): Date {
     const [month, day, year] = date.split('/');
     const [hours, minutes] = time.split(':');
 
     const newDate = new Date(+year, +month - 1, +day, +hours, +minutes, +0);
+    console.log(newDate);
     return newDate;
   }
 
-  generateFlightCode() {
+  //done
+  generateFlightCode(): string {
     var dateNow = new Date().valueOf().toString();
     var id = dateNow.substring(dateNow.length - 5, dateNow.length);
 
@@ -49,7 +49,7 @@ export class AdminFlightsComponent implements OnInit {
     var A = alphabet[Math.floor(Math.random() * alphabet.length)];
     var B = alphabet[Math.floor(Math.random() * alphabet.length)];
 
-    this.flightCode = `${A}${B}-${id}`;
+    return `${A}${B}-${id}`;
   }
 
   addFlightToDB() {
@@ -60,6 +60,7 @@ export class AdminFlightsComponent implements OnInit {
     this.setFlightToDB();
   }
 
+  //done
   private isFormValid(): boolean {
     if (
       !(
@@ -69,12 +70,14 @@ export class AdminFlightsComponent implements OnInit {
         this.flightForm.value.destination.trim()
       )
     ) {
+      console.log(this.flightForm.value.origin);
+      console.log(this.flightForm.value.destination);
       this.errorFormInput = 'fields should not be empty';
       return false;
     }
     return true;
   }
-
+  //partial
   private async setFlightToDB(): Promise<any> {
     var attributes = new Map<string, any>();
 
@@ -106,7 +109,7 @@ export class AdminFlightsComponent implements OnInit {
     this.errorFormInput = '';
     // await this.ABS_service.addNewFlight(this.mapToObject(attributes))\;
   }
-
+  //done
   private isDateValid(): boolean {
     if (
       !(
@@ -136,7 +139,7 @@ export class AdminFlightsComponent implements OnInit {
     this.errorCodeInput = 'flight code not found';
     console.log(this.errorCodeInput);
   }
-
+  //done.
   retrieveFlights() {
     this.ABS_service.getAllFlights().subscribe((data) => {
       this.flights = data;

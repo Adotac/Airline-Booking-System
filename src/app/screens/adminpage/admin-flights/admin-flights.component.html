@@ -16,7 +16,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr *ngFor="let flight of flights; let i = index" (click)="printSelected(flight)">
+                            <tr *ngFor="let flight of flights; let i = index">
 
                                 <td>{{flight.flight_code}}</td>
                                 <td>{{flight.origin_name}}</td>

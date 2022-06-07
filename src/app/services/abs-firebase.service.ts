@@ -26,25 +26,31 @@ export class ABSFirebaseService {
     this.userCollection = this.afs.collection<UserAccount>('UserAccounts');
   }
 
-  getAllFlights(){
-    const o = this.flightsCollection.snapshotChanges().pipe(
-      map(changes => 
-        changes.map(c=>
-          ({id: c.payload.doc.id, ...c.payload.doc.data()})  
+  getAllFlights() {
+    const o = this.flightsCollection
+      .snapshotChanges()
+      .pipe(
+        map((changes) =>
+          changes.map((c) => ({
+            id: c.payload.doc.id,
+            ...c.payload.doc.data(),
+          }))
         )
-      )
-    );
-    
+      );
+
     return o;
   }
-  getAllUsers(){
-    const o = this.userCollection.snapshotChanges().pipe(
-      map(changes => 
-        changes.map(c=>
-          ({id: c.payload.doc.id, ...c.payload.doc.data()})  
-        )  
-      )
-    );
+  getAllUsers() {
+    const o = this.userCollection
+      .snapshotChanges()
+      .pipe(
+        map((changes) =>
+          changes.map((c) => ({
+            id: c.payload.doc.id,
+            ...c.payload.doc.data(),
+          }))
+        )
+      );
 
     return o;
   }
@@ -165,7 +171,6 @@ export class ABSFirebaseService {
       console.log(error);
     }
   }
-
 
   /////--- Miscellaneous -------////
   isGoodDate(dt: string) {

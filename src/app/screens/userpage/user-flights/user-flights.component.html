@@ -7,7 +7,7 @@
                     <table class="table table-responsive table-hover">
                         <thead>
                             <tr>
-                                <th scope="col">Index</th>
+                                <!-- <th scope="col">Index</th> -->
                                 <th scope="col">Code</th>
                                 <th scope="col">Origin</th>
                                 <th scope="col">Destination</th>
@@ -17,20 +17,23 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr *ngFor="let flight of flights; let i = index">
-                                <th scope="row">{{i+1}}</th>
-                                <td>{{flight.flight_code}}</td>
-                                <td>{{flight.origin_name}}</td>
-                                <td>{{flight.dest_name}}</td>
-                                <td>{{flight.depart_time.toDate().toDateString() +' | '+ flight.depart_time.toDate().toLocaleTimeString()}}</td>
-                                <td>{{flight.arrival_time.toDate().toDateString()+' | '+ flight.arrival_time.toDate().toLocaleTimeString()}}</td>
-                                <td *ngIf="{code: flight.flight_code} as variable">
-                                    <button type="button" class="btn btn-primary"  (click)="addBookingToUser(variable.code, 'random')">Book Flight</button>
-                                </td>
-                                <!-- <td>
-                                    <button type="button" class="btn btn-primary" >Book Flight</button>
-                                </td> -->
-                            </tr>
+                            <ng-container *ngFor="let flight of flights">
+                                <tr *ngIf="flight.status == 'Available' ">
+                                    <!-- <th scope="row">{{i+1}}</th> -->
+                                    <td>{{flight.flight_code}}</td>
+                                    <td>{{flight.origin_name}}</td>
+                                    <td>{{flight.dest_name}}</td>
+                                    <td>{{flight.depart_time.toDate().toDateString() +' | '+ flight.depart_time.toDate().toLocaleTimeString()}}</td>
+                                    <td>{{flight.arrival_time.toDate().toDateString()+' | '+ flight.arrival_time.toDate().toLocaleTimeString()}}</td>
+                                    <td *ngIf="{code: flight.flight_code} as variable">
+                                        <button type="button" class="btn btn-primary"  (click)="addBookingToUser(variable.code, 'random')">Book Flight</button>
+                                    </td>
+                                    <!-- <td>
+                                        <button type="button" class="btn btn-primary" >Book Flight</button>
+                                    </td> -->
+                                </tr>
+                            </ng-container>
+                            
 
                         </tbody>
                     </table>

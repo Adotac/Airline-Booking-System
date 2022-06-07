@@ -34,6 +34,9 @@ describe('AdminFlightsComponent', () => {
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
+  it('should create', () => {
+    expect(component).toBeTruthy();
+  });
 
   it('should return true when form is valid', () => {
     component.flightForm.value.origin = 'Cebu, Philippines';

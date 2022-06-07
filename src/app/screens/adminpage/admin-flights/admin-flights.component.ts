@@ -1,24 +1,35 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ABSFirebaseService } from 'src/app/services/abs-firebase.service';
 import { Flights } from 'src/app/models/flights.model';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-admin-flights',
   templateUrl: './admin-flights.component.html',
   styleUrls: ['./admin-flights.component.scss'],
 })
-export class AdminFlightsComponent implements OnInit {
+export class AdminFlightsComponent implements OnInit, OnDestroy {
+  //Don't delete important observable threads
+  retrieveFlight$?: Subscription;
+  //
+  
   flights?: Flights[];
   flightCode?: string;
   searchflightCode = '';
   errorCodeInput = '';
   errorFormInput = '';
 
+
+
   constructor(private ABS_service: ABSFirebaseService) {}
   ngOnInit(): void {
     this.flightCode = this.generateFlightCode();
     this.retrieveFlights();
+  }
+
+  ngOnDestroy(): void {
+    this.retrieveFlight$?.unsubscribe();
   }
 
   flightForm: FormGroup = new FormGroup({
@@ -141,7 +152,7 @@ export class AdminFlightsComponent implements OnInit {
   }
   //done.
   retrieveFlights() {
-    this.ABS_service.getAllFlights().subscribe((data) => {
+    this.retrieveFlight$ = this.ABS_service.getAllFlights().subscribe((data) => {
       this.flights = data;
     });
   }

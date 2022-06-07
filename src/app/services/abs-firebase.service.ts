@@ -3,7 +3,7 @@ import {
   AngularFirestore,
   AngularFirestoreCollection,
 } from '@angular/fire/compat/firestore';
-import { type } from 'os';
+
 import { Observable, pipe, forkJoin } from 'rxjs';
 import { filter, find, map, tap, mergeMap  } from 'rxjs/operators';
 
@@ -40,6 +40,21 @@ export class ABSFirebaseService {
 
     return o;
   }
+  getAll_AvailableFlights() {
+    const o = this.flightsCollection
+      .snapshotChanges()
+      .pipe(
+        map((changes) =>
+          changes.map((c) => ({
+            id: c.payload.doc.id,
+            ...c.payload.doc.data(),
+          }))
+        )
+      );
+
+    return o;
+  }
+
   getAllUsers() {
     const o = this.userCollection
       .snapshotChanges()
@@ -151,7 +166,7 @@ export class ABSFirebaseService {
   updateUserBookings(flight: Flights, userID: string) {
     try {
       let newCodes, tempData;
-      const test = this.getUser(userID).subscribe( (sdata) => {
+      const o = this.getUser(userID).subscribe( (sdata) => {
         tempData = sdata[0];
         const codes:any = sdata[0].flightCode_bookings;
         // codes.push(flight.flight_code);
@@ -165,7 +180,7 @@ export class ABSFirebaseService {
           .doc(sdata[0].id)
           .update({ flightCode_bookings: newCodes });
 
-          test.unsubscribe();
+          o.unsubscribe();
       });
     } catch (error) {
       console.log(error);

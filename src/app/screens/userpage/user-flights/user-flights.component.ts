@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
-import { filter, find, map, tap } from 'rxjs/operators';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { Subscription } from 'rxjs';
 
 import { CrudReturn } from 'src/app/models/crud-return';
 import { Flights } from 'src/app/models/flights.model';
@@ -12,20 +12,24 @@ import { UserAccount } from 'src/app/models/user-account.model';
   templateUrl: './user-flights.component.html',
   styleUrls: ['./user-flights.component.scss']
 })
-export class UserFlightsComponent implements OnInit {
+export class UserFlightsComponent implements OnInit, OnDestroy {
+  //Don't delete important observable threads
+  retrieveFlight$?: Subscription;
+  //
+
   flights?: Flights[];
   users?: UserAccount[];
   selectedFlight?: Flights;
-  current_index = -1;
 
   errorFormInput = '';
 
   constructor(private ABS_service: ABSFirebaseService) { }
   
-  date!: Date;
   ngOnInit(): void {
-    this.date = new Date(2021, 9, 4, 5, 6, 7);
     this.retrieveFlights();
+  }
+  ngOnDestroy(): void {
+    this.retrieveFlight$?.unsubscribe();
   }
 
   flightForm: FormGroup = new FormGroup({
@@ -38,7 +42,7 @@ export class UserFlightsComponent implements OnInit {
   });
 
   retrieveFlights(){
-    this.ABS_service.getAllFlights().subscribe(data=>{
+    this.retrieveFlight$ = this.ABS_service.getAllFlights().subscribe(data=>{
       this.flights = data;
       // console.log(data)
     });
@@ -89,20 +93,22 @@ export class UserFlightsComponent implements OnInit {
 
 
   addBookingToUser(flightCode: any, userID:string){
-    console.log(flightCode);
-
-    var temp:Flights;
-    this.ABS_service.getFlight(flightCode).subscribe( (sdata) =>{
-      console.log("get flight subscribe after filter!");
-      // console.log(sdata);
-      temp = sdata[0];
-      console.log("user flight");
-      console.log(temp);
-
-      this.ABS_service.updateUserBookings(temp, userID);
-    });;
-      
-
+    try{
+      var temp:Flights;
+      const o = this.ABS_service.getFlight(flightCode).subscribe( (sdata) =>{
+        console.log("get flight subscribe after filter!");
+        // console.log(sdata);
+        temp = sdata[0];
+        console.log("user flight");
+        console.log(temp);
+  
+        this.ABS_service.updateUserBookings(temp, userID);
+        o.unsubscribe();
+      });;
+    }
+    catch(error){
+      console.log(error);
+    }
   }
 
 }

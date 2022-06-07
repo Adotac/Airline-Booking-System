@@ -21,6 +21,7 @@ export class AdminFlightsComponent implements OnInit {
   constructor(private ABS_service: ABSFirebaseService) {}
   ngOnInit(): void {
     this.generateFlightCode();
+    this.retrieveFlights();
   }
 
   flightForm: FormGroup = new FormGroup({
@@ -131,10 +132,12 @@ export class AdminFlightsComponent implements OnInit {
     this.errorCodeInput = 'flight code not found';
     console.log(this.errorCodeInput);
   }
+
   retrieveFlights(){
-    // console.log("retrieve flights!!")
-    this.flights = this.ABS_service.getAllFlights(); // redundancy kay kailangan nimo ang flights sa cancel?
-    return this.flights;
+    this.ABS_service.getAllFlights().subscribe(data=>{
+      this.flights = data;
+      // console.log(data)
+    });
   }
 
   private mapToObject(map: any) {

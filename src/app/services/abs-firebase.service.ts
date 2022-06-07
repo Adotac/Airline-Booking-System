@@ -17,43 +17,45 @@ export class ABSFirebaseService {
   private flightsCollection: AngularFirestoreCollection<Flights>;
   private userCollection: AngularFirestoreCollection<UserAccount>;
 
-  private flights?: Flights[];
-  private users?: UserAccount[];
+  // private flights?: Flights[];
+  // private users?: UserAccount[];
 
   constructor(private afs: AngularFirestore) {
     this.flightsCollection = this.afs.collection<Flights>('Flights');
     this.userCollection = this.afs.collection<UserAccount>('UserAccounts');
-  
   }
 
   getAllFlights(){
-    this.flightsCollection.snapshotChanges().pipe(
+    const o = this.flightsCollection.snapshotChanges().pipe(
       map(changes => 
         changes.map(c=>
           ({id: c.payload.doc.id, ...c.payload.doc.data()})  
         )  
       )
-    ).subscribe(data=>{
-      this.flights = data;
-    });
-
-    return this.flights;
+    );
+    
+    return o;
   }
   getAllUsers(){
-    this.userCollection.snapshotChanges().pipe(
+    const o = this.userCollection.snapshotChanges().pipe(
       map(changes => 
         changes.map(c=>
           ({id: c.payload.doc.id, ...c.payload.doc.data()})  
         )  
       )
-    ).subscribe(data=>{
-      this.users = data;
+    );
+
+    return o;
+  }
+
+  getUser(userID: string): CrudReturn{
+    var users:any;
+    this.getAllUsers().subscribe(data=>{
+      users = data;
+      // console.log(data)
     });
 
-    return this.users;
-  }
-  getUser(userID: string): CrudReturn{
-    for (let user of this.users!) {
+    for (let user of users!) {
       if (user.userID == userID) {
         return {success:true, data:user};
       }
@@ -61,7 +63,12 @@ export class ABSFirebaseService {
     return {success:true, data:'error GetFlight'};
   }
   getFlight(flightCode: string): CrudReturn{
-    for (let flight of this.flights!) {
+    var flights:any;
+    this.getAllFlights().subscribe(data=>{
+      flights = data;
+      // console.log(data)
+    });
+    for (let flight of flights!) {
       if (flight.flight_code == flightCode) {
         return {success:true, data:flight};
       }
@@ -90,15 +97,21 @@ export class ABSFirebaseService {
   }
 
   updateUserBookings(flight: Flights, userID: string) {
-    
     try {
-      var codes = this.getUser(userID).data.flightCode_bookings;
-      codes.push(flight.flight_code);
-
-      this.afs
-        .collection('UserAccounts')
-        .doc(userID)
-        .update({ flightCode_bookings: codes });
+      var user = this.getUser(userID);
+      if(user.success){
+        var codes = [];
+        codes.push(user.data.flightCode_bookings);
+        codes.push(flight.flight_code);
+        console.log(codes);
+        // this.afs
+        //   .collection('UserAccounts')
+        //   .doc(userID)
+        //   .update({ flightCode_bookings: codes });
+      }
+      else{
+        console.log(user);
+      }
     } catch (error) {
       console.log(error);
     }

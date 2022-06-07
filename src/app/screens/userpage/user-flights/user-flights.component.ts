@@ -13,8 +13,8 @@ import { UserAccount } from 'src/app/models/user-account.model';
   styleUrls: ['./user-flights.component.scss']
 })
 export class UserFlightsComponent implements OnInit {
-  // flights?: Flights[];
-  // users?: UserAccount[];
+  flights?: Flights[];
+  users?: UserAccount[];
   selectedFlight?: Flights;
   current_index = -1;
 
@@ -25,6 +25,7 @@ export class UserFlightsComponent implements OnInit {
   date!: Date;
   ngOnInit(): void {
     this.date = new Date(2021, 9, 4, 5, 6, 7);
+    this.retrieveFlights();
   }
 
   flightForm: FormGroup = new FormGroup({
@@ -37,12 +38,17 @@ export class UserFlightsComponent implements OnInit {
   });
 
   retrieveFlights(){
-    // console.log("retrieve flights!!")
-    return this.ABS_service.getAllFlights();
+    this.ABS_service.getAllFlights().subscribe(data=>{
+      this.flights = data;
+      // console.log(data)
+    });
   }
+
   retrieveUsers(){
-    // console.log("retrieve users!!")
-    return this.ABS_service.getAllUsers();
+    this.ABS_service.getAllUsers().subscribe(data=>{
+      this.users = data;
+      // console.log(data)
+    });
   }
 
   searchFlights(){
@@ -82,11 +88,17 @@ export class UserFlightsComponent implements OnInit {
 
 
 
-  async addBookingToUser(flightCode: any, userID:string){
+  addBookingToUser(flightCode: any, userID:string){
     var tempID = "ZL4BwNXyxrl89EtdI9ac";
-    var crud = this.ABS_service.getFlight(flightCode);
-      if (crud.data.flight_code == flightCode)
-        await this.ABS_service.updateUserBookings(crud.data, tempID);
+    console.log("PRESSEEDDD!!!");
+    // var crud = this.ABS_service.getFlight(flightCode);
+    // if (crud.success && crud.data.flight_code == flightCode){
+    //   alert("Flight is now Booked!!");
+    //   this.ABS_service.updateUserBookings(crud.data, tempID);
+    // }
+    // else{
+    //   alert("Booking failed, please try again...");
+    // }
 
   }
 

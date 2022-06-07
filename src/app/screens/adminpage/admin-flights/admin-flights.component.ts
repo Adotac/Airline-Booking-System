@@ -1,11 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-
-import { DatabaseQuery } from 'src/app/firebase.database';
 import { ABSFirebaseService } from 'src/app/services/abs-firebase.service';
-import { filter, find, map, tap } from 'rxjs/operators';
 import { Flights } from 'src/app/models/flights.model';
-import { setTokenAutoRefreshEnabled } from '@firebase/app-check';
 
 @Component({
   selector: 'app-admin-flights',

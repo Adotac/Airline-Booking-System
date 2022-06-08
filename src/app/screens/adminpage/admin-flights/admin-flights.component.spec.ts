@@ -34,9 +34,6 @@ describe('AdminFlightsComponent', () => {
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
 
   it('should return true when form is valid', () => {
     component.flightForm.value.origin = 'Cebu, Philippines';
@@ -102,6 +99,12 @@ describe('AdminFlightsComponent', () => {
     await app['setFlightToDB']();
 
     expect(await component.errorFormInput).not.toBeNull();
+  });
+
+  it('should return convert date and time arguments to Date newDate when stringToDateTime method is called', () => {
+    var result = component.stringToDateTime('06/12/2022', '13:00');
+
+    expect(result).not.toBeNull();
   });
 
   it('should return convert date and time arguments to Date newDate when stringToDateTime method is called', () => {

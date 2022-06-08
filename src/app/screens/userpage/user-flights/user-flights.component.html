@@ -17,16 +17,18 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <ng-container *ngFor="let flight of flights">
-                                <tr *ngIf="flight.status == 'Available' ">
+                            <ng-container  *ngFor="let flight of flights">
+                                <tr id="userFlightRows" *ngIf="flight.status == 'Available' ">
                                     <!-- <th scope="row">{{i+1}}</th> -->
                                     <td>{{flight.flight_code}}</td>
                                     <td>{{flight.origin_name}}</td>
                                     <td>{{flight.dest_name}}</td>
                                     <td>{{flight.depart_time.toDate().toDateString() +' | '+ flight.depart_time.toDate().toLocaleTimeString()}}</td>
                                     <td>{{flight.arrival_time.toDate().toDateString()+' | '+ flight.arrival_time.toDate().toLocaleTimeString()}}</td>
+                                    
+                                    <!-- Please change parameters in addBookingToUser - currently a testing purpose code -->
                                     <td *ngIf="{code: flight.flight_code} as variable">
-                                        <button type="button" class="btn btn-primary"  (click)="addBookingToUser(variable.code, 'random')">Book Flight</button>
+                                        <button id="bookFlightBtn" type="button" class="btn btn-primary"  (click)="addBookingToUser(variable.code, 'random')">Book Flight</button>
                                     </td>
                                     <!-- <td>
                                         <button type="button" class="btn btn-primary" >Book Flight</button>
@@ -70,7 +72,7 @@
                         <input type="text" class="form-control" id="inputPassword4" formControlName="arivalTime" placeholder="15:35">
                     </div>
                     <div class="col-3 ">
-                        <button type="submit" class="btn btn-primary" (click)="searchFlights()" >Search</button>
+                        <button id="searchFlightBtn" type="submit" class="btn btn-primary" (click)="searchFlights()" >Search</button>
                     </div>
                     <div class="col-9 d-flex align-items-center  ">
                         <label class="text-danger">{{errorFormInput}}</label>

@@ -11,7 +11,7 @@ import { Subscription } from 'rxjs';
 })
 export class AdminFlightsComponent implements OnInit, OnDestroy {
   //Don't delete important observable threads
-  retrieveFlight$?: Subscription;
+  private retrieveFlight$?: Subscription;
   //
   
   flights?: Flights[];

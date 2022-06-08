@@ -1,5 +1,5 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { Component, OnInit, OnDestroy, Optional, Self } from '@angular/core';
+import { FormControl,FormGroup, Validators } from '@angular/forms';
 import { Subscription } from 'rxjs';
 
 import { CrudReturn } from 'src/app/models/crud-return';
@@ -19,7 +19,6 @@ export class UserFlightsComponent implements OnInit, OnDestroy {
 
   flights?: Flights[];
   users?: UserAccount[];
-  selectedFlight?: Flights;
 
   errorFormInput = '';
 
@@ -27,6 +26,7 @@ export class UserFlightsComponent implements OnInit, OnDestroy {
   
   ngOnInit(): void {
     this.retrieveFlights();
+    console.log(this.flights);
   }
   ngOnDestroy(): void {
     this.retrieveFlight$?.unsubscribe();
@@ -45,13 +45,7 @@ export class UserFlightsComponent implements OnInit, OnDestroy {
     this.retrieveFlight$ = this.ABS_service.getAllFlights().subscribe(data=>{
       this.flights = data;
       // console.log(data)
-    });
-  }
-
-  retrieveUsers(){
-    this.ABS_service.getAllUsers().subscribe(data=>{
-      this.users = data;
-      // console.log(data)
+      // this.retrieveFlight$?.unsubscribe();
     });
   }
 
@@ -104,11 +98,14 @@ export class UserFlightsComponent implements OnInit, OnDestroy {
   
         this.ABS_service.updateUserBookings(temp, userID);
         o.unsubscribe();
-      });;
+        return true;
+      });
     }
     catch(error){
       console.log(error);
     }
+
+    return false;
   }
 
 }

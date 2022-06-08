@@ -14,7 +14,7 @@ import { UserAccount } from '../models/user-account.model';
 @Injectable({
   providedIn: 'root',
 })
-export class ABSFirebaseService {
+export class ABSFirebaseService{
   private flightsCollection: AngularFirestoreCollection<Flights>;
   private userCollection: AngularFirestoreCollection<UserAccount>;
 
@@ -26,8 +26,8 @@ export class ABSFirebaseService {
     this.userCollection = this.afs.collection<UserAccount>('UserAccounts');
   }
 
-  getAllFlights() {
-    const o = this.flightsCollection
+  getAllFlights(): Observable<Flights[]> {
+    return this.flightsCollection
       .snapshotChanges()
       .pipe(
         map((changes) =>
@@ -38,10 +38,10 @@ export class ABSFirebaseService {
         )
       );
 
-    return o;
   }
-  getAll_AvailableFlights() {
-    const o = this.flightsCollection
+
+  getAllUsers():  Observable<UserAccount[]> {
+    return this.userCollection
       .snapshotChanges()
       .pipe(
         map((changes) =>
@@ -52,45 +52,10 @@ export class ABSFirebaseService {
         )
       );
 
-    return o;
+
   }
 
-  getAllUsers() {
-    const o = this.userCollection
-      .snapshotChanges()
-      .pipe(
-        map((changes) =>
-          changes.map((c) => ({
-            id: c.payload.doc.id,
-            ...c.payload.doc.data(),
-          }))
-        )
-      );
-
-    return o;
-  }
-
-  getUser(id: string){
-    // try{
-    //   this.userCollection.snapshotChanges().pipe(
-    //     map(changes => 
-    //       changes.map(c=>
-    //         ({id: c.payload.doc.id, ...c.payload.doc.data()})  
-    //       ).filter( (selectedUser:UserAccount) => selectedUser.userID == userID)
-    //     )
-    //   ).subscribe( sdata =>{
-    //     console.log("get flight subscribe after filter!");
-    //     console.log(sdata);
-    //     return {success:true, data:sdata};
-    //   });
-
-
-    // }
-    // catch(error){
-    //   console.log(error);
-    // }
-    // return {success:false, data:'error getFlight'};
-
+  getUser(id: string): Observable<UserAccount[]>{
     const o = this.userCollection.snapshotChanges().pipe(
       map(changes => 
         changes.map(c=>
@@ -102,31 +67,7 @@ export class ABSFirebaseService {
     
     return o;
   }
-  getFlight(flightCode: string) {
-    // fuck this subscribe shit HAHAHAH
-    // var tempData:any;
-    // var tempBool:boolean = false;
-    // try{
-    //   this.flightsCollection.snapshotChanges().pipe(
-    //     map(changes => 
-    //       changes.map(c=>
-    //         ({id: c.payload.doc.id, ...c.payload.doc.data()})  
-    //       ).filter( (selectedFlight:Flights) => 
-    //       selectedFlight.flight_code == flightCode
-    //       )
-    //     )
-    //   ).subscribe( sdata =>{
-    //     console.log("get flight subscribe after filter!");
-    //     console.log(sdata);
-    //     tempData = sdata;
-    //     tempBool = true;
-    //   });
-    // }
-    // catch(error){
-    //   console.log(error);
-    //   tempData = error;
-    //   tempBool = false;
-    // }
+  getFlight(flightCode: string): Observable<Flights[]> {
 
     const o = this.flightsCollection.snapshotChanges().pipe(
       map(changes => 
@@ -143,24 +84,30 @@ export class ABSFirebaseService {
     // return {success:tempBool, data:tempData};
   }
 
+  //Not added 
   addNewFlight(flight: Flights) {
     try {
       this.afs.collection('Flights').doc(flight['flight_code']).set(flight);
+      return true;
     } catch (error) {
       console.log(error);
     }
+    return false;
   }
 
+  // Chnage later into updateFlightStatus(flightCode: string, status: string)
   updateFlightStatus(flightCode: string) {
     try {
       this.afs
         .collection('Flights')
         .doc(flightCode)
         .update({ status: 'Cancelled' });
-      console.log(flightCode);
+      // console.log(flightCode);
+      return true;
     } catch (error) {
       console.log(error);
     }
+    return false;
   }
 
   updateUserBookings(flight: Flights, userID: string) {
@@ -170,21 +117,24 @@ export class ABSFirebaseService {
         tempData = sdata[0];
         const codes:any = sdata[0].flightCode_bookings;
         // codes.push(flight.flight_code);
-        console.log(typeof(sdata));
-        console.log(sdata[0].id);
+        // console.log(typeof(sdata));
+        // console.log(sdata[0]);
 
         newCodes = [...codes, flight.flight_code]
-        console.log(newCodes);
+        // console.log(newCodes);
         this.afs
           .collection('UserAccounts')
           .doc(sdata[0].id)
           .update({ flightCode_bookings: newCodes });
 
-          o.unsubscribe();
+        return true;    
       });
+      o.unsubscribe();
+
     } catch (error) {
       console.log(error);
     }
+    return false;
   }
 
   /////--- Miscellaneous -------////

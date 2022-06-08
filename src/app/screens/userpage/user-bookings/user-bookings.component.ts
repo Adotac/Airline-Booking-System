@@ -27,5 +27,11 @@ export class UserBookingsComponent implements OnInit {
       // console.log(data)
     });
   }
+  retrieveUsers(){
+    this.ABS_service.getAllUsers().subscribe(data=>{
+      this.users = data;
+      // console.log(data)
+    });
+  }
 
 }

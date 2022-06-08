@@ -13,14 +13,12 @@ export class AdminFlightsComponent implements OnInit, OnDestroy {
   //Don't delete important observable threads
   private retrieveFlight$?: Subscription;
   //
-  
+
   flights?: Flights[];
   flightCode?: string;
   searchflightCode = '';
   errorCodeInput = '';
   errorFormInput = '';
-
-
 
   constructor(private ABS_service: ABSFirebaseService) {}
   ngOnInit(): void {
@@ -111,6 +109,7 @@ export class AdminFlightsComponent implements OnInit, OnDestroy {
 
     if (!(arival > departure)) {
       this.errorFormInput = 'arival should be greater than departure ';
+      return;
     }
 
     if (attributes.size <= 0) {
@@ -118,7 +117,7 @@ export class AdminFlightsComponent implements OnInit, OnDestroy {
       return null;
     }
     this.errorFormInput = '';
-    // await this.ABS_service.addNewFlight(this.mapToObject(attributes))\;
+    await this.ABS_service.addNewFlight(this.mapToObject(attributes));
   }
   //done
   private isDateValid(): boolean {
@@ -152,9 +151,11 @@ export class AdminFlightsComponent implements OnInit, OnDestroy {
   }
   //done.
   retrieveFlights() {
-    this.retrieveFlight$ = this.ABS_service.getAllFlights().subscribe((data) => {
-      this.flights = data;
-    });
+    this.retrieveFlight$ = this.ABS_service.getAllFlights().subscribe(
+      (data) => {
+        this.flights = data;
+      }
+    );
   }
 
   private mapToObject(map: any) {

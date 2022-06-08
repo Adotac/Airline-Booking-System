@@ -84,14 +84,18 @@ export class ABSFirebaseService{
     // return {success:tempBool, data:tempData};
   }
 
+  //Not added 
   addNewFlight(flight: Flights) {
     try {
       this.afs.collection('Flights').doc(flight['flight_code']).set(flight);
+      return true;
     } catch (error) {
       console.log(error);
     }
+    return false;
   }
 
+  // Chnage later into updateFlightStatus(flightCode: string, status: string)
   updateFlightStatus(flightCode: string) {
     try {
       this.afs
@@ -99,9 +103,11 @@ export class ABSFirebaseService{
         .doc(flightCode)
         .update({ status: 'Cancelled' });
       // console.log(flightCode);
+      return true;
     } catch (error) {
       console.log(error);
     }
+    return false;
   }
 
   updateUserBookings(flight: Flights, userID: string) {
@@ -121,11 +127,14 @@ export class ABSFirebaseService{
           .doc(sdata[0].id)
           .update({ flightCode_bookings: newCodes });
 
-          o.unsubscribe();
+        return true;    
       });
+      o.unsubscribe();
+
     } catch (error) {
       console.log(error);
     }
+    return false;
   }
 
   /////--- Miscellaneous -------////

@@ -15,6 +15,7 @@ var mockFlights:Flights[] = [
     dest_name: 'Japan',
     depart_time: '2:00',
     arrival_time: '3:00',
+    status: 'Available',
   }
 ];
 var mockUsers:UserAccount[] = [
@@ -114,10 +115,7 @@ describe('ABSFirebaseService', () => {
       let user:Flights={};
       const w$ = service.getFlight(tempId).subscribe(sdata=>{
         user = sdata[0];
-        
       });
-      
-
       expect(spy).toHaveBeenCalled();
       expect(user).toBeDefined();
       expect(user).toEqual(mockFlights[0]);
@@ -126,6 +124,60 @@ describe('ABSFirebaseService', () => {
     },1000)
   });
 
+  it('should call updateUserBookings() and return true', (done) => {
+    let spy = spyOn(service, 'updateUserBookings').and.callThrough();
+    const tempId = 'random1';  
+    setTimeout(()=>{
+      service.updateUserBookings(mockFlights[0], tempId);
+      expect(spy).toHaveBeenCalled();
+      expect(spy).toBeTruthy();
+      done();
+    }, 1000); 
+  });
 
+  // it('should call updateFlightStatus() and return true', (done) => {
+  //   let spy = spyOn(service, 'updateFlightStatus').and.callThrough();
+  //   const tempId = 'random1';  
+  //   setTimeout(()=>{
+  //     service.updateFlightStatus();
+  //     expect(spy).toHaveBeenCalled();
+  //     expect(spy).toBeTruthy();
+  //     done();
+  //   }, 1000); 
+  // });
+
+  it('should call isGoodDate() and return true', () => {
+    let spy = spyOn(service, 'isGoodDate').and.callThrough();
+    const date = '01/01/2001';  
+    let f = service.isGoodDate(date);
+
+    expect(spy).toHaveBeenCalled();
+    expect(f).toBeTrue();
+  });
+  it('should call isGoodDate() and return false', () => {
+    let spy = spyOn(service, 'isGoodDate').and.callThrough();
+    const date = '01/69';  
+    let f =service.isGoodDate(date);
+
+    expect(spy).toHaveBeenCalled();
+    expect(f).toBeFalse();
+  });
+
+  it('should call isGoodTime() and return true', () => {
+    let spy = spyOn(service, 'isGoodTime').and.callThrough();
+    const date = '12:12';  
+    let f =service.isGoodTime(date);
+
+    expect(spy).toHaveBeenCalled();
+    expect(f).toBeTrue();
+  });
+  it('should call isGoodTime() and return false', () => {
+    let spy = spyOn(service, 'isGoodTime').and.callThrough();
+    const date = '69:00';  
+    let f =service.isGoodTime(date);
+
+    expect(spy).toHaveBeenCalled();
+    expect(f).toBeFalse();
+  });
 
 });

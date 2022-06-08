@@ -12,19 +12,9 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <th scope="row">1</th>
-                                <td>Mark</td>
-
-                            </tr>
-                            <tr>
-                                <th scope="row">2</th>
-                                <td>Jacob</td>
-
-                            </tr>
-                            <tr>
-                                <th scope="row">3</th>
-                                <td colspan="2">Larry the Bird</td>
+                            <tr *ngFor="let user of users; let i = index">
+                                <td>{{user.userID}}</td>
+                                <td>{{user.username}}</td>
                             </tr>
                         </tbody>
                     </table>

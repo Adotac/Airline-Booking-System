@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { Subscription } from 'rxjs';
 import { Flights } from 'src/app/models/flights.model';
+import { UserAccount } from 'src/app/models/user-account.model';
+import { ABSFirebaseService } from 'src/app/services/abs-firebase.service';
 
 @Component({
   selector: 'app-admin-bookings',
@@ -7,6 +10,33 @@ import { Flights } from 'src/app/models/flights.model';
   styleUrls: ['./admin-bookings.component.scss'],
 })
 export class AdminBookingsComponent implements OnInit {
-  constructor() {}
-  ngOnInit(): void {}
+  constructor(private ABS_service: ABSFirebaseService) {}
+  retrieveFlight$?: Subscription;
+  retrieveUsers$?: Subscription;
+
+  flights?: Flights[];
+  users?: UserAccount[];
+  ngOnInit(): void {
+    this.retrieveFlights();
+    this.retrieveUsers();
+  }
+
+  ngOnDestroy(): void {
+    this.retrieveFlight$?.unsubscribe();
+    this.retrieveUsers$?.unsubscribe();
+  }
+
+  retrieveFlights() {
+    this.retrieveFlight$ = this.ABS_service.getAllFlights().subscribe(
+      (data) => {
+        this.flights = data;
+      }
+    );
+  }
+
+  retrieveUsers() {
+    this.retrieveUsers$ = this.ABS_service.getAllUsers().subscribe((data) => {
+      this.users = data;
+    });
+  }
 }

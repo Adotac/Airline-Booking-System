@@ -12,14 +12,13 @@ describe('UserBookingsComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ UserBookingsComponent ],
+      declarations: [UserBookingsComponent],
       imports: [
         RouterTestingModule,
         AngularFireModule.initializeApp(environment.firebase),
         AngularFirestoreModule,
       ],
-    })
-    .compileComponents();
+    }).compileComponents();
   });
 
   beforeEach(() => {

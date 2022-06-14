@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { RouterTestingModule } from '@angular/router/testing';
 
 import { UserpageComponent } from './userpage.component';
 
@@ -9,6 +10,8 @@ describe('UserpageComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [UserpageComponent],
+
+      imports: [RouterTestingModule],
     }).compileComponents();
   });
 
@@ -18,7 +21,7 @@ describe('UserpageComponent', () => {
     fixture.detectChanges();
   });
 
-  // it('should create', () => {
-  //   expect(component).toBeTruthy();
-  // });
+  it('should create', () => {
+    expect(component).toBeTruthy();
+  });
 });

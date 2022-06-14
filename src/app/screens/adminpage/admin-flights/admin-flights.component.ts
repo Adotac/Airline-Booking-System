@@ -149,6 +149,7 @@ export class AdminFlightsComponent implements OnInit, OnDestroy {
     this.errorCodeInput = 'flight code not found';
     console.log(this.errorCodeInput);
   }
+
   //done.
   retrieveFlights() {
     this.retrieveFlight$ = this.ABS_service.getAllFlights().subscribe(

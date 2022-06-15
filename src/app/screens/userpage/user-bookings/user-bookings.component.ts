@@ -10,29 +10,26 @@ import { UserAccount } from 'src/app/models/user-account.model';
   styleUrls: ['./user-bookings.component.scss']
 })
 export class UserBookingsComponent implements 
-OnInit, 
-AfterContentInit
+OnInit
+
 
 {
-  flights: Flights[] = [];
+  flights?: Flights[];
   user?: UserAccount;
   selectedFlight?: Flights;
+
+  // mock user
+  currentUserID = 'random';
 
   constructor(private ABS_service: ABSFirebaseService) { }
 
   ngOnInit(): void {
     console.log("ngOnit");
 
-    this.retrieveUser();
-
+    this.retrieveUser(this.currentUserID);
   }
 
-  ngAfterContentInit(): void {
-    // console.log(this.user);
-    // this.retrieveFlights();
-    
-  }
-
+  //done
   retrieveFlights(user: UserAccount){
     console.log("user flights!");
     console.log(this.user);
@@ -52,9 +49,11 @@ AfterContentInit
 
     
   }
-  retrieveUser(){
+
+  // NOT YET DONE 
+  retrieveUser(userID: string){
     // temporary data ang random user
-    this.ABS_service.getUser('random').subscribe(data=>{
+    this.ABS_service.getUser(userID).subscribe(data=>{
       this.user = data[0];
       // console.log(data[0])
       // console.log(this.user);
@@ -63,13 +62,14 @@ AfterContentInit
     });
   }
 
-  deleteBookingUser(fCode: string|undefined){
+  //partial done
+  deleteBookingUser(fCode: string|undefined, userID:string){
     console.log(fCode);
     if(typeof(fCode) == undefined)
       return false;
 
     try{
-      this.ABS_service.deleteFlightFromUser('random', fCode);
+      this.ABS_service.deleteFlightFromUser(userID, fCode);
       console.log("deleted!!");
 
       return true;

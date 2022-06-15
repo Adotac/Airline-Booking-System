@@ -11,7 +11,7 @@ import { UserAccount } from 'src/app/models/user-account.model';
   templateUrl: './user-flights.component.html',
   styleUrls: ['./user-flights.component.scss']
 })
-export class UserFlightsComponent implements OnInit, OnDestroy, OnChanges {
+export class UserFlightsComponent implements OnInit, OnDestroy {
   //Don't delete important observable threads
   retrieveFlight$?: Subscription;
   //
@@ -28,10 +28,6 @@ export class UserFlightsComponent implements OnInit, OnDestroy, OnChanges {
     // console.log(this.flights);
   }
 
-  ngOnChanges(): void {
-    
-  }
-
   ngOnDestroy(): void {
     this.retrieveFlight$?.unsubscribe();
   }
@@ -41,6 +37,7 @@ export class UserFlightsComponent implements OnInit, OnDestroy, OnChanges {
     destination: new FormControl('', Validators.required),
   });
 
+  //done
   retrieveFlights(){
     this.retrieveFlight$ = this.ABS_service.getAllFlights().subscribe(data=>{
       this.flights = data;
@@ -49,6 +46,7 @@ export class UserFlightsComponent implements OnInit, OnDestroy, OnChanges {
     });
   }
 
+  //done
   searchFlights(){
     // console.log("pressed search@!!");
     let org = this.flightForm.value.origin.trim().toLocaleLowerCase();
@@ -58,23 +56,13 @@ export class UserFlightsComponent implements OnInit, OnDestroy, OnChanges {
         || (this.flightForm.value.destination &&  this.flightForm.value.destination.trim()) )
     ) 
     {
-      if (
-        this.flightForm.value.departureDate ||this.flightForm.value.arivalDate 
-        ||this.flightForm.value.departureTime ||this.flightForm.value.arivalTime
-      )
-      {        
-        this.errorFormInput = '';
-        // end condition block 
-      }
-      else{
         this.retrieveFlights();
         this.errorFormInput = 'empty fields';
         return;
-      }
     }
-    else{
-      this.errorFormInput = '';
-    }
+
+    this.errorFormInput = '';
+    
     var tempFlights = this.flights?.filter(function(e){
       return e.origin_name?.toLocaleLowerCase().match(org) != null &&
       e.dest_name?.toLocaleLowerCase().match(dest) != null 
@@ -82,10 +70,10 @@ export class UserFlightsComponent implements OnInit, OnDestroy, OnChanges {
 
     console.log(tempFlights);
     this.flights = tempFlights;
+    return;
   }
 
-
-
+  //done
   addBookingToUser(flightCode: any, userID:string){
     try{
       var temp:Flights;

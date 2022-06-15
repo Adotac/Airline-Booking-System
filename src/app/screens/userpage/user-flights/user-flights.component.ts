@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, Optional, Self } from '@angular/core';
+import { Component, OnInit, OnDestroy, OnChanges, SimpleChanges } from '@angular/core';
 import { FormControl,FormGroup, Validators } from '@angular/forms';
 import { Subscription } from 'rxjs';
 
@@ -11,7 +11,7 @@ import { UserAccount } from 'src/app/models/user-account.model';
   templateUrl: './user-flights.component.html',
   styleUrls: ['./user-flights.component.scss']
 })
-export class UserFlightsComponent implements OnInit, OnDestroy {
+export class UserFlightsComponent implements OnInit, OnDestroy, OnChanges {
   //Don't delete important observable threads
   retrieveFlight$?: Subscription;
   //
@@ -25,8 +25,13 @@ export class UserFlightsComponent implements OnInit, OnDestroy {
   
   ngOnInit(): void {
     this.retrieveFlights();
-    console.log(this.flights);
+    // console.log(this.flights);
   }
+
+  ngOnChanges(): void {
+    
+  }
+
   ngOnDestroy(): void {
     this.retrieveFlight$?.unsubscribe();
   }
@@ -34,10 +39,6 @@ export class UserFlightsComponent implements OnInit, OnDestroy {
   flightForm: FormGroup = new FormGroup({
     origin: new FormControl('', Validators.required),
     destination: new FormControl('', Validators.required),
-    arivalDate: new FormControl('', Validators.required),
-    arivalTime: new FormControl('', Validators.required),
-    departureDate: new FormControl('', Validators.required),
-    departureTime: new FormControl('', Validators.required),
   });
 
   retrieveFlights(){
@@ -49,38 +50,38 @@ export class UserFlightsComponent implements OnInit, OnDestroy {
   }
 
   searchFlights(){
+    // console.log("pressed search@!!");
+    let org = this.flightForm.value.origin.trim().toLocaleLowerCase();
+    let dest = this.flightForm.value.destination.trim().toLocaleLowerCase();
     if (
       !((this.flightForm.value.origin && this.flightForm.value.origin.trim()) 
         || (this.flightForm.value.destination &&  this.flightForm.value.destination.trim()) )
-    ) {
+    ) 
+    {
       if (
         this.flightForm.value.departureDate ||this.flightForm.value.arivalDate 
         ||this.flightForm.value.departureTime ||this.flightForm.value.arivalTime
       )
-      {
-        if (
-          !(
-            this.ABS_service.isGoodDate(this.flightForm.value.departureDate) ||
-            this.ABS_service.isGoodDate(this.flightForm.value.arivalDate) ||
-            this.ABS_service.isGoodTime(this.flightForm.value.departureTime) ||
-            this.ABS_service.isGoodTime(this.flightForm.value.arivalTime)
-          )
-        ) {
-          this.errorFormInput = 'date or/and time is not valid';
-          return;
-        }
-        else{
-          this.errorFormInput = '';
-          return;
-        }
+      {        
+        this.errorFormInput = '';
+        // end condition block 
       }
-
-
-      this.errorFormInput = 'empty fields';
+      else{
+        this.retrieveFlights();
+        this.errorFormInput = 'empty fields';
+        return;
+      }
     }
     else{
       this.errorFormInput = '';
     }
+    var tempFlights = this.flights?.filter(function(e){
+      return e.origin_name?.toLocaleLowerCase().match(org) != null &&
+      e.dest_name?.toLocaleLowerCase().match(dest) != null 
+    });
+
+    console.log(tempFlights);
+    this.flights = tempFlights;
   }
 
 

@@ -1,6 +1,5 @@
 import { Component, OnInit, DoCheck, AfterContentInit } from '@angular/core';
 
-import { CrudReturn } from 'src/app/models/crud-return';
 import { Flights } from 'src/app/models/flights.model';
 import { ABSFirebaseService } from 'src/app/services/abs-firebase.service';
 import { UserAccount } from 'src/app/models/user-account.model';

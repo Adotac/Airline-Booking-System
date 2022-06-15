@@ -7,7 +7,6 @@ import {
 import { Observable, pipe, forkJoin } from 'rxjs';
 import { filter, find, map, tap, mergeMap  } from 'rxjs/operators';
 
-import { CrudReturn } from '../models/crud-return';
 import { Flights } from '../models/flights.model';
 import { UserAccount } from '../models/user-account.model';
 
@@ -102,20 +101,14 @@ export class ABSFirebaseService{
       const o = this.getUser(userID).subscribe( (sdata) => {
         tempData = sdata[0];
         const codes:any = sdata[0].flightCode_bookings;
-        console.log(codes);
-
+        // console.log(codes);
         newCodes = Array.from(codes); //shallow copy
-        
         const index = newCodes.indexOf(fCode);
 
         if (index !== -1){
           newCodes.splice(index,1);
         }
-        console.log(newCodes);
-
-
-        
-        console.log(newCodes);
+        // console.log(newCodes);
         this.afs
           .collection('UserAccounts')
           .doc(sdata[0].id)
@@ -158,7 +151,7 @@ export class ABSFirebaseService{
         // console.log(sdata[0]);
 
         const exists = sdata[0].flightCode_bookings?.find((val)=>val===flight.flight_code);
-        console.log("exists: " + exists);
+        // console.log("exists: " + exists);
         if (exists != undefined){
           alert("You have already booked the selected flight!")
           o.unsubscribe();

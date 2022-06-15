@@ -43,7 +43,6 @@ AfterContentInit
     this.ABS_service.getAllFlights().subscribe(data=>{
       const intersection = data.filter((flight_code) => {
         // console.log(flight_code.flight_code)
-
         return tempFlightCodes.includes( flight_code.flight_code! );
       });
       

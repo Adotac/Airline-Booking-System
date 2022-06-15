@@ -103,20 +103,23 @@ export class ABSFirebaseService{
         tempData = sdata[0];
         const codes:any = sdata[0].flightCode_bookings;
         console.log(codes);
-        
-        // const index = newCodes.indexOf(fCode);
-        // console.log(index);
 
-        // if (index !== -1){
-        //   newCodes.splice(index);
-        // }
+        newCodes = Array.from(codes); //shallow copy
+        
+        const index = newCodes.indexOf(fCode);
+
+        if (index !== -1){
+          newCodes.splice(index,1);
+        }
+        console.log(newCodes);
+
 
         
-        // console.log(newCodes);
-        // this.afs
-        //   .collection('UserAccounts')
-        //   .doc(sdata[0].id)
-        //   .update({ flightCode_bookings: newCodes });
+        console.log(newCodes);
+        this.afs
+          .collection('UserAccounts')
+          .doc(sdata[0].id)
+          .update({ flightCode_bookings: newCodes });
         o.unsubscribe();
 
         return true;    
@@ -154,16 +157,25 @@ export class ABSFirebaseService{
         // console.log(typeof(sdata));
         // console.log(sdata[0]);
 
+        const exists = sdata[0].flightCode_bookings?.find((val)=>val===flight.flight_code);
+        console.log("exists: " + exists);
+        if (exists != undefined){
+          alert("You have already booked the selected flight!")
+          o.unsubscribe();
+
+          return false
+        }
+
         newCodes = [...codes, flight.flight_code]
         // console.log(newCodes);
         this.afs
           .collection('UserAccounts')
           .doc(sdata[0].id)
           .update({ flightCode_bookings: newCodes });
+        o.unsubscribe();
 
         return true;    
       });
-      o.unsubscribe();
 
     } catch (error) {
       console.log(error);

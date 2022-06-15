@@ -3,9 +3,16 @@ import { AngularFireModule } from '@angular/fire/compat';
 import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
 import { RouterTestingModule } from '@angular/router/testing';
 import { environment } from 'src/environments/environment';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import {
+  FormControl,
+  FormGroup,
+  FormsModule,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 
 import { AdminFlightsComponent } from './admin-flights.component';
+import { By } from '@angular/platform-browser';
 
 describe('AdminFlightsComponent', () => {
   let component: AdminFlightsComponent;
@@ -25,6 +32,9 @@ describe('AdminFlightsComponent', () => {
         RouterTestingModule,
         AngularFireModule.initializeApp(environment.firebase),
         AngularFirestoreModule,
+
+        FormsModule,
+        ReactiveFormsModule,
       ],
     }).compileComponents();
   });
@@ -81,6 +91,7 @@ describe('AdminFlightsComponent', () => {
     var result = component.generateFlightCode();
     expect(result).not.toBeNull();
   });
+
   //partial
   it('should define flights when retrieveFlights method is called', async () => {
     await component.retrieveFlights();
@@ -112,4 +123,83 @@ describe('AdminFlightsComponent', () => {
 
     expect(result).not.toBeNull();
   });
+
+  it('should click `submit` flights button and call addFlightBtn() with empty fields', () => {
+    let spy = spyOn(component, 'addFlightToDB').and.callThrough();
+    let btn: HTMLElement = fixture.debugElement.query(
+      By.css('#addFlightBtn')
+    ).nativeElement;
+
+    btn.click();
+    fixture.detectChanges();
+    expect(spy).toHaveBeenCalled();
+    expect(component.errorFormInput).toBe('fields should not be empty');
+  });
+
+  it('should click `submit` cancel flight button and call cancelFlight() with empty fields', () => {
+    let spy = spyOn(component, 'cancelFlight').and.callThrough();
+    let btn: HTMLElement = fixture.debugElement.query(
+      By.css('#cancelFlightBtn')
+    ).nativeElement;
+
+    btn.click();
+
+    fixture.detectChanges();
+    expect(spy).toHaveBeenCalled();
+    expect(component.errorFormInput).toBe('');
+  });
+
+  it('2should click `submit` cancel flight button and call cancelFlight() with empty fields', () => {
+    let spy = spyOn(component, 'cancelFlight').and.callThrough();
+    let btn: HTMLElement = fixture.debugElement.query(
+      By.css('#cancelFlightBtn')
+    ).nativeElement;
+
+    component.cancelFlight('CI-43068');
+    btn.click();
+
+    fixture.detectChanges();
+    expect(spy).toHaveBeenCalled();
+    expect(component.errorFormInput).toBe('');
+  });
+
+  it('Should check if the labels for the "flight list" exists', () => {
+    let firstLabel = fixture.debugElement.query(
+      By.css('#flight-label')
+    ).nativeElement;
+
+    expect(firstLabel.textContent).toBe(' Fight List');
+  });
+
+  it('Should check if the labels for the "create flight" exists', () => {
+    let firstLabel = fixture.debugElement.query(
+      By.css('#create-label')
+    ).nativeElement;
+
+    expect(firstLabel.textContent).toBe(' Create Flight');
+  });
+
+  it('Should check if the labels for the "cancel flight" exists', () => {
+    let firstLabel = fixture.debugElement.query(
+      By.css('#cancel-flight-label')
+    ).nativeElement;
+
+    expect(firstLabel.textContent).toBe(' Cancel Flight');
+  });
+
+  // it('should click `Search` flights button and call searchFlights() with atleast one filled input field', () => {
+  //   component.flightForm.value.origin = 'Tokyo';
+  //   // component.flightForm.value.destination = 'Cebu';
+
+  //   fixture.detectChanges();
+  //   let spy = spyOn(component, 'searchFlights').and.callThrough();
+  //   let btn: HTMLElement = fixture.debugElement.query(
+  //     By.css('#searchFlightBtn')
+  //   ).nativeElement;
+
+  //   btn.click();
+  //   fixture.detectChanges();
+  //   expect(spy).toHaveBeenCalled();
+  //   expect(component.errorFormInput).toBe('');
+  // });
 });

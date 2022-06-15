@@ -11,12 +11,21 @@ import { ABSFirebaseService } from 'src/app/services/abs-firebase.service';
 })
 export class AdminBookingsComponent implements OnInit {
   constructor(private ABS_service: ABSFirebaseService) {}
-  retrieveFlight$?: Subscription;
   retrieveUsers$?: Subscription;
 
   userBooking?: Flights[];
-  flights?: Flights[];
   users?: UserAccount[];
+
+  retrieveFlight$?: Subscription;
+  flights?: Flights[];
+
+  retrieveFlights() {
+    this.retrieveFlight$ = this.ABS_service.getAllFlights().subscribe(
+      (data) => {
+        this.flights = data;
+      }
+    );
+  }
 
   ngOnInit(): void {
     this.retrieveFlights();
@@ -28,18 +37,20 @@ export class AdminBookingsComponent implements OnInit {
     this.retrieveUsers$?.unsubscribe();
   }
 
-  retrieveFlights() {
-    this.retrieveFlight$ = this.ABS_service.getAllFlights().subscribe(
-      (data) => {
-        this.flights = data;
-      }
-    );
-  }
+  // retrieveFlights() {
+  //   this.retrieveFlight$ = this.ABS_service.getAllFlights().subscribe(
+  //     (data) => {
+  //       this.flights = data;
+  //     }
+  //   );
+  // }
+  // this.done();
 
   retrieveUsers() {
     this.retrieveUsers$ = this.ABS_service.getAllUsers().subscribe((data) => {
       this.users = data;
     });
+    this.done();
   }
 
   onClickedUser(bookings: any) {
@@ -54,4 +65,6 @@ export class AdminBookingsComponent implements OnInit {
 
     this.userBooking = tempBookings;
   }
+
+  done() {}
 }

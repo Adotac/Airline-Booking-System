@@ -95,6 +95,40 @@ export class ABSFirebaseService{
     return false;
   }
 
+  deleteFlightFromUser(userID: string ,fCode: any){
+
+    try {
+      let newCodes, tempData;
+      const o = this.getUser(userID).subscribe( (sdata) => {
+        tempData = sdata[0];
+        const codes:any = sdata[0].flightCode_bookings;
+        console.log(codes);
+        
+        // const index = newCodes.indexOf(fCode);
+        // console.log(index);
+
+        // if (index !== -1){
+        //   newCodes.splice(index);
+        // }
+
+        
+        // console.log(newCodes);
+        // this.afs
+        //   .collection('UserAccounts')
+        //   .doc(sdata[0].id)
+        //   .update({ flightCode_bookings: newCodes });
+        o.unsubscribe();
+
+        return true;    
+      });
+
+    } catch (error) {
+      console.log(error);
+    }
+    return false;
+  }
+  
+
   // Chnage later into updateFlightStatus(flightCode: string, status: string)
   updateFlightStatus(flightCode: string) {
     try {

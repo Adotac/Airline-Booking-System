@@ -1,6 +1,6 @@
 <div class=" d-flex row w-100 body">
     <div class="d-flex flex-row align-items-stretch w-100 p-3">
-        <div class=" d-flex w-100 ">
+        <div class=" d-flex w-75 p-3 position-absolute top-50 start-50 translate-middle">
             <div class=" w-100 p-2 ">
                 <h3 class="fw-bold"> Fight List</h3>
                 <div class="border border-dark table-wrapper-scroll-y my-custom-scrollbar">
@@ -25,12 +25,12 @@
                                     <td>{{flight.dest_name}}</td>
                                     <td>{{flight.depart_time.toDate().toDateString() +' | '+ flight.depart_time.toDate().toLocaleTimeString()}}</td>
                                     <td>{{flight.arrival_time.toDate().toDateString()+' | '+ flight.arrival_time.toDate().toLocaleTimeString()}}</td>
-                                    <!-- <td *ngIf="{code: flight.flight_code} as variable">
-                                        <button type="button" class="btn btn-primary"  (click)="addBookingToUser(variable.code, 'random')">Book Flight</button>
-                                    </td> -->
-                                    <td>
-                                        <button type="button" class="btn btn-primary" >Cancel Flight</button>
+                                    <td *ngIf="{code: flight.flight_code} as variable">
+                                        <button type="button" class="btn btn-danger"  (click)="deleteBookingUser(variable.code)">Cancel Booking</button>
                                     </td>
+                                    <!-- <td>
+                                        <button type="button" class="btn btn-danger" >Cancel Booking</button>
+                                    </td> -->
                                 </tr>
                             </ng-container>
                             

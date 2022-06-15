@@ -17,8 +17,8 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <ng-container  *ngFor="let flight of flights">
-                                <tr id="userFlightRows" *ngIf="flight.status == 'Available' ">
+                            <ng-container id="userFlightRows" *ngFor="let flight of flights">
+                                <tr  *ngIf="flight.status == 'Available' ">
                                     <!-- <th scope="row">{{i+1}}</th> -->
                                     <td>{{flight.flight_code}}</td>
                                     <td>{{flight.origin_name}}</td>

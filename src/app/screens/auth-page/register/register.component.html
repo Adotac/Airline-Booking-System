@@ -3,19 +3,18 @@
         <h2 class="fw-bold text-light">Register</h2>
         <form class="text-light">
             <div class="mb-3 mt-3">
-                <input type="email" class="form-control" id="email" placeholder="Email" name="email" />
+                <input type="username" class="form-control" id="email" placeholder="Name" name="name" #userName required />
             </div>
             <div class="mb-3 mt-3">
-                <input type="username" class="form-control" id="email" placeholder="Name" name="name" />
-            </div>
-            <div class="mb-3">
-                <input type="password" class="form-control" id="pwd" placeholder="Password" name="pswd" />
-            </div>
-            <div class="mb-3">
-                <input type="password" class="form-control" id="pwd" placeholder="Confirm Password" name="pswd" />
+                <input type="email" class="form-control" id="email" placeholder="Email" name="email" #userEmail required />
             </div>
 
-            <button type="submit" class="btn btn-primary w-100">Submit</button>
+            <div class="mb-3">
+
+                <input type="password" class="form-control" id="pwd" placeholder="Password" name="pswd" #userPwd required />
+            </div>
+
+            <button type="submit" class="btn btn-primary w-100" (click)="authService.SignUp(userName.value, userEmail.value, userPwd.value)">Submit</button>
 
             <div class="pt-4">
                 <a [routerLink]="['/login']" class="text-white pt-3">Back to login</a>

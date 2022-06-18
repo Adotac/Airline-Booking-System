@@ -13,7 +13,7 @@
                         </thead>
                         <tbody>
                             <tr *ngFor="let user of users; let i = index" (click)="onClickedUser(user.flightCode_bookings)">
-                                <td>{{user.userID}}</td>
+                                <td>{{user.id}}</td>
                                 <td>{{user.username}}</td>
                             </tr>
                         </tbody>

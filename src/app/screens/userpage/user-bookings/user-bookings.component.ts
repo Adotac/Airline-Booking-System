@@ -25,8 +25,9 @@ export class UserBookingsComponent implements OnInit {
 
   ngOnInit(): void {
     console.log('ngOnit');
+    console.log(this.authService.userUID);
 
-    this.retrieveUser(this.currentUserID);
+    this.retrieveUser(this.authService.userUID);
   }
 
   //done
@@ -50,11 +51,14 @@ export class UserBookingsComponent implements OnInit {
 
   // NOT YET DONE
   retrieveUser(userID: string) {
-    // temporary data ang random user
+    console.log('userID');
+    console.log(userID);
     this.ABS_service.getUser(userID).subscribe((data) => {
+      //undfined na diri
+      console.log('data[0]');
       this.user = data[0];
-      // console.log(data[0])
-      // console.log(this.user);
+      console.log(data[0]);
+      console.log(this.user);
       this.retrieveFlights(this.user);
     });
   }

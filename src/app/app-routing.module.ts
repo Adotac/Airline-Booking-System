@@ -31,7 +31,7 @@ const routes: Routes = [
   {
     path: 'user',
     component: UserpageComponent,
-    canActivate: [AuthGuard],
+
     children: [
       {
         path: '',
@@ -47,11 +47,12 @@ const routes: Routes = [
         component: UserBookingsComponent,
       },
     ],
+    canActivate: [AuthGuard],
   },
   {
     path: 'admin',
     component: AdminpageComponent,
-    canActivate: [AuthGuard],
+
     children: [
       {
         path: '',
@@ -67,6 +68,7 @@ const routes: Routes = [
         component: AdminBookingsComponent,
       },
     ],
+    canActivate: [AuthGuard],
   },
 ];
 

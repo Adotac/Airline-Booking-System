@@ -1,5 +1,6 @@
-import { Component, OnInit, } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-userpage',
@@ -7,11 +8,13 @@ import { ActivatedRoute, Router } from '@angular/router';
   styleUrls: ['./userpage.component.scss'],
 })
 export class UserpageComponent implements OnInit {
-
   bookingClicked: boolean = false;
   flightsClicked: boolean = false;
-  constructor(private route: ActivatedRoute, private router: Router) {}
-
+  constructor(
+    public authService: AuthService,
+    private route: ActivatedRoute,
+    private router: Router
+  ) {}
 
   ngOnInit(): void {
     this.flightsClicked = true;
@@ -26,5 +29,4 @@ export class UserpageComponent implements OnInit {
     this.flightsClicked = false;
     this.bookingClicked = true;
   }
-
 }

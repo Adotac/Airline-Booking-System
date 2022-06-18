@@ -38,9 +38,11 @@ export class AuthService {
         this.ngZone.run(() => {
           console.log(result.user?.uid == 'cqapPVKAf9hvYp5VpUm5rOqyv962');
           if (result.user?.uid == 'cqapPVKAf9hvYp5VpUm5rOqyv962') {
+            // this.userData = result.user;
             this.router.navigate(['admin']);
+          } else {
+            this.router.navigate(['user']);
           }
-          this.router.navigate(['user']);
         });
       })
       .catch((error) => {
@@ -62,7 +64,7 @@ export class AuthService {
 
   get isLoggedIn(): boolean {
     const user = JSON.parse(localStorage.getItem('user')!);
-    return user !== null && user.emailVerified !== false ? true : false;
+    return user !== null ? true : false;
   }
 
   SetUserData(user: any, username: string) {
@@ -75,6 +77,7 @@ export class AuthService {
       username: username,
       flightCode_bookings: [],
     };
+
     return userRef.set(userData, {
       merge: true,
     });

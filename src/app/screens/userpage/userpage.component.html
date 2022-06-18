@@ -10,12 +10,12 @@
                 </div>
                 <ul class="nav nav-pills flex-row mb-auto">
                     <li>
-                        <a (click)='flights()' class="nav-link text-white" [ngClass]="flightsClicked ? 'active' : ''"  style="cursor: pointer;">
+                        <a (click)='flights()' class="nav-link text-white" [ngClass]="flightsClicked ? 'active' : ''" style="cursor: pointer;">
                             <i class=" fa fa-dashboard "></i><span class=" ms-2 ">Flights</span>
                         </a>
                     </li>
                     <li class=" nav-item ">
-                        <a (click)='bookings()' class=" nav-link text-white " aria-current=" page " [ngClass]="bookingClicked ? 'active' : ''"  style="cursor: pointer;">
+                        <a (click)='bookings()' class=" nav-link text-white " aria-current=" page " [ngClass]="bookingClicked ? 'active' : ''" style="cursor: pointer;">
                             <i class=" fa fa-home "></i><span class=" ms-2 ">My Bookings</span>
                         </a>
                     </li>
@@ -25,7 +25,8 @@
 
                     <div class="d-flex flex-row align-items-center justify-content-center">
                         <h5 class="text-white fw-bold ms-2">User</h5>
-                        <button class="btn"> <i class="bi bi-box-arrow-in-right fa-lg text-white"></i></button>
+                        <button class="btn"> <i class="bi bi-box-arrow-in-right fa-lg text-white"
+                                (click)="authService.SignOut()"></i></button>
                     </div>
 
                 </div>

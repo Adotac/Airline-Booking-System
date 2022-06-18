@@ -5,7 +5,7 @@ import {
 } from '@angular/fire/compat/firestore';
 
 import { Observable, pipe, forkJoin } from 'rxjs';
-import { filter, find, map, tap, mergeMap  } from 'rxjs/operators';
+import { filter, find, map, tap, mergeMap } from 'rxjs/operators';
 
 import { Flights } from '../models/flights.model';
 import { UserAccount } from '../models/user-account.model';
@@ -13,7 +13,7 @@ import { UserAccount } from '../models/user-account.model';
 @Injectable({
   providedIn: 'root',
 })
-export class ABSFirebaseService{
+export class ABSFirebaseService {
   private flightsCollection: AngularFirestoreCollection<Flights>;
   private userCollection: AngularFirestoreCollection<UserAccount>;
 
@@ -26,64 +26,60 @@ export class ABSFirebaseService{
   }
 
   getAllFlights(): Observable<Flights[]> {
-    return this.flightsCollection
+    return this.flightsCollection.snapshotChanges().pipe(
+      map((changes) =>
+        changes.map((c) => ({
+          id: c.payload.doc.id,
+          ...c.payload.doc.data(),
+        }))
+      )
+    );
+  }
+
+  getAllUsers(): Observable<UserAccount[]> {
+    return this.userCollection.snapshotChanges().pipe(
+      map((changes) =>
+        changes.map((c) => ({
+          id: c.payload.doc.id,
+          ...c.payload.doc.data(),
+        }))
+      )
+    );
+  }
+
+  getUser(id: string): Observable<UserAccount[]> {
+    const o = this.userCollection
       .snapshotChanges()
       .pipe(
         map((changes) =>
-          changes.map((c) => ({
-            id: c.payload.doc.id,
-            ...c.payload.doc.data(),
-          }))
+          changes
+            .map((c) => ({ id: c.payload.doc.id, ...c.payload.doc.data() }))
+            .filter((selectedUser: UserAccount) => selectedUser.userID == id)
         )
       );
 
-  }
-
-  getAllUsers():  Observable<UserAccount[]> {
-    return this.userCollection
-      .snapshotChanges()
-      .pipe(
-        map((changes) =>
-          changes.map((c) => ({
-            id: c.payload.doc.id,
-            ...c.payload.doc.data(),
-          }))
-        )
-      );
-
-
-  }
-
-  getUser(id: string): Observable<UserAccount[]>{
-    const o = this.userCollection.snapshotChanges().pipe(
-      map(changes => 
-        changes.map(c=>
-          ({id: c.payload.doc.id, ...c.payload.doc.data()})  
-        ).filter( (selectedUser:UserAccount) => 
-        selectedUser.userID == id)
-        )
-      );
-    
     return o;
   }
   getFlight(flightCode: string): Observable<Flights[]> {
-
-    const o = this.flightsCollection.snapshotChanges().pipe(
-      map(changes => 
-        changes.map(c=>
-          ({id: c.payload.doc.id, ...c.payload.doc.data()})  
-        ).filter( (selectedFlight:Flights) => 
-        selectedFlight.flight_code == flightCode
+    const o = this.flightsCollection
+      .snapshotChanges()
+      .pipe(
+        map((changes) =>
+          changes
+            .map((c) => ({ id: c.payload.doc.id, ...c.payload.doc.data() }))
+            .filter(
+              (selectedFlight: Flights) =>
+                selectedFlight.flight_code == flightCode
+            )
         )
-      )
-    );
-    
+      );
+
     return o;
     // console.log(tempData);
     // return {success:tempBool, data:tempData};
   }
 
-  //Not added 
+  //Not added
   addNewFlight(flight: Flights) {
     try {
       this.afs.collection('Flights').doc(flight['flight_code']).set(flight);
@@ -94,19 +90,18 @@ export class ABSFirebaseService{
     return false;
   }
 
-  deleteFlightFromUser(userID: string ,fCode: any){
-
+  deleteFlightFromUser(userID: string, fCode: any) {
     try {
       let newCodes, tempData;
-      const o = this.getUser(userID).subscribe( (sdata) => {
+      const o = this.getUser(userID).subscribe((sdata) => {
         tempData = sdata[0];
-        const codes:any = sdata[0].flightCode_bookings;
+        const codes: any = sdata[0].flightCode_bookings;
         // console.log(codes);
         newCodes = Array.from(codes); //shallow copy
         const index = newCodes.indexOf(fCode);
 
-        if (index !== -1){
-          newCodes.splice(index,1);
+        if (index !== -1) {
+          newCodes.splice(index, 1);
         }
         // console.log(newCodes);
         this.afs
@@ -115,15 +110,13 @@ export class ABSFirebaseService{
           .update({ flightCode_bookings: newCodes });
         o.unsubscribe();
 
-        return true;    
+        return true;
       });
-
     } catch (error) {
       console.log(error);
     }
     return false;
   }
-  
 
   // Chnage later into updateFlightStatus(flightCode: string, status: string)
   updateFlightStatus(flightCode: string) {
@@ -143,23 +136,27 @@ export class ABSFirebaseService{
   updateUserBookings(flight: Flights, userID: string) {
     try {
       let newCodes, tempData;
-      const o = this.getUser(userID).subscribe( (sdata) => {
+      const o = this.getUser(userID).subscribe((sdata) => {
+        console.log(sdata);
+
         tempData = sdata[0];
-        const codes:any = sdata[0].flightCode_bookings;
+        const codes: any = sdata[0].flightCode_bookings;
         // codes.push(flight.flight_code);
         // console.log(typeof(sdata));
         // console.log(sdata[0]);
 
-        const exists = sdata[0].flightCode_bookings?.find((val)=>val===flight.flight_code);
+        const exists = sdata[0].flightCode_bookings?.find(
+          (val) => val === flight.flight_code
+        );
         // console.log("exists: " + exists);
-        if (exists != undefined){
-          alert("You have already booked the selected flight!")
+        if (exists != undefined) {
+          alert('You have already booked the selected flight!');
           o.unsubscribe();
 
-          return false
+          return false;
         }
 
-        newCodes = [...codes, flight.flight_code]
+        newCodes = [...codes, flight.flight_code];
         // console.log(newCodes);
         this.afs
           .collection('UserAccounts')
@@ -167,9 +164,8 @@ export class ABSFirebaseService{
           .update({ flightCode_bookings: newCodes });
         o.unsubscribe();
 
-        return true;    
+        return true;
       });
-
     } catch (error) {
       console.log(error);
     }
@@ -187,5 +183,4 @@ export class ABSFirebaseService{
     var reGoodDate = /^([01]\d|2[0-3]):([0-5]\d)$/;
     return reGoodDate.test(dt);
   }
-
 }

@@ -18,24 +18,28 @@
                         </thead>
                         <tbody>
                             <ng-container id="userFlightRows" *ngFor="let flight of flights">
-                                <tr  *ngIf="flight.status == 'Available' ">
+                                <tr *ngIf="flight.status == 'Available' ">
                                     <!-- <th scope="row">{{i+1}}</th> -->
                                     <td>{{flight.flight_code}}</td>
                                     <td>{{flight.origin_name}}</td>
                                     <td>{{flight.dest_name}}</td>
-                                    <td>{{flight.depart_time.toDate().toDateString() +' | '+ flight.depart_time.toDate().toLocaleTimeString()}}</td>
-                                    <td>{{flight.arrival_time.toDate().toDateString()+' | '+ flight.arrival_time.toDate().toLocaleTimeString()}}</td>
-                                    
+                                    <td>{{flight.depart_time.toDate().toDateString() +' | '+ flight.depart_time.toDate().toLocaleTimeString()}}
+                                    </td>
+                                    <td>{{flight.arrival_time.toDate().toDateString()+' | '+ flight.arrival_time.toDate().toLocaleTimeString()}}
+                                    </td>
+
                                     <!-- Please change parameters in addBookingToUser - currently a testing purpose code -->
                                     <td *ngIf="{code: flight.flight_code} as variable">
-                                        <button id="bookFlightBtn" type="button" class="btn btn-primary"  (click)="addBookingToUser(variable.code, 'random')">Book Flight</button>
+                                        <button id="bookFlightBtn" type="button" class="btn btn-primary" *ngIf="authService.userData as user" (click)="addBookingToUser(variable.code, user.uid)">
+                                            Book
+                                            Flight</button>
                                     </td>
                                     <!-- <td>
                                         <button type="button" class="btn btn-primary" >Book Flight</button>
                                     </td> -->
                                 </tr>
                             </ng-container>
-                            
+
 
                         </tbody>
                     </table>
@@ -45,7 +49,7 @@
         <div class=" d-flex  w-25 flex-column  p-2">
             <h3 class="fw-bold">Flight search</h3>
             <div class="border border-dark p-3">
-                
+
                 <form class="row g-3" [formGroup]="flightForm">
                     <div class="col-12 ">
                         <label for="inputAddress" class="form-label">Origin</label>
@@ -55,9 +59,9 @@
                         <label for="inputAddress2" class="form-label">Destination</label>
                         <input type="text" class="form-control" id="inputAddress2" formControlName="destination" placeholder="Tokyo, Japan">
                     </div>
-                    
+
                     <div class="col-3 ">
-                        <button id="searchFlightBtn" type="submit" class="btn btn-primary" (click)="searchFlights()" >Search</button>
+                        <button id="searchFlightBtn" type="submit" class="btn btn-primary" (click)="searchFlights()">Search</button>
                     </div>
                     <div class="col-9 d-flex align-items-center  ">
                         <label class="text-danger">{{errorFormInput}}</label>

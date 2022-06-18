@@ -3,6 +3,7 @@ import { Component, OnInit, DoCheck, AfterContentInit } from '@angular/core';
 import { Flights } from 'src/app/models/flights.model';
 import { ABSFirebaseService } from 'src/app/services/abs-firebase.service';
 import { UserAccount } from 'src/app/models/user-account.model';
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-user-bookings',
@@ -17,7 +18,10 @@ export class UserBookingsComponent implements OnInit {
   // mock user
   currentUserID = 'random';
 
-  constructor(private ABS_service: ABSFirebaseService) {}
+  constructor(
+    public authService: AuthService,
+    private ABS_service: ABSFirebaseService
+  ) {}
 
   ngOnInit(): void {
     console.log('ngOnit');

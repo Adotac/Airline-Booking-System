@@ -36,6 +36,10 @@ export class AuthService {
       .signInWithEmailAndPassword(email, password)
       .then((result) => {
         this.ngZone.run(() => {
+          console.log(result.user?.uid == 'cqapPVKAf9hvYp5VpUm5rOqyv962');
+          if (result.user?.uid == 'cqapPVKAf9hvYp5VpUm5rOqyv962') {
+            this.router.navigate(['admin']);
+          }
           this.router.navigate(['user']);
         });
       })

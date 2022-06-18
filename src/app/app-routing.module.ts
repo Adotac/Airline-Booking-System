@@ -11,7 +11,7 @@ import { UserpageComponent } from './screens/userpage/userpage.component';
 import { UserBookingsComponent } from './screens/userpage/user-bookings/user-bookings.component';
 import { UserFlightsComponent } from './screens/userpage/user-flights/user-flights.component';
 
-
+import { AuthGuard } from './shared/guard/auth.guard';
 const routes: Routes = [
   {
     path: '',
@@ -31,8 +31,13 @@ const routes: Routes = [
   {
     path: 'user',
     component: UserpageComponent,
+    canActivate: [AuthGuard],
     children: [
-      { path: '', redirectTo: 'flights', pathMatch: 'full' },
+      {
+        path: '',
+        redirectTo: 'flights',
+        pathMatch: 'full',
+      },
       {
         path: 'flights',
         component: UserFlightsComponent,
@@ -46,8 +51,13 @@ const routes: Routes = [
   {
     path: 'admin',
     component: AdminpageComponent,
+    canActivate: [AuthGuard],
     children: [
-      { path: '', redirectTo: 'flights', pathMatch: 'full' },
+      {
+        path: '',
+        redirectTo: 'flights',
+        pathMatch: 'full',
+      },
       {
         path: 'flights',
         component: AdminFlightsComponent,

@@ -1,4 +1,117 @@
-@import "~bootstrap-icons/font/bootstrap-icons.css";
+$sideNavWidth: 13.5vw;
+$PoppinFont: 'Poppins',
+sans-serif;
+#big-box {
+    --sideNavWidth: #{$sideNavWidth};
+    --PoppinFont: #{$PoppinFont};
+    display: flex;
+    flex-direction: row;
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    width: 100vw;
+}
+
+#big-box #sidebar-wrapper {
+    position: relative;
+    display: block;
+    background-color: var(--bs-dark);
+    height: 100vh;
+    min-width: 120px;
+    width: var(--sideNavWidth);
+    margin-left: 0;
+    transition: margin 0.25s ease-out;
+    font-family: var(--PoppinFont);
+    #sidebar-btn {
+        margin: 1.5rem 1.9rem 0rem 1.9rem;
+        padding: 0.8rem;
+        text-align: left;
+        font-size: 17px;
+    }
+    .sidebar-heading {
+        padding: 12px 0px;
+        font-size: 25px;
+        font-weight: 600;
+        letter-spacing: 1px;
+        color: #ffffff;
+        text-align: center;
+    }
+    .list-group {
+        display: flex;
+        flex-direction: column;
+        padding-left: 0;
+        margin-bottom: 0;
+        #logout-btn {
+            position: absolute;
+            bottom: 29px;
+            margin: 20vh 1.9rem 0rem 1.9rem;
+            font-family: var(--PoppinFont);
+            padding: 0rem 0.8rem;
+            text-align: left;
+            font-size: 20px;
+            background-color: rgba(255, 0, 0, 0);
+            border-color: var(--bs-dark);
+            ;
+        }
+    }
+    .list-group-flush {
+        border-radius: 0;
+    }
+    // side-bar list css
+    .p-3 {
+        padding: 1rem !important;
+    }
+    .list-group-item {
+        margin: 0rem 1.5rem 0rem 1.5rem;
+        position: relative;
+        display: block;
+        padding: 0.5rem 1rem;
+        color: #ffffff;
+        background-color: var(--bs-dark);
+        text-decoration: none;
+        border-bottom: 1px solid rgb(243, 238, 238);
+    }
+    .list-group-item-action {
+        width: inherit;
+        color: #ffffff;
+        text-align: center;
+        font-size: 20px;
+    }
+    .list-group-item-action:active {
+        color: #fafafa;
+    }
+}
+
+#big-box #page-content-wrapper {
+    position: relative;
+    display: block;
+    width: calc(100vw - var(--sideNavWidth)) !important;
+    min-height: 100vh;
+    .navbar {
+        position: relative;
+        display: flex;
+        background-color: var(--bs-dark);
+        color: #ffffff;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0rem;
+        padding-bottom: 0.5rem;
+        .navbar-heading {
+            padding: 10px 0px;
+            // font-family: var(--PoppinFont);
+            font-size: 28px;
+            font-weight: 600;
+            text-align: left, center;
+            letter-spacing: 1px;
+        }
+    }
+    .flight-container {
+        position: relative;
+        width: 50%;
+    }
+}
+
 #wrapper {
     padding-left: 200px;
     transition: all 0.4s ease 0s;

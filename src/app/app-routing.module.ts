@@ -31,7 +31,6 @@ const routes: Routes = [
   {
     path: 'user',
     component: UserpageComponent,
-
     children: [
       {
         path: '',
@@ -49,10 +48,10 @@ const routes: Routes = [
     ],
     canActivate: [AuthGuard],
   },
+
   {
     path: 'admin',
     component: AdminpageComponent,
-
     children: [
       {
         path: '',

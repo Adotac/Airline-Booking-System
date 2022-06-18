@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-adminpage',
@@ -9,7 +10,11 @@ import { ActivatedRoute, Router } from '@angular/router';
 export class AdminpageComponent implements OnInit {
   bookingClicked: boolean = false;
   flightsClicked: boolean = false;
-  constructor(private route: ActivatedRoute, private router: Router) {}
+  constructor(
+    public authService: AuthService,
+    private route: ActivatedRoute,
+    private router: Router
+  ) {}
 
   ngOnInit(): void {
     this.flightsClicked = true;

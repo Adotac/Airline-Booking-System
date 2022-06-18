@@ -3,13 +3,13 @@
         <h2 class="fw-bold text-light">Login</h2>
         <form class="text-light">
             <div class="mb-3 mt-3">
-                <input type="email" class="form-control" id="email" placeholder="Email" name="email" />
+                <input type="email" class="form-control" id="email" placeholder="Email" name="email" #userName required />
             </div>
             <div class="mb-3">
-                <input type="password" class="form-control" id="pwd" placeholder="Password" name="pswd" />
+                <input type="password" class="form-control" id="pwd" placeholder="Password" name="pswd" #userPassword required />
             </div>
 
-            <button type="submit" class="btn btn-primary w-100">Submit</button>
+            <button type="submit" class="btn btn-primary w-100" (click)="authService.SignIn(userName.value, userPassword.value)">Submit</button>
 
             <div class="pt-4">
                 <a [routerLink]="['/register']" class="text-white">Create an account</a>

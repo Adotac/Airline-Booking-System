@@ -56,18 +56,14 @@ export class AuthService {
       });
   }
 
-  // Returns true when user is looged in and email is verified
   get isLoggedIn(): boolean {
     const user = JSON.parse(localStorage.getItem('user')!);
     return user !== null && user.emailVerified !== false ? true : false;
   }
 
-  /* Setting up user data when sign in with username/password, 
-  sign up with username/password and sign in with social auth  
-  provider in Firestore database using AngularFirestore + AngularFirestoreDocument service */
   SetUserData(user: any, username: string) {
     const userRef: AngularFirestoreDocument<any> = this.afs.doc(
-      `userAccounts/${user.uid}`
+      `UserAccounts/${user.uid}`
     );
     const userData: UserAccount = {
       id: user.uid,
@@ -79,11 +75,11 @@ export class AuthService {
       merge: true,
     });
   }
-  // Sign out
+
   SignOut() {
     return this.afAuth.signOut().then(() => {
       localStorage.removeItem('user');
-      this.router.navigate(['sign-in']);
+      this.router.navigate(['login']);
     });
   }
 }

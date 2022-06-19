@@ -65,19 +65,23 @@ export class AuthService {
   }
   get userUID(): string {
     const user = JSON.parse(localStorage.getItem('user')!);
+    // console.log(user);
+
     return user.uid;
   }
 
-  SetUserData(user: any, username: string) {
+  SetUserData(user: any, user_name: string) {
     const userRef: AngularFirestoreDocument<any> = this.afs.doc(
       `UserAccounts/${user.uid}`
     );
     const userData: UserAccount = {
       id: user.uid,
       email: user.email,
-      username: username,
+      username: user_name,
       flightCode_bookings: [],
     };
+
+    console.log(userData);
 
     return userRef.set(userData, {
       merge: true,

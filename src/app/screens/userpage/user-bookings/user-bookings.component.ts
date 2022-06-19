@@ -25,7 +25,7 @@ export class UserBookingsComponent implements OnInit {
 
   ngOnInit(): void {
     console.log('ngOnit');
-    console.log(this.authService.userUID);
+    // console.log(this.authService.userUID);
 
     this.retrieveUser(this.authService.userUID);
   }
@@ -33,20 +33,27 @@ export class UserBookingsComponent implements OnInit {
   //done
   retrieveFlights(user: UserAccount) {
     console.log('user flights!');
-    console.log(this.user);
+    // console.log(this.user);
     let tempFlightCodes: Array<string> = Array.from(user.flightCode_bookings!);
-    console.log(tempFlightCodes);
-
-    this.ABS_service.getAllFlights().subscribe((data) => {
-      const intersection = data.filter((flight_code) => {
-        // console.log(flight_code.flight_code)
-        return tempFlightCodes.includes(flight_code.flight_code!);
+    // console.log(tempFlightCodes);
+    
+    try{
+      this.ABS_service.getAllFlights().subscribe((data) => {
+        const intersection = data.filter((flight_code) => {
+          // console.log(flight_code.flight_code)
+          return tempFlightCodes.includes(flight_code.flight_code!);
+        });
+  
+        this.flights = intersection;
+        // console.log(intersection);
       });
+      return true;
+    } catch (error) {
+      console.log(error);
+    }
 
-      this.flights = intersection;
-      console.log(intersection);
-    });
-    return true;
+    return false;
+    
   }
 
   // NOT YET DONE
@@ -57,19 +64,19 @@ export class UserBookingsComponent implements OnInit {
       //undfined na diri
       console.log('data[0]');
       this.user = data[0];
-      console.log(data[0]);
-      console.log(this.user);
+      // console.log(data[0]);
+      // console.log(this.user);
       this.retrieveFlights(this.user);
     });
   }
 
   //partial done
-  deleteBookingUser(fCode: string | undefined, userID: string) {
+  deleteBookingUser(fCode: string | undefined) {
     console.log(fCode);
     if (typeof fCode == undefined) return false;
 
     try {
-      this.ABS_service.deleteFlightFromUser(userID, fCode);
+      this.ABS_service.deleteFlightFromUser(fCode);
       console.log('deleted!!');
 
       return true;

@@ -125,7 +125,7 @@ describe('ABSFirebaseService', () => {
     let spy = spyOn(service, 'updateUserBookings').and.callThrough();
     const tempId = 'random1';
     setTimeout(() => {
-      service.updateUserBookings(mockFlights[0], tempId);
+      service.updateUserBookings(mockFlights[0]);
       expect(spy).toHaveBeenCalled();
       expect(spy).toBeTruthy();
       done();

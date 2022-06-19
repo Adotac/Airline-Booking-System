@@ -90,17 +90,17 @@ export class UserFlightsComponent implements OnInit, OnDestroy {
   }
 
   //done
-  addBookingToUser(flightCode: any, userID: string) {
+  addBookingToUser(flightCode: any) {
     try {
       var temp: Flights;
       const o = this.ABS_service.getFlight(flightCode).subscribe((sdata) => {
         console.log('get flight subscribe after filter!');
-        console.log(sdata[0]);
+        // console.log(sdata);
         temp = sdata[0];
         console.log('user flight');
-        console.log(temp);
+        // console.log(temp);
 
-        this.ABS_service.updateUserBookings(temp, userID);
+        this.ABS_service.updateUserBookings(temp);
         o.unsubscribe();
         return true;
       });

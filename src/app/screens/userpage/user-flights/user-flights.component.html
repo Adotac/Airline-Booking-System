@@ -30,7 +30,7 @@
 
                                     <!-- Please change parameters in addBookingToUser - currently a testing purpose code -->
                                     <td *ngIf="{code: flight.flight_code} as variable">
-                                        <button id="bookFlightBtn" type="button" class="btn btn-primary" *ngIf="authService.userData as user" (click)="addBookingToUser(variable.code, user.uid)">
+                                        <button id="bookFlightBtn" type="button" class="btn btn-primary" (click)="addBookingToUser(variable.code)">
                                             Book
                                             Flight</button>
                                     </td>

@@ -51,7 +51,7 @@ describe('ABSFirebaseService', () => {
     service = TestBed.get(ABSFirebaseService);
   });
 
-  it('should be created abs-firebase-service', () => {
+  it('should be created `abs-firebase-service`', () => {
     expect(service).toBeTruthy();
   });
 

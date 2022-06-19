@@ -1,6 +1,13 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 
+import { SETTINGS as FS_SETTINGS,} from '@angular/fire/compat/firestore';
+import { AngularFireModule, FIREBASE_OPTIONS } from '@angular/fire/compat';
+import { environment } from 'src/environments/environment';
+
+import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
+
+import { of } from 'rxjs';
 import { UserpageComponent } from './userpage.component';
 
 describe('UserpageComponent', () => {
@@ -11,7 +18,24 @@ describe('UserpageComponent', () => {
     await TestBed.configureTestingModule({
       declarations: [UserpageComponent],
 
-      imports: [RouterTestingModule],
+      imports: [
+        AngularFireModule.initializeApp(environment.firebase),
+        HttpClientTestingModule,
+        RouterTestingModule.withRoutes([]),
+      ],
+      providers: [
+        {
+          provide: FS_SETTINGS,
+          useValue: {
+            experimentalAutoDetectLongPolling: true,
+            useFetchStreams: false,
+          },
+        },
+        {
+          provide: FIREBASE_OPTIONS,
+          useValue: environment.firebase,
+        },
+      ],
     }).compileComponents();
   });
 
@@ -21,7 +45,7 @@ describe('UserpageComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
+  it('should create `userpage-component`', () => {
     expect(component).toBeTruthy();
   });
 });

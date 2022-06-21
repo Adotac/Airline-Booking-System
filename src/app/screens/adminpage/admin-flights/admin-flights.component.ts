@@ -61,6 +61,7 @@ export class AdminFlightsComponent implements OnInit, OnDestroy {
     return `${A}${B}-${id}`;
   }
 
+  
   addFlightToDB() {
     if (!this.isFormValid()) return;
 
@@ -86,6 +87,7 @@ export class AdminFlightsComponent implements OnInit, OnDestroy {
     }
     return true;
   }
+
   //partial
   private async setFlightToDB(): Promise<any> {
     var attributes = new Map<string, any>();
@@ -119,6 +121,7 @@ export class AdminFlightsComponent implements OnInit, OnDestroy {
     this.errorFormInput = '';
     await this.ABS_service.addNewFlight(this.mapToObject(attributes));
   }
+
   //done
   private isDateValid(): boolean {
     if (

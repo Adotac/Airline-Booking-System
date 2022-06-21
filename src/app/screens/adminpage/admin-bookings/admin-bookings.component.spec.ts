@@ -3,6 +3,8 @@ import { AngularFireModule } from '@angular/fire/compat';
 import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
 import { By } from '@angular/platform-browser';
 import { RouterTestingModule } from '@angular/router/testing';
+import { of } from 'rxjs';
+import { Flights } from 'src/app/models/flights.model';
 
 import { UserAccount } from 'src/app/models/user-account.model';
 import { ABSFirebaseService } from 'src/app/services/abs-firebase.service';
@@ -33,6 +35,7 @@ describe('AdminBookingsComponent', () => {
         AngularFirestoreModule,
       ],
     }).compileComponents();
+    service = TestBed.get(ABSFirebaseService);
   });
 
   beforeEach(() => {
@@ -51,21 +54,26 @@ describe('AdminBookingsComponent', () => {
     expect(firstLabel.textContent).toBe(' Users');
   });
 
-  it('Should populate flights when retrieveFlights() is called', () => {
-    spyOn(component, 'retrieveFlights');
+  it('Should populate flights when retrieveFlights() is called', (done) => {
+    let spy = spyOn(service, 'getAllUsers');
+    setTimeout(() => {
+      let user: UserAccount[] = [];
+      const a$ = service.getAllUsers().subscribe((sdata) => {
+        user = sdata;
+      });
 
-    component.retrieveFlights();
-    expect(component.flights).toBeNull;
-
-    // let firstLabel = fixture.debugElement.query(
-    //   By.css('#users-label')
-    // ).nativeElement;
-
-    // fixture.detectChanges();
-
-    // expect(firstLabel.textContent).toBe(' Users');
+      expect(spy).toHaveBeenCalled();
+      expect(user).toBeDefined();
+      component.retrieveFlights();
+      expect(component.flights).toBeNull;
+      a$.unsubscribe();
+      done();
+    }, 1000);
   });
 
+  //SPEC HAS NO EXPECTATIONS
+
+  //SPEC HAS NO EXPECTATIONS
   it('Should call done users when retrieveUsers() is called', () => {
     // expect(component.users).toBeNull();
     setTimeout(() => {
@@ -74,6 +82,7 @@ describe('AdminBookingsComponent', () => {
     expect(component.done).toHaveBeenCalled;
   });
 
+  //SPEC HAS NO EXPECTATIONS
   it('Should call done users when retrieveFlights() is called', () => {
     spyOn(component, 'retrieveFlights');
 
@@ -84,7 +93,7 @@ describe('AdminBookingsComponent', () => {
     expect(component.flights).toBeNull;
     expect(component.done).toHaveBeenCalled;
   });
-
+  //SPEC HAS NO EXPECTATIONS
   it('Should call done users when done() is called', () => {
     setTimeout(() => {
       component.done();
@@ -109,6 +118,15 @@ describe('AdminBookingsComponent', () => {
     fixture.detectChanges();
 
     expect(firstLabel.textContent).toBe(' Flights');
+  });
+
+  it('Should call onClickedUser() when called ', () => {
+    expect(component.userBooking).toBeNull();
+
+    component.onClickedUser;
+    fixture.detectChanges();
+
+    expect(component.onClickedUser).toHaveBeenCalled();
   });
 
   // it('Should check if the number of labels in user table is equal to 2', () => {

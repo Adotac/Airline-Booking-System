@@ -49,8 +49,6 @@ export class AdminBookingsComponent implements OnInit {
   retrieveUsers() {
     this.retrieveUsers$ = this.ABS_service.getAllUsers().subscribe((data) => {
       this.users = data;
-      // console.log("admin!");
-      // console.log(data);
     });
     this.done();
   }

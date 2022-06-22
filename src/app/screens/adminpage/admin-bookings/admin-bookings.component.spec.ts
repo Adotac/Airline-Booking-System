@@ -121,7 +121,7 @@ describe('AdminBookingsComponent', () => {
   });
 
   it('Should call onClickedUser() when called ', () => {
-    expect(component.userBooking).toBeNull();
+    expect(component.userBooking).not.toBeDefined();
 
     component.onClickedUser;
     fixture.detectChanges();

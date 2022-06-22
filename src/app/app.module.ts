@@ -14,7 +14,6 @@ import { AdminBookingsComponent } from './screens/adminpage/admin-bookings/admin
 import { UserFlightsComponent } from './screens/userpage/user-flights/user-flights.component';
 import { UserBookingsComponent } from './screens/userpage/user-bookings/user-bookings.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { MatDatepickerModule } from '@angular/material/datepicker';
 import { RouterTestingModule } from '@angular/router/testing';
 // test angularfire
 // import { AngularFirestore } from '@angular/fire/firestore';
@@ -40,7 +39,6 @@ import { AuthService } from './services/auth.service';
     RouterTestingModule,
     RouterModule,
     ReactiveFormsModule,
-    MatDatepickerModule,
     FormsModule,
     BrowserModule,
     AppRoutingModule,

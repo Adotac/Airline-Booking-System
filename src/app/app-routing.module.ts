@@ -11,7 +11,6 @@ import { UserpageComponent } from './screens/userpage/userpage.component';
 import { UserBookingsComponent } from './screens/userpage/user-bookings/user-bookings.component';
 import { UserFlightsComponent } from './screens/userpage/user-flights/user-flights.component';
 
-import { AuthGuard } from './shared/guard/auth.guard';
 const routes: Routes = [
   {
     path: '',
@@ -47,7 +46,6 @@ const routes: Routes = [
         component: UserBookingsComponent,
       },
     ],
-    canActivate: [AuthGuard],
   },
   {
     path: 'admin',
@@ -68,7 +66,6 @@ const routes: Routes = [
         component: AdminBookingsComponent,
       },
     ],
-    canActivate: [AuthGuard],
   },
 ];
 

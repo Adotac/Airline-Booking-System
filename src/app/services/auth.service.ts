@@ -57,16 +57,8 @@ export class AuthService {
         window.alert(error.message);
       });
   }
-
-  get isLoggedIn(): boolean {
-    const user = JSON.parse(localStorage.getItem('user')!);
-    return user !== null ? true : false;
-  }
-  get userUID(): string {
-    const user = JSON.parse(localStorage.getItem('user')!);
-    // console.log(user);
-
-    return user.uid;
+  SignOut() {
+    this.router.navigate(['login']);
   }
 
   SetUserData(user: any, user_name: string) {
@@ -84,13 +76,6 @@ export class AuthService {
 
     return userRef.set(userData, {
       merge: true,
-    });
-  }
-
-  SignOut() {
-    return this.afAuth.signOut().then(() => {
-      localStorage.removeItem('user');
-      this.router.navigate(['login']);
     });
   }
 }

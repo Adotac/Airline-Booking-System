@@ -4,6 +4,7 @@ import { Flights } from 'src/app/models/flights.model';
 import { ABSFirebaseService } from 'src/app/services/abs-firebase.service';
 import { UserAccount } from 'src/app/models/user-account.model';
 import { AuthService } from 'src/app/services/auth.service';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-user-bookings',
@@ -16,9 +17,10 @@ export class UserBookingsComponent implements OnInit {
   selectedFlight?: Flights;
 
   // mock user
-  currentUserID = 'random';
+  currentUserID?: string | null;
 
   constructor(
+    private _Activatedroute: ActivatedRoute,
     public authService: AuthService,
     private ABS_service: ABSFirebaseService
   ) {}
@@ -43,7 +45,7 @@ export class UserBookingsComponent implements OnInit {
           // console.log(flight_code.flight_code)
           return tempFlightCodes.includes(flight_code.flight_code!);
         });
-  
+
         this.flights = intersection;
         // console.log(intersection);
         o.unsubscribe();
@@ -54,7 +56,6 @@ export class UserBookingsComponent implements OnInit {
     }
 
     return false;
-    
   }
 
   // NOT YET DONE

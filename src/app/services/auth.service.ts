@@ -18,19 +18,11 @@ export class AuthService {
     public afAuth: AngularFireAuth,
     public router: Router,
     public ngZone: NgZone
-  ) {
-    this.afAuth.authState.subscribe((user) => {
-      if (user) {
-        this.userData = user;
-        // console.log(user);
-        localStorage.setItem('user', JSON.stringify(this.userData));
-        JSON.parse(localStorage.getItem('user')!);
-      } else {
-        localStorage.setItem('user', 'null');
-        JSON.parse(localStorage.getItem('user')!);
-      }
-    });
-  }
+  ) { 
+    if (!this.userData){
+      this.userData = JSON.parse(localStorage.getItem('user')!);
+    }
+   }
 
   SignIn(email: string, password: string) {
     return this.afAuth
@@ -38,8 +30,14 @@ export class AuthService {
       .then((result) => {
         this.afAuth.authState.subscribe((user) => {
           if (user) {
+            this.userData = user;
+            localStorage.setItem('user', JSON.stringify(this.userData));
             if (user.email == 'a@a.com') this.router.navigate(['admin']);
-            else this.router.navigate(['user']);
+            else {
+              this.router.navigate(['user']);
+            }
+          }else {
+            localStorage.setItem('user', 'null');
           }
         });
       })

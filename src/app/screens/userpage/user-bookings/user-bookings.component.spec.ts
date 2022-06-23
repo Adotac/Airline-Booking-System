@@ -1,41 +1,33 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, tick } from '@angular/core/testing';
 import { AngularFireModule } from '@angular/fire/compat';
 import { AngularFirestoreModule,AngularFirestoreDocument,
     SETTINGS as FS_SETTINGS } from '@angular/fire/compat/firestore';
+
 import { RouterTestingModule } from '@angular/router/testing';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { Router,Routes } from '@angular/router';
 import { environment } from 'src/environments/environment';
 
-import { AngularFireAuth } from '@angular/fire/compat/auth';
 
 import { By } from '@angular/platform-browser';
 import { Observable, of} from 'rxjs';
+
 import { UserBookingsComponent } from './user-bookings.component';
+
 import { AuthService } from 'src/app/services/auth.service';
-import { UserAccount } from 'src/app/models/user-account.model';
 
-var mockUser: {
-    flightCode_bookings: [];
-    userID: "NKlVvTFxm4Mwm1FlPdC2LXC7ATw1";
-    username: "PinakaGwapo";
-    id: "NKlVvTFxm4Mwm1FlPdC2LXC7ATw1";
-    uid: "NKlVvTFxm4Mwm1FlPdC2LXC7ATw1";
-    email: "g@g.com";
-    isAnonymous: false;
-  };
 
-fdescribe('UserBookingsComponent', () => {
+xdescribe('UserBookingsComponent', () => {
   let component: UserBookingsComponent;
   let fixture: ComponentFixture<UserBookingsComponent>;
   let service: AuthService;
-
-  let l:any;
-  
+  let rot:Router;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [UserBookingsComponent],
       imports: [
-        RouterTestingModule,
+        RouterTestingModule.withRoutes([]),HttpClientTestingModule,
         AngularFireModule.initializeApp(environment.firebase),
         AngularFirestoreModule,//AngularFirestoreDocument,
       ],
@@ -50,12 +42,17 @@ fdescribe('UserBookingsComponent', () => {
         AuthService,
       ],
     }).compileComponents();
+    rot = TestBed.inject(Router);
     service = TestBed.inject(AuthService);
+    service.SignIn('g@g.com', '123456');
 
   });
 
   beforeEach(() => {
-    localStorage.setItem('user', JSON.stringify(mockUser));
+
+    console.log(service.userData);
+
+    rot.initialNavigation();
     fixture = TestBed.createComponent(UserBookingsComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
@@ -63,38 +60,43 @@ fdescribe('UserBookingsComponent', () => {
 
   afterEach(() => {
     // localStorage.removeItem('user');
+    service.SignOut();
   });
 
-  it('should create user-booking-component', () => {
-    let user = localStorage.getItem('user');
-    console.log("sssssssssss\n\n\n\n");
-    service.userData = mockUser;
-    fixture.detectChanges();
-
-    console.log(service.userData);
-
-    expect(component).toBeTruthy();
-  });
-
-  xit('should call retrieveFlights() when retrieveUser() is called and flights is not undefined', (done) => {
-    // let service = TestBed.inject(ABSFirebaseService);
-    let spy = spyOn(component, 'retrieveFlights').and.callThrough();
+  it('should create user-booking-component', (done) => {
     setTimeout(() => {
-    service.userData = mockUser;
-    console.log("askjd\n\n\nghasd");
-    console.log(service.userData);
+        service.SignIn('g@g.com', '123456');
 
+        fixture.detectChanges();
+        
+        done();
+    }, 1000);
+    expect(component).toBeTruthy();
+
+  });
+
+  it('should call retrieveFlights() when retrieveUser() is called and flights is not undefined', (done) => {
+    // let service = TestBed.inject(ABSFirebaseService);
+    let spyF = spyOn(component, 'retrieveFlights').and.callThrough();
+    let spyU = spyOn(component, 'retrieveUser').and.callThrough();
+    // rot.navigate(['user/bookings']);
+    // tick();
+    setTimeout(() => {
+  
     //   component.retrieveFlights();
       component.ngOnInit();
-      fixture.detectChanges();
+      fixture.detectChanges(); 
+      console.log("service.userData");
+      console.log(service.userData);
 
-      expect(spy).toHaveBeenCalled();
-      expect(component.flights).not.toBe(undefined);
+      expect(spyU).toHaveBeenCalled();
+      expect(spyF).toHaveBeenCalled();
+    //   expect(component.flights).not.toBe(undefined);
       done();
     }, 1000);
   });
 
-  xit('should click `Cancel Booking` button and call deleteBookingUser()', (done) => {
+  it('should click `Cancel Booking` button and call deleteBookingUser()', (done) => {
     let spy = spyOn(component, 'deleteBookingUser').and.callThrough();
     // let btn:HTMLElement = fixture.debugElement.query(By.css('#bookFlightBtn')).nativeElement;
 

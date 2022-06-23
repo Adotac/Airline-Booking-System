@@ -64,7 +64,7 @@ describe('UserFlightsComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should call retrieveFlights() and flights is not undefined',  (done) => {
+  xit('should call retrieveFlights() and flights is not undefined',  (done) => {
     // let service = TestBed.inject(ABSFirebaseService);
     let spy = spyOn(component, 'retrieveFlights').and.callThrough();
     setTimeout(()=>{
@@ -78,7 +78,7 @@ describe('UserFlightsComponent', () => {
     }, 1000);
   });
 
-  it('should check if it will display only `Available` flights', (done) => {
+  xit('should check if it will display only `Available` flights', (done) => {
     // let service = TestBed.inject(ABSFirebaseService);
     let spy = spyOn(component, 'retrieveFlights').and.callThrough();
     setTimeout(() => {

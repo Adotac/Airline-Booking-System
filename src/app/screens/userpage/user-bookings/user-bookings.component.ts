@@ -25,7 +25,7 @@ export class UserBookingsComponent implements OnInit {
 
   ngOnInit(): void {
     console.log('ngOnit');
-    console.log(this.authService.userData);
+    // console.log(this.authService.userData);
 
     this.retrieveUser(this.authService.userData.uid);
   }
@@ -38,7 +38,7 @@ export class UserBookingsComponent implements OnInit {
     // console.log(tempFlightCodes);
     
     try{
-      this.ABS_service.getAllFlights().subscribe((data) => {
+      const o = this.ABS_service.getAllFlights().subscribe((data) => {
         const intersection = data.filter((flight_code) => {
           // console.log(flight_code.flight_code)
           return tempFlightCodes.includes(flight_code.flight_code!);
@@ -46,6 +46,7 @@ export class UserBookingsComponent implements OnInit {
   
         this.flights = intersection;
         // console.log(intersection);
+        o.unsubscribe();
       });
       return true;
     } catch (error) {
@@ -58,15 +59,16 @@ export class UserBookingsComponent implements OnInit {
 
   // NOT YET DONE
   retrieveUser(userID: string) {
-    console.log('userID');
+    console.log('retrieving userID');
     console.log(userID);
-    this.ABS_service.getUser(userID).subscribe((data) => {
+    const o = this.ABS_service.getUser(userID).subscribe((data) => {
       //undfined na diri
-      console.log('data[0]');
+      // console.log('data[0]');
       this.user = data[0];
       // console.log(data[0]);
       // console.log(this.user);
       this.retrieveFlights(this.user);
+      o.unsubscribe();
     });
   }
 

@@ -75,6 +75,8 @@ export class ABSFirebaseService{
   addNewFlight(flight: Flights) {
     try {
       this.afs.collection('Flights').doc(flight['flight_code']).set(flight);
+      console.log("ADDED");
+
       return true;
     } catch (error) {
       console.log(error);

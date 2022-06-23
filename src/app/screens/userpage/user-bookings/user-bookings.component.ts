@@ -25,9 +25,9 @@ export class UserBookingsComponent implements OnInit {
 
   ngOnInit(): void {
     console.log('ngOnit');
-    // console.log(this.authService.userUID);
+    console.log(this.authService.userData);
 
-    this.retrieveUser(this.authService.userUID);
+    this.retrieveUser(this.authService.userData.uid);
   }
 
   //done

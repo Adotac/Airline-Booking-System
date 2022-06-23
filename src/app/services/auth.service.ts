@@ -16,17 +16,12 @@ export class AuthService {
   constructor(
     public afs: AngularFirestore,
     public afAuth: AngularFireAuth,
-    public router: Router,
-    public ngZone: NgZone
+    public router: Router
   ) {
     this.afAuth.authState.subscribe((user) => {
       if (user) {
         this.userData = user;
-        localStorage.setItem('user', JSON.stringify(this.userData));
-        JSON.parse(localStorage.getItem('user')!);
       } else {
-        localStorage.setItem('user', 'null');
-        JSON.parse(localStorage.getItem('user')!);
       }
     });
   }
@@ -37,8 +32,9 @@ export class AuthService {
       .then((result) => {
         this.afAuth.authState.subscribe((user) => {
           if (user) {
+            this.userData = user;
             if (user.email == 'a@a.com') this.router.navigate(['admin']);
-            else this.router.navigate(['user']);
+            else this.router.navigate(['user', `${user.uid}`]);
           }
         });
       })
@@ -58,16 +54,8 @@ export class AuthService {
         window.alert(error.message);
       });
   }
-
-  get isLoggedIn(): boolean {
-    const user = JSON.parse(localStorage.getItem('user')!);
-    return user !== null ? true : false;
-  }
-  get userUID(): string {
-    const user = JSON.parse(localStorage.getItem('user')!);
-    // console.log(user);
-
-    return user.uid;
+  SignOut() {
+    this.router.navigate(['login']);
   }
 
   SetUserData(user: any, user_name: string) {
@@ -85,13 +73,6 @@ export class AuthService {
 
     return userRef.set(userData, {
       merge: true,
-    });
-  }
-
-  SignOut() {
-    return this.afAuth.signOut().then(() => {
-      localStorage.removeItem('user');
-      this.router.navigate(['login']);
     });
   }
 }

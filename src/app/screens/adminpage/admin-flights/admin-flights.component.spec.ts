@@ -13,6 +13,7 @@ import {
 
 import { AdminFlightsComponent } from './admin-flights.component';
 import { By } from '@angular/platform-browser';
+import { not } from '@angular/compiler/src/output/output_ast';
 
 describe('AdminFlightsComponent', () => {
   let component: AdminFlightsComponent;
@@ -109,7 +110,15 @@ describe('AdminFlightsComponent', () => {
     const app = component;
     await app['setFlightToDB']();
 
-    expect(await component.errorFormInput).not.toBeNull();
+    expect(await component.errorFormInput).toBe('');
+  });
+  it('should commit flight data to firebase when setFlightToDB method is called', async () => {
+    const app = component;
+    await app['setFlightToDB']();
+
+    expect(await component.errorFormInput).toBe(
+      'arival should be greater than departure '
+    );
   });
 
   it('should return convert date and time arguments to Date newDate when stringToDateTime method is called', () => {
@@ -149,18 +158,25 @@ describe('AdminFlightsComponent', () => {
     expect(component.errorFormInput).toBe('');
   });
 
-  it('2should click `submit` cancel flight button and call cancelFlight() with empty fields', () => {
-    let spy = spyOn(component, 'cancelFlight').and.callThrough();
-    let btn: HTMLElement = fixture.debugElement.query(
-      By.css('#cancelFlightBtn')
-    ).nativeElement;
+  it('should click `submit` cancel flight button and call cancelFlight() fields', () => {
+    // let spy = spyOn(component, 'cancelFlight').and.callThrough();
 
-    component.cancelFlight('CI-43068');
-    btn.click();
-
-    fixture.detectChanges();
-    expect(spy).toHaveBeenCalled();
+    component.cancelFlight('CI-1234');
+    // fixture.detectChanges();
+    // expect(spy).toHaveBeenCalled();
     expect(component.errorFormInput).toBe('');
+  });
+
+  it('Should call mapToObject() and return a value', () => {
+    let spy = spyOn(component, 'mapToObject').and.callThrough();
+    let value = component.mapToObject(['apples', 500]);
+    expect(value).not.toBeNull();
+  });
+
+  it('Should call mapToObject() and return a null', () => {
+    let spy = spyOn(component, 'mapToObject').and.callThrough();
+    let value = component.mapToObject([]);
+    expect(value).toEqual(Object.create(null));
   });
 
   it('Should check if the labels for the "flight list" exists', () => {

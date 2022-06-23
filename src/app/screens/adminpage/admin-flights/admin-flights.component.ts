@@ -61,7 +61,6 @@ export class AdminFlightsComponent implements OnInit, OnDestroy {
     return `${A}${B}-${id}`;
   }
 
-  
   addFlightToDB() {
     if (!this.isFormValid()) return;
 
@@ -114,10 +113,6 @@ export class AdminFlightsComponent implements OnInit, OnDestroy {
       return;
     }
 
-    if (attributes.size <= 0) {
-      this.errorFormInput = 'empty fields';
-      return null;
-    }
     this.errorFormInput = '';
     await this.ABS_service.addNewFlight(this.mapToObject(attributes));
   }
@@ -162,7 +157,7 @@ export class AdminFlightsComponent implements OnInit, OnDestroy {
     );
   }
 
-  private mapToObject(map: any) {
+  public mapToObject(map: any) {
     const out = Object.create(null);
     map.forEach((value: any, key: string | number) => {
       if (value instanceof Map) {

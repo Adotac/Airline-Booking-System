@@ -7,7 +7,7 @@
 
 // import { UserBookingsComponent } from './user-bookings.component';
 
-// fdescribe('UserBookingsComponent', () => {
+// describe('UserBookingsComponent', () => {
 //   let component: UserBookingsComponent;
 //   let fixture: ComponentFixture<UserBookingsComponent>;
 
@@ -28,7 +28,7 @@
 //     fixture.detectChanges();
 //   });
 
-//   fit('should create user-booking-component', () => {
+//   it('should create user-booking-component', () => {
 //     expect(component).toBeTruthy();
 //   });
 

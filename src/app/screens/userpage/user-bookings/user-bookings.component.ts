@@ -4,6 +4,7 @@ import { Flights } from 'src/app/models/flights.model';
 import { ABSFirebaseService } from 'src/app/services/abs-firebase.service';
 import { UserAccount } from 'src/app/models/user-account.model';
 import { AuthService } from 'src/app/services/auth.service';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-user-bookings',
@@ -16,18 +17,22 @@ export class UserBookingsComponent implements OnInit {
   selectedFlight?: Flights;
 
   // mock user
-  currentUserID = 'random';
+  currentUserID?: string | null;
 
   constructor(
+    private _Activatedroute: ActivatedRoute,
     public authService: AuthService,
     private ABS_service: ABSFirebaseService
   ) {}
 
   ngOnInit(): void {
-    console.log('ngOnit');
+    this.currentUserID = this._Activatedroute.snapshot.paramMap.get('id');
+    console.log('this.currentUserID');
+    console.log(this.currentUserID);
+
     // console.log(this.authService.userUID);
 
-    this.retrieveUser(this.authService.userUID);
+    this.retrieveUser(this.currentUserID ?? '');
   }
 
   //done
@@ -36,14 +41,14 @@ export class UserBookingsComponent implements OnInit {
     // console.log(this.user);
     let tempFlightCodes: Array<string> = Array.from(user.flightCode_bookings!);
     // console.log(tempFlightCodes);
-    
-    try{
+
+    try {
       this.ABS_service.getAllFlights().subscribe((data) => {
         const intersection = data.filter((flight_code) => {
           // console.log(flight_code.flight_code)
           return tempFlightCodes.includes(flight_code.flight_code!);
         });
-  
+
         this.flights = intersection;
         // console.log(intersection);
       });
@@ -53,7 +58,6 @@ export class UserBookingsComponent implements OnInit {
     }
 
     return false;
-    
   }
 
   // NOT YET DONE

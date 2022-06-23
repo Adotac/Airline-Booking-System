@@ -1,11 +1,13 @@
 // import { ComponentFixture, TestBed } from '@angular/core/testing';
 // import { AngularFireModule } from '@angular/fire/compat';
-// import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
+// import { AngularFirestoreModule,SETTINGS as FS_SETTINGS } from '@angular/fire/compat/firestore';
 // import { RouterTestingModule } from '@angular/router/testing';
 // import { environment } from 'src/environments/environment';
 // import { By } from '@angular/platform-browser';
 
 // import { UserBookingsComponent } from './user-bookings.component';
+
+// var mockStorage = {}
 
 // fdescribe('UserBookingsComponent', () => {
 //   let component: UserBookingsComponent;
@@ -19,10 +21,21 @@
 //         AngularFireModule.initializeApp(environment.firebase),
 //         AngularFirestoreModule,
 //       ],
+//       providers: [
+//         {
+//           provide: FS_SETTINGS,
+//           useValue: {
+//             experimentalAutoDetectLongPolling: true,
+//             useFetchStreams: false,
+//           },
+//         },
+//       ],
 //     }).compileComponents();
 //   });
 
 //   beforeEach(() => {
+
+
 //     fixture = TestBed.createComponent(UserBookingsComponent);
 //     component = fixture.componentInstance;
 //     fixture.detectChanges();

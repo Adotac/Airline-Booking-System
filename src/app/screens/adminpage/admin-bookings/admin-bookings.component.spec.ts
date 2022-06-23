@@ -55,25 +55,15 @@ describe('AdminBookingsComponent', () => {
   });
 
   it('Should populate flights when retrieveFlights() is called', (done) => {
-    let spy = spyOn(service, 'getAllUsers');
+    let spyflights = spyOn(component, 'retrieveFlights');
     setTimeout(() => {
-      let user: UserAccount[] = [];
-      const a$ = service.getAllUsers().subscribe((sdata) => {
-        user = sdata;
-      });
-
-      expect(spy).toHaveBeenCalled();
-      expect(user).toBeDefined();
       component.retrieveFlights();
-      expect(component.flights).toBeNull;
-      a$.unsubscribe();
+      expect(spyflights).toHaveBeenCalled();
+      expect(component.flights).toBeDefined();
       done();
     }, 1000);
   });
 
-  //SPEC HAS NO EXPECTATIONS
-
-  //SPEC HAS NO EXPECTATIONS
   it('Should call done users when retrieveUsers() is called', () => {
     // expect(component.users).toBeNull();
     setTimeout(() => {
@@ -82,7 +72,7 @@ describe('AdminBookingsComponent', () => {
     expect(component.done).toHaveBeenCalled;
   });
 
-  //SPEC HAS NO EXPECTATIONS
+
   it('Should call done users when retrieveFlights() is called', () => {
     spyOn(component, 'retrieveFlights');
 
@@ -93,7 +83,7 @@ describe('AdminBookingsComponent', () => {
     expect(component.flights).toBeNull;
     expect(component.done).toHaveBeenCalled;
   });
-  //SPEC HAS NO EXPECTATIONS
+
   it('Should call done users when done() is called', () => {
     setTimeout(() => {
       component.done();
@@ -111,22 +101,23 @@ describe('AdminBookingsComponent', () => {
     expect(firstLabel.textContent).toBe(' Flights');
   });
 
-  it('Should check if the labels for the "Flights" exists', () => {
-    let firstLabel = fixture.debugElement.query(
-      By.css('#flight-label')
-    ).nativeElement;
-    fixture.detectChanges();
+  it('Should call onClickedUser() when called ', (done) => {
+    let spy = spyOn(component, 'onClickedUser').and.callThrough();
 
-    expect(firstLabel.textContent).toBe(' Flights');
-  });
 
-  it('Should call onClickedUser() when called ', () => {
-    expect(component.userBooking).not.toBeDefined();
+    setTimeout(() => {
+      component.retrieveFlights();
+      fixture.detectChanges();
+      // console.log(component.flights);
 
-    component.onClickedUser;
-    fixture.detectChanges();
+      component.onClickedUser('AB-02943');
+      fixture.detectChanges();
 
-    expect(component.onClickedUser).toHaveBeenCalled();
+      expect(component.userBooking).toBeDefined();
+      expect(spy).toHaveBeenCalled();
+      // expect(spy).toBeTruthy();
+      done();
+    }, 1000);
   });
 
   // it('Should check if the number of labels in user table is equal to 2', () => {

@@ -10,11 +10,33 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-
+import { Flights } from 'src/app/models/flights.model';
+import { UserAccount } from 'src/app/models/user-account.model';
 import { AdminFlightsComponent } from './admin-flights.component';
 import { By } from '@angular/platform-browser';
 import { not } from '@angular/compiler/src/output/output_ast';
 // 3 1 7 2
+
+var mockFlights: Flights[] = [
+  {
+    flight_code: 'IW-82214',
+    origin_name: 'Cebu',
+    dest_name: 'Japan',
+    depart_time: '2:00',
+    arrival_time: '3:00',
+    status: 'Available',
+  },
+];
+
+var mockUsers: UserAccount[] = [
+  {
+    flightCode_bookings: ['IW-82214', 'HH-95575', 'GP-20441'],
+    userID: 'random',
+    username: 'pinakagwapo',
+    id: 'random',
+  },
+];
+
 describe('AdminFlightsComponent', () => {
   let component: AdminFlightsComponent;
   let fixture: ComponentFixture<AdminFlightsComponent>;
@@ -196,14 +218,23 @@ describe('AdminFlightsComponent', () => {
     expect(spy).toHaveBeenCalled();
   });
 
-  // it('should click `submit` cancel flight button and call cancelFlight() fields', () => {
-  //   // let spy = spyOn(component, 'cancelFlight').and.callThrough();
+  it('should cancel mock flight data when calling cancelFlight()', () => {
+    let spy = spyOn(component, 'cancelFlight').and.callFake(function(c:string){
+      if(c == mockFlights[0].flight_code!){
+        component.errorCodeInput = '';
+        return true;
+      }
+      component.errorCodeInput = 'flight code not found';
+      return false
+    });
 
-  //   component.cancelFlight('CI-1234');
-  //   // fixture.detectChanges();
-  //   // expect(spy).toHaveBeenCalled();
-  //   expect(component.errorFormInput).toBe('');
-  // });
+
+    component.cancelFlight(mockFlights[0].flight_code!);
+
+    expect(spy).toHaveBeenCalled();
+    expect(spy).toBeTruthy();
+    expect(component.errorFormInput).toBe('');
+  });
 
   it('Should call mapToObject() and return a value', () => {
     let spy = spyOn(component, 'mapToObject').and.callThrough();

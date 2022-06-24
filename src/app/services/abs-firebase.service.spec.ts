@@ -132,16 +132,42 @@ describe('ABSFirebaseService', () => {
     }, 1000);
   });
 
-  // it('should call updateFlightStatus() and return true', (done) => {
-  //   let spy = spyOn(service, 'updateFlightStatus').and.callThrough();
-  //   const tempId = 'random1';
-  //   setTimeout(()=>{
-  //     service.updateFlightStatus();
-  //     expect(spy).toHaveBeenCalled();
-  //     expect(spy).toBeTruthy();
-  //     done();
-  //   }, 1000);
-  // });
+  it('should call updateFlightStatus() with mock flight and return true, and update mockFlight.status', (done) => {
+    
+    setTimeout(()=>{
+      let spy = spyOn(service, 'updateFlightStatus').and.callFake(function(c:string){
+        if(c == mockFlights[0].flight_code!){
+          mockFlights[0].status = 'Cancelled';
+          return true;
+        }
+        return false;
+      });
+
+      service.updateFlightStatus(mockFlights[0].flight_code!);
+      expect(spy).toHaveBeenCalled();
+      expect(spy).toBeTruthy();
+      expect(mockFlights[0].status!).toBe('Cancelled');
+      mockFlights[0].status! = "Available";
+      done();
+    }, 1000);
+  });
+
+  it('should call updateFlightStatus() with mock flight and not update mockFlight.status', (done) => {
+    
+    setTimeout(()=>{
+      let spy = spyOn(service, 'updateFlightStatus').and.callFake(function(c:string){
+        if(c != mockFlights[0].flight_code!){
+          return false;
+        }
+        return true;
+      });
+
+      service.updateFlightStatus("RANDOMSMSMS");
+      expect(spy).toHaveBeenCalled();
+      expect(mockFlights[0].status!).not.toBe('Cancelled');
+      done();
+    }, 1000);
+  });
 
   it('should call isGoodDate() and return true', () => {
     let spy = spyOn(service, 'isGoodDate').and.callThrough();

@@ -18,56 +18,18 @@ export class ABSFirebaseService{
 
   getAllFlights(): Observable<Flights[]> {
     return this.afs.collection<Flights>('Flights').valueChanges();
-      // .snapshotChanges()
-      // .pipe(
-      //   map((changes) =>
-      //     changes.map((c) => ({
-      //       id: c.payload.doc.id,
-      //       ...c.payload.doc.data(),
-      //     }))
-      //   )
-      // );
   }
 
   getAllUsers():  Observable<UserAccount[]> {
     return this.afs.collection<UserAccount>('UserAccounts').valueChanges();
-      // .snapshotChanges()
-      // .pipe(
-      //   map((changes) =>
-      //     changes.map((c) => ({
-      //       id: c.payload.doc.id,
-      //       ...c.payload.doc.data(),
-      //     }))
-      //   )
-      // );
   }
 
   getUser(uid: string): Observable<UserAccount[]>{
     const o = this.afs.collection<UserAccount>('UserAccounts', ref => ref.where('id', '==', uid)).valueChanges();
-    // .snapshotChanges().pipe(
-    //   map(changes => 
-    //     changes.map(c=>
-    //       ({id: c.payload.doc.id, ...c.payload.doc.data()})  
-    //     ).filter( (selectedUser:UserAccount) => 
-    //     selectedUser.userID == uid)
-    //     )
-    //   );
-    
-    // console.log(o);
     return o;
   }
   getFlight(flightCode: string): Observable<Flights[]> {
     const o = this.afs.collection<Flights>('Flights', ref => ref.where('flight_code', '==', flightCode)).valueChanges();
-    //.valueChanges({flight_code:flightCode});
-    // .snapshotChanges().pipe(
-    //   map(changes => 
-    //     changes.map(c=>
-    //       ({id: c.payload.doc.id, ...c.payload.doc.data()})  
-    //     ).filter( (selectedFlight:Flights) => 
-    //     selectedFlight.flight_code == flightCode
-    //     )
-    //   )
-    // );
     return o;
   }
 

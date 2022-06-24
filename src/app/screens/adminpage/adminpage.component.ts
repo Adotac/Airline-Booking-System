@@ -12,7 +12,7 @@ export class AdminpageComponent implements OnInit {
   flightsClicked: boolean = false;
   constructor(
     public authService: AuthService,
-    public route: ActivatedRoute,
+    private route: ActivatedRoute,
     public router: Router
   ) {}
 

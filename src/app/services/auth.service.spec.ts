@@ -10,6 +10,7 @@ import {
   HttpTestingController,
 } from '@angular/common/http/testing';
 
+import { Router } from '@angular/router';
 import { of } from 'rxjs';
 import { AuthService } from './auth.service';
 import { UserAccount } from '../models/user-account.model';
@@ -60,6 +61,7 @@ describe('AuthService', () => {
           provide: FIREBASE_OPTIONS,
           useValue: environment.firebase,
         },
+        { provide: Router, useValue: mockRouter},
       ],
     }).compileComponents();
     service = TestBed.get(AuthService);
@@ -69,7 +71,7 @@ describe('AuthService', () => {
     expect(service).toBeTruthy();
   });
 
-  it('should login with email:r@ndom.com | password:123456 and call SignIn() which will store userData on localStorage', (done) => {
+  it('should login with mockUserData and call SignIn() which will store userData on localStorage', (done) => {
     const m = 'r@ndom.com', p = '123456';
     setTimeout(() => {
       let spy = spyOn(service, 'SignIn').and.callFake(async function(mail:string, pass:string){
@@ -83,6 +85,66 @@ describe('AuthService', () => {
       expect(spy).toHaveBeenCalled();
       expect(service.userData).toBeDefined();
       expect(service.userData).toEqual(mockUsers[0]);
+      done();
+    }, 1000);
+  });
+
+  it('should login with mock admin credentials and call SignIn() and navigate to admin page', (done) => {
+    const m = 'a@a.com', p = '123123';
+    setTimeout(() => {
+      let spy = spyOn(service, 'SignIn').and.callFake(async function(mail:string, pass:string){
+        if(mail == m && pass == p){
+          mockRouter.navigate(['admin']);
+        }
+        return;
+      });
+      service.SignIn(m, p);
+      expect(spy).toHaveBeenCalled();
+      expect (mockRouter.navigate).toHaveBeenCalledWith(['admin']);
+      done();
+    }, 1000);
+  });
+
+  it('should login with mockUserData and call SignIn() and navigate to user page', (done) => {
+    const m = 'r@ndom.com', p = '123456';
+    setTimeout(() => {
+      let spy = spyOn(service, 'SignIn').and.callFake(async function(mail:string, pass:string){
+        if(mail == m && pass == p){
+          mockRouter.navigate(['user']);
+        }
+        return;
+      });
+      service.SignIn(m, p);
+      expect(spy).toHaveBeenCalled();
+      expect (mockRouter.navigate).toHaveBeenCalledWith(['user']);
+      done();
+    }, 1000);
+  });
+
+  it('should register with mockUserData and call SignUp() to and navigate to user page', (done) => {
+    const m = 'r@ndom.com', p = '123456', u = 'random';
+    setTimeout(() => {
+      let spy = spyOn(service, 'SignUp').and.callFake(async function(){
+          mockRouter.navigate(['user']);
+        return;
+      });
+      service.SignUp(u, m, p);
+      expect(spy).toHaveBeenCalled();
+      expect (mockRouter.navigate).toHaveBeenCalledWith(['user']);
+      done();
+    }, 1000);
+  });
+
+  it('should call SetUserData() after register and set', (done) => {
+    let user:any;
+    setTimeout(() => {
+      let spy = spyOn(service, 'SetUserData').and.callFake(async function(){
+        user = mockUsers[0];
+        return;
+      });
+      service.SetUserData();
+      expect(spy).toHaveBeenCalled();
+      expect(user).not.toBeUndefined();
       done();
     }, 1000);
   });

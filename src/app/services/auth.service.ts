@@ -62,7 +62,7 @@ export class AuthService {
     this.router.navigate(['login']);
   }
 
-  SetUserData(user: any, user_name: string) {
+  SetUserData(user?: any, user_name?: string) {
     const userRef: AngularFirestoreDocument<any> = this.afs.doc(
       `UserAccounts/${user.uid}`
     );

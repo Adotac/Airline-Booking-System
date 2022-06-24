@@ -9,7 +9,7 @@
                 <input type="password" class="form-control" id="pwd" placeholder="Password" name="pswd" #userPassword required />
             </div>
 
-            <button type="submit" class="btn btn-primary w-100" (click)="authService.SignIn(userName.value, userPassword.value)">Submit</button>
+            <button type="submit" id="SignInBtn" class="btn btn-primary w-100" (click)="authService.SignIn(userName.value, userPassword.value)">Submit</button>
 
             <div class="pt-4">
                 <a id="a" [routerLink]="['/register']" class="text-white">Create an account</a>

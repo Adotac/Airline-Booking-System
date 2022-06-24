@@ -113,6 +113,7 @@ export class AdminFlightsComponent implements OnInit, OnDestroy {
       return;
     }
 
+    this.flightCode = this.generateFlightCode();
     this.errorFormInput = '';
     await this.ABS_service.addNewFlight(this.mapToObject(attributes));
   }

@@ -70,7 +70,7 @@ export class AdminFlightsComponent implements OnInit, OnDestroy {
   }
 
   //done
-  private isFormValid(): boolean {
+  public isFormValid(): boolean {
     if (
       !(
         this.flightForm.value.origin &&
@@ -118,7 +118,7 @@ export class AdminFlightsComponent implements OnInit, OnDestroy {
   }
 
   //done
-  private isDateValid(): boolean {
+  public isDateValid(): boolean {
     if (
       !(
         this.ABS_service.isGoodDate(this.flightForm.value.departureDate) &&

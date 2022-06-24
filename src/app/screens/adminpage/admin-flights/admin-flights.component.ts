@@ -134,18 +134,19 @@ export class AdminFlightsComponent implements OnInit, OnDestroy {
     return true;
   }
 
-  public async cancelFlight(code: string) {
+  cancelFlight(code: string) {
     for (let flight of this.flights!) {
       if (flight.flight_code == code.trim()) {
-        await this.ABS_service.updateFlightStatus(code);
+        this.ABS_service.updateFlightStatus(code);
         flight.status = 'Cancelled';
         this.errorCodeInput = '';
-        return;
+        return true;
       }
     }
 
     this.errorCodeInput = 'flight code not found';
     console.log(this.errorCodeInput);
+    return false;
   }
 
   //done.

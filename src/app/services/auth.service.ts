@@ -31,6 +31,7 @@ export class AuthService {
         this.afAuth.authState.subscribe((user) => {
           if (user) {
             this.userData = user;
+            this.userData.id = user.uid;
             localStorage.setItem('user', JSON.stringify(this.userData));
             if (user.email == 'a@a.com') this.router.navigate(['admin']);
             else {

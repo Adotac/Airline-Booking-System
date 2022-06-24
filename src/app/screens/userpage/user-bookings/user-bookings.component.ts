@@ -5,6 +5,8 @@ import { ABSFirebaseService } from 'src/app/services/abs-firebase.service';
 import { UserAccount } from 'src/app/models/user-account.model';
 import { AuthService } from 'src/app/services/auth.service';
 import { ActivatedRoute } from '@angular/router';
+import { Router } from '@angular/router';
+import { tick } from '@angular/core/testing';
 
 @Component({
   selector: 'app-user-bookings',
@@ -22,14 +24,15 @@ export class UserBookingsComponent implements OnInit {
   constructor(
     private _Activatedroute: ActivatedRoute,
     public authService: AuthService,
-    private ABS_service: ABSFirebaseService
+    private ABS_service: ABSFirebaseService,
+    public router: Router,
   ) {}
 
   ngOnInit(): void {
     console.log('ngOnit');
     // console.log(this.authService.userData);
 
-    this.retrieveUser(this.authService.userData.uid);
+    this.retrieveUser(this.authService.userData.id);
   }
 
   //done
@@ -69,7 +72,7 @@ export class UserBookingsComponent implements OnInit {
       // console.log(data[0]);
       // console.log(this.user);
       this.retrieveFlights(this.user);
-      o.unsubscribe();
+      // o.unsubscribe();
     });
   }
 
@@ -82,11 +85,11 @@ export class UserBookingsComponent implements OnInit {
       this.ABS_service.deleteFlightFromUser(fCode);
       console.log('deleted!!');
 
-      return true;
     } catch (error) {
       console.log(error);
-    }
+      return false;
 
-    return false;
+    }
+    return true;
   }
 }

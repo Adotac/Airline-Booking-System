@@ -28,7 +28,7 @@ const routes: Routes = [
     ],
   },
   {
-    path: 'user/:id',
+    path: 'user',
     component: UserpageComponent,
 
     children: [

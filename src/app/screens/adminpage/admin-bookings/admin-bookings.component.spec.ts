@@ -54,48 +54,6 @@ describe('AdminBookingsComponent', () => {
     expect(firstLabel.textContent).toBe(' Users');
   });
 
-  xit('Should populate flights when retrieveFlights() is called', (done) => {
-    let spyflights = spyOn(component, 'retrieveFlights').and.callThrough();
-    setTimeout(() => {
-      component.retrieveFlights();
-      expect(spyflights).toHaveBeenCalled();
-      expect(component.flights).toBeDefined();
-      done();
-    }, 1000);
-  });
-
-  it('Should call done users when retrieveUsers() is called', () => {
-    // expect(component.users).toBeNull();
-    setTimeout(() => {
-      component.retrieveUsers();
-      expect(component.done).toHaveBeenCalled();
-
-    }, 1000);
-  });
-
-
-  xit('Should call done users when retrieveFlights() is called', () => {
-    let spyflights = spyOn(component, 'retrieveFlights').and.callThrough();
-    let spydone = spyOn(component, 'done').and.callThrough();
-
-
-    component.retrieveFlights();
-    fixture.detectChanges();
-
-    expect(spyflights).toHaveBeenCalled();
-    expect(component.retrieveFlight$).not.toBeNull();
-    expect(component.flights).toBeNull();
-    expect(spydone).toHaveBeenCalled();
-  });
-
-  it('Should call done users when done() is called', () => {
-    setTimeout(() => {
-      component.done();
-      expect(component.done).toHaveBeenCalled();
-    }, 1000);
-    fixture.detectChanges();
-  });
-
   it('Should check if the labels for the "Flights" exists', () => {
     let firstLabel = fixture.debugElement.query(
       By.css('#flight-label')
@@ -108,9 +66,7 @@ describe('AdminBookingsComponent', () => {
   xit('Should call onClickedUser() when called ', (done) => {
     let spy = spyOn(component, 'onClickedUser').and.callThrough();
 
-
     setTimeout(() => {
-      component.retrieveFlights();
       fixture.detectChanges();
       // console.log(component.flights);
 
@@ -123,20 +79,4 @@ describe('AdminBookingsComponent', () => {
       done();
     }, 1000);
   });
-
-  // it('Should check if the number of labels in user table is equal to 2', () => {
-  //   let flightsTable = fixture.debugElement.query(
-  //     By.css('#flights-table')
-  //   ).nativeElement;
-  //   const bannerElement: HTMLElement = fixture.nativeElement;
-  //   const p = bannerElement.querySelector('tr')!;
-  //   expect(p.cells).toEqual('banner works!');
-
-  //   let tableRows = fixture.debugElement.query(By.css('#flights-table'));
-  //   fixture.detectChanges();
-  //   expect(tableRows.length).toBe(0);
-
-  //   // expect(flightsTable('tbody tr').count()).toBe(2);
-  //   // expect(firstLabel.textContent).toBe(' Flights');
-  // });
 });

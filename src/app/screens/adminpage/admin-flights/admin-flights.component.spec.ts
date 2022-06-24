@@ -14,7 +14,7 @@ import {
 import { AdminFlightsComponent } from './admin-flights.component';
 import { By } from '@angular/platform-browser';
 import { not } from '@angular/compiler/src/output/output_ast';
-
+// 3 1 7 2
 describe('AdminFlightsComponent', () => {
   let component: AdminFlightsComponent;
   let fixture: ComponentFixture<AdminFlightsComponent>;
@@ -113,6 +113,7 @@ describe('AdminFlightsComponent', () => {
 
   //   expect(await component.errorFormInput).toBe('');
   // });
+
   it('should commit flight data to firebase when setFlightToDB method is called', async () => {
     const app = component;
     await app['setFlightToDB']();
@@ -146,6 +147,42 @@ describe('AdminFlightsComponent', () => {
     expect(component.errorFormInput).toBe('fields should not be empty');
   });
 
+  it('should click `isFormValid` when addFlightBtn() is called', () => {
+    let spy = spyOn(component, 'isFormValid').and.callThrough();
+    let btn: HTMLElement = fixture.debugElement.query(
+      By.css('#addFlightBtn')
+    ).nativeElement;
+
+    btn.click();
+    fixture.detectChanges();
+    expect(spy).toHaveBeenCalled();
+  });
+  it('should click `isDateValid` when addFlightBtn() is called', () => {
+    component.flightForm.value.origin = 'Cebu, Philippines';
+    component.flightForm.value.departure = 'Tokyo, Japan';
+    component.flightForm.value.departureDate = '06/12/2022';
+    component.flightForm.value.departureTime = '12:00';
+    component.flightForm.value.arivalDate = '06/12/2022';
+    component.flightForm.value.arivalTime = '13:00';
+
+    let spy = spyOn(component, 'isDateValid').and.callThrough();
+    component.addFlightToDB();
+    expect(component.isDateValid()).toBe(true);
+  });
+
+  it('should click invalud `isDateValid` when addFlightBtn() is called', () => {
+    component.flightForm.value.origin = 'Cebu, Philippines';
+    component.flightForm.value.departure = 'Tokyo, Japan';
+    component.flightForm.value.departureDate = '06/12/2022';
+    component.flightForm.value.departureTime = '12:00';
+    component.flightForm.value.arivalDate = '06/12/2022';
+    component.flightForm.value.arivalTime = '13:asa00';
+
+    let spy = spyOn(component, 'isDateValid').and.callThrough();
+    component.addFlightToDB();
+    expect(component.isDateValid()).toBe(false);
+  });
+
   it('should click `submit` cancel flight button and call cancelFlight() with empty fields', () => {
     let spy = spyOn(component, 'cancelFlight').and.callThrough();
     let btn: HTMLElement = fixture.debugElement.query(
@@ -156,17 +193,16 @@ describe('AdminFlightsComponent', () => {
 
     fixture.detectChanges();
     expect(spy).toHaveBeenCalled();
-    expect(component.errorFormInput).toBe('');
   });
 
-  it('should click `submit` cancel flight button and call cancelFlight() fields', () => {
-    // let spy = spyOn(component, 'cancelFlight').and.callThrough();
+  // it('should click `submit` cancel flight button and call cancelFlight() fields', () => {
+  //   // let spy = spyOn(component, 'cancelFlight').and.callThrough();
 
-    component.cancelFlight('CI-1234');
-    // fixture.detectChanges();
-    // expect(spy).toHaveBeenCalled();
-    expect(component.errorFormInput).toBe('');
-  });
+  //   component.cancelFlight('CI-1234');
+  //   // fixture.detectChanges();
+  //   // expect(spy).toHaveBeenCalled();
+  //   expect(component.errorFormInput).toBe('');
+  // });
 
   it('Should call mapToObject() and return a value', () => {
     let spy = spyOn(component, 'mapToObject').and.callThrough();
@@ -178,6 +214,14 @@ describe('AdminFlightsComponent', () => {
     let spy = spyOn(component, 'mapToObject').and.callThrough();
     let value = component.mapToObject([]);
     expect(value).toEqual(Object.create(null));
+  });
+
+  it('Should check if the labels for the "flight list" exists', () => {
+    let firstLabel = fixture.debugElement.query(
+      By.css('#flight-label')
+    ).nativeElement;
+
+    expect(firstLabel.textContent).toBe(' Fight List');
   });
 
   it('Should check if the labels for the "flight list" exists', () => {
@@ -204,19 +248,40 @@ describe('AdminFlightsComponent', () => {
     expect(firstLabel.textContent).toBe(' Cancel Flight');
   });
 
-  // it('should click `Search` flights button and call searchFlights() with atleast one filled input field', () => {
-  //   component.flightForm.value.origin = 'Tokyo';
-  //   // component.flightForm.value.destination = 'Cebu';
+  it('Should check if the labels for the "Flight Code" exists', () => {
+    let firstLabel = fixture.debugElement.query(
+      By.css('#flightCode')
+    ).nativeElement;
 
-  //   fixture.detectChanges();
-  //   let spy = spyOn(component, 'searchFlights').and.callThrough();
-  //   let btn: HTMLElement = fixture.debugElement.query(
-  //     By.css('#searchFlightBtn')
-  //   ).nativeElement;
+    expect(firstLabel.textContent).toBe('Flight Code');
+  });
 
-  //   btn.click();
-  //   fixture.detectChanges();
-  //   expect(spy).toHaveBeenCalled();
-  //   expect(component.errorFormInput).toBe('');
-  // });
+  it('Should check if the labels for the "Origin" exists', () => {
+    let firstLabel = fixture.debugElement.query(
+      By.css('#origin')
+    ).nativeElement;
+
+    expect(firstLabel.textContent).toBe('Origin');
+  });
+  it('Should check if the labels for the "Destination" exists', () => {
+    let firstLabel = fixture.debugElement.query(
+      By.css('#destination')
+    ).nativeElement;
+
+    expect(firstLabel.textContent).toBe('Destination');
+  });
+  it('Should check if the labels for the "Departure" exists', () => {
+    let firstLabel = fixture.debugElement.query(
+      By.css('#departure')
+    ).nativeElement;
+
+    expect(firstLabel.textContent).toBe('Departure');
+  });
+  it('Should check if the labels for the "date" exists', () => {
+    let firstLabel = fixture.debugElement.query(
+      By.css('#arrival')
+    ).nativeElement;
+
+    expect(firstLabel.textContent).toBe('Arrival');
+  });
 });

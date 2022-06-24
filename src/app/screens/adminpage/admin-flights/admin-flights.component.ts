@@ -70,7 +70,7 @@ export class AdminFlightsComponent implements OnInit, OnDestroy {
   }
 
   //done
-  private isFormValid(): boolean {
+  public isFormValid(): boolean {
     if (
       !(
         this.flightForm.value.origin &&
@@ -118,7 +118,7 @@ export class AdminFlightsComponent implements OnInit, OnDestroy {
   }
 
   //done
-  private isDateValid(): boolean {
+  public isDateValid(): boolean {
     if (
       !(
         this.ABS_service.isGoodDate(this.flightForm.value.departureDate) &&
@@ -134,10 +134,10 @@ export class AdminFlightsComponent implements OnInit, OnDestroy {
     return true;
   }
 
-  public async cancelFlight(code: string) {
+  public cancelFlight(code: string) {
     for (let flight of this.flights!) {
       if (flight.flight_code == code.trim()) {
-        await this.ABS_service.updateFlightStatus(code);
+        this.ABS_service.updateFlightStatus(code);
         flight.status = 'Cancelled';
         this.errorCodeInput = '';
         return;

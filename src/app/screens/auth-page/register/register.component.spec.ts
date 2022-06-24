@@ -20,7 +20,7 @@ describe('RegisterComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ RegisterComponent ],
+      declarations: [RegisterComponent],
       imports: [
         RouterTestingModule,
         AngularFireModule.initializeApp(environment.firebase),
@@ -39,8 +39,7 @@ describe('RegisterComponent', () => {
           },
         },
       ],
-    })
-    .compileComponents();
+    }).compileComponents();
   });
 
   beforeEach(() => {
@@ -51,5 +50,11 @@ describe('RegisterComponent', () => {
 
   it('should create `Register Component`', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('Should check if the title is "Register" exists', () => {
+    let firstLabel = fixture.debugElement.query(By.css('#title')).nativeElement;
+
+    expect(firstLabel.textContent).toBe('Register');
   });
 });

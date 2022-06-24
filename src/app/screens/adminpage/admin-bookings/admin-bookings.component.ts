@@ -19,38 +19,20 @@ export class AdminBookingsComponent implements OnInit {
   retrieveFlight$?: Subscription;
   flights?: Flights[];
 
-  retrieveFlights() {
+  ngOnInit(): void {
     this.retrieveFlight$ = this.ABS_service.getAllFlights().subscribe(
       (data) => {
         this.flights = data;
       }
     );
-  }
-
-  ngOnInit(): void {
-    this.retrieveFlights();
-    this.retrieveUsers();
+    this.retrieveUsers$ = this.ABS_service.getAllUsers().subscribe((data) => {
+      this.users = data;
+    });
   }
 
   ngOnDestroy(): void {
     this.retrieveFlight$?.unsubscribe();
     this.retrieveUsers$?.unsubscribe();
-  }
-
-  // retrieveFlights() {
-  //   this.retrieveFlight$ = this.ABS_service.getAllFlights().subscribe(
-  //     (data) => {
-  //       this.flights = data;
-  //     }
-  //   );
-  // }
-  // this.done();
-
-  retrieveUsers() {
-    this.retrieveUsers$ = this.ABS_service.getAllUsers().subscribe((data) => {
-      this.users = data;
-    });
-    this.done();
   }
 
   onClickedUser(bookings: any) {
@@ -65,6 +47,4 @@ export class AdminBookingsComponent implements OnInit {
 
     this.userBooking = tempBookings;
   }
-
-  done() {}
 }

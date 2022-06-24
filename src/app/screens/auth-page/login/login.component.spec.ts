@@ -20,7 +20,7 @@ describe('LoginComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ LoginComponent ],
+      declarations: [LoginComponent],
       imports: [
         RouterTestingModule,
         AngularFireModule.initializeApp(environment.firebase),
@@ -39,8 +39,7 @@ describe('LoginComponent', () => {
           },
         },
       ],
-    })
-    .compileComponents();
+    }).compileComponents();
   });
 
   beforeEach(() => {
@@ -51,5 +50,11 @@ describe('LoginComponent', () => {
 
   it('should create `Login Component`', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('Should check if the title is "Login" exists', () => {
+    let firstLabel = fixture.debugElement.query(By.css('#title')).nativeElement;
+
+    expect(firstLabel.textContent).toBe('Login');
   });
 });

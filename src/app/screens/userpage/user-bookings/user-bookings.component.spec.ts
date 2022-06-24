@@ -18,38 +18,40 @@ import { AuthService } from 'src/app/services/auth.service';
 import { Flights } from 'src/app/models/flights.model';
 import { UserAccount } from 'src/app/models/user-account.model';
 
-var mockFlights: Flights[] = [
-  {
-    flight_code: 'CODE',
-    origin_name: 'Cebu',
-    dest_name: 'Japan',
-    depart_time: '2:00',
-    arrival_time: '3:00',
-    status: 'Available',
-  },
-  {
-    flight_code: 'IW-82214',
-    origin_name: 'Cebu',
-    dest_name: 'Japan',
-    depart_time: '2:00',
-    arrival_time: '3:00',
-    status: 'Available',
-  },
-];
-var mockUsers: UserAccount[] = [
-  {
-    flightCode_bookings: ['IW-82214', 'HH-95575', 'GP-20441'],
-    userID: 'random',
-    username: 'pinakagwapo',
-    id: 'random',
-  },
-];
+
 
 describe('UserBookingsComponent', () => {
   let component: UserBookingsComponent;
   let fixture: ComponentFixture<UserBookingsComponent>;
   let service: AuthService;
   let rot:Router;
+
+  var mockFlights: Flights[] = [
+    {
+      flight_code: 'CODE',
+      origin_name: 'Cebu',
+      dest_name: 'Japan',
+      depart_time: '2:00',
+      arrival_time: '3:00',
+      status: 'Available',
+    },
+    {
+      flight_code: 'IW-82214',
+      origin_name: 'Cebu',
+      dest_name: 'Japan',
+      depart_time: '2:00',
+      arrival_time: '3:00',
+      status: 'Available',
+    },
+  ];
+  var mockUsers: UserAccount[] = [
+    {
+      flightCode_bookings: ['IW-82214', 'HH-95575', 'GP-20441'],
+      userID: 'random',
+      username: 'pinakagwapo',
+      id: 'random',
+    },
+  ];
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({

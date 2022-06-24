@@ -13,7 +13,7 @@ export class UserpageComponent implements OnInit {
   constructor(
     public authService: AuthService,
     private route: ActivatedRoute,
-    private router: Router
+    public router: Router
   ) {}
 
   ngOnInit(): void {

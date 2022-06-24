@@ -18,11 +18,11 @@ export class AuthService {
     public afAuth: AngularFireAuth,
     public router: Router,
     public ngZone: NgZone
-  ) { 
-    if (!this.userData){
+  ) {
+    if (!this.userData) {
       this.userData = JSON.parse(localStorage.getItem('user')!);
     }
-   }
+  }
 
   SignIn(email: string, password: string) {
     return this.afAuth
@@ -37,7 +37,7 @@ export class AuthService {
             else {
               this.router.navigate(['user']);
             }
-          }else {
+          } else {
             localStorage.setItem('user', 'null');
           }
         });

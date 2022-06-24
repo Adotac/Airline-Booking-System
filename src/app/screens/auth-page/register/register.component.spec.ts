@@ -57,4 +57,11 @@ describe('RegisterComponent', () => {
 
     expect(firstLabel.textContent).toBe('Register');
   });
+
+  it('should be able to go to login on click', () => {
+    let href = fixture.debugElement
+      .query(By.css('#a'))
+      .nativeElement.getAttribute('href');
+    expect(href).toEqual('/login');
+  });
 });

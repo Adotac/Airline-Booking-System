@@ -111,6 +111,7 @@ describe('AdminFlightsComponent', () => {
     const app = component;
     var result = app['isDateValid']();
 
+    expect(component.errorFormInput).toBe('date or/and time is not valid');
     expect(result).toBe(false);
   });
 

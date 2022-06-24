@@ -12,8 +12,8 @@ export class AdminpageComponent implements OnInit {
   flightsClicked: boolean = false;
   constructor(
     public authService: AuthService,
-    private route: ActivatedRoute,
-    private router: Router
+    public route: ActivatedRoute,
+    public router: Router
   ) {}
 
   ngOnInit(): void {

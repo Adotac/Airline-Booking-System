@@ -30,4 +30,20 @@ describe('AdminpageComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  it('should be able to go to bookings on click', () => {
+    spyOn(component.router, 'navigate').and.returnValue(Promise.resolve(true));
+    component.bookings();
+    expect(component.router.navigate).not.toBeNull();
+    expect(component.flightsClicked).toBe(false);
+    expect(component.bookingClicked).toBe(true);
+  });
+
+  it('should be able to go to flights on click', () => {
+    spyOn(component.router, 'navigate').and.returnValue(Promise.resolve(true));
+    component.flights();
+    expect(component.router.navigate).not.toBeNull();
+    expect(component.flightsClicked).toBe(true);
+    expect(component.bookingClicked).toBe(false);
+  });
 });

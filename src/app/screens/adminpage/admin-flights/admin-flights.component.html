@@ -16,11 +16,11 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr *ngFor="let flight of flights; let i = index">
+                            <tr id="adminUserlist" *ngFor="let flight of flights; let i = index">
 
-                                <td>{{flight.flight_code}}</td>
-                                <td>{{flight.origin_name}}</td>
-                                <td>{{flight.dest_name}}</td>
+                                <td class="code">{{flight.flight_code}}</td>
+                                <td class="origin">{{flight.origin_name}}</td>
+                                <td class="dest">{{flight.dest_name}}</td>
                                 <td>{{flight.depart_time.toDate().toDateString() +' | '+ flight.depart_time.toDate().toLocaleTimeString()}}
                                 </td>
                                 <td>{{flight.arrival_time.toDate().toDateString()+' | '+ flight.arrival_time.toDate().toLocaleTimeString()}}

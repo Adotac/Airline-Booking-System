@@ -121,26 +121,5 @@ describe('UserBookingsComponent', () => {
     }, 1000);
   });
 
-  xit('should click `Cancel Booking` button and call deleteBookingUser()', (done) => {
-    let spy = spyOn(component, 'deleteBookingUser').and.callFake(function(){
-      return true;
-    });
-    // let btn:HTMLElement = fixture.debugElement.query(By.css('#bookFlightBtn')).nativeElement;
-
-    setTimeout(() => {
-      component.flights = mockFlights;
-
-      // component.retrieveFlights();
-      fixture.detectChanges();
-      // console.log(component.flights);
-      const btn: HTMLElement = fixture.debugElement.query(
-        By.css('#cancelUserFlightBtn')
-      ).nativeElement;
-      expect(btn).toBeDefined();
-      btn.click();
-      expect(spy).toHaveBeenCalled();
-      expect(spy).toBeTruthy();
-      done();
-    }, 1000);
-  });
+  
 });

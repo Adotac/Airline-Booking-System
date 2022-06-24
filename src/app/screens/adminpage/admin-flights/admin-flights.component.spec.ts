@@ -316,4 +316,36 @@ describe('AdminFlightsComponent', () => {
 
     expect(firstLabel.textContent).toBe('Arrival');
   });
+  
+  // it(`should list all flights`, () => {
+  //   component.flights = [];
+  //   fixture.detectChanges();
+  
+  //   const listLength = 1;
+  //   for(let i = 0; i < listLength; i ++) {
+  //     component.flights = [{
+  //       flight_code: 'IW-82214',
+  //       origin_name: 'Cebu',
+  //       dest_name: 'Japan',
+  //       depart_time: '2:00',
+  //       arrival_time: '3:00',
+  //       status: 'Available',
+  //     }];
+  //   }
+  //   fixture.detectChanges();
+  //   const userEls = fixture.debugElement.queryAll(By.css('adminUserlist'));
+  //   expect(userEls.length).toEqual(listLength);
+  //   userEls.forEach((userEl, index) => {
+  //     const name = userEl.query(By.css('td.code'));
+  //     const email = userEl.query(By.css('td.origin'));
+  //     const bFlights = userEl.query(By.css('td.dest'));
+  //     expect(name).toBeTruthy();
+  //     expect(name.nativeElement.innerText).toEqual(component.flights![index].flight_code);
+  //     expect(email).toBeTruthy();
+  //     expect(email.nativeElement.innerText).toEqual(component.flights![index].origin_name);
+  //     expect(bFlights).toBeTruthy();
+  //     expect(bFlights.nativeElement.innerText).toEqual(component.flights![index].dest_name);
+      
+  //   });
+  // });
 });

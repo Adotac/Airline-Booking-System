@@ -85,6 +85,7 @@ describe('AdminFlightsComponent', () => {
     const app = component;
     var result = app['isDateValid']();
 
+    expect(component.errorFormInput).toBe('date or/and time is not valid');
     expect(result).toBe(false);
   });
 
@@ -99,7 +100,7 @@ describe('AdminFlightsComponent', () => {
     expect(await component.flights).not.toBeNull();
   });
 
-  //DSIABLE SA NI KAY MAOY GA POPULATE SA FLIGHTS XD
+  // // DSIABLE SA NI KAY MAOY GA POPULATE SA FLIGHTS XD
   // it('should commit flight data to firebase when setFlightToDB method is called', async () => {
   //   component.flightForm.value.origin = 'Cebu, Philippines';
   //   component.flightForm.value.destination = 'Tokyo, Japan';

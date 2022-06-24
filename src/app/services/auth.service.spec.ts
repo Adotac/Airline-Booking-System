@@ -12,6 +12,28 @@ import {
 
 import { of } from 'rxjs';
 import { AuthService } from './auth.service';
+import { UserAccount } from '../models/user-account.model';
+import { Flights } from '../models/flights.model';
+
+var mockFlights: Flights[] = [
+  {
+    flight_code: 'CODE',
+    origin_name: 'Cebu',
+    dest_name: 'Japan',
+    depart_time: '2:00',
+    arrival_time: '3:00',
+    status: 'Available',
+  },
+];
+var mockUsers: UserAccount[] = [
+  {
+    flightCode_bookings: ['IW-82214', 'HH-95575', 'GP-20441'],
+    userID: 'random',
+    username: 'pinakagwapo',
+    email: "r@ndom.com",
+    id: 'random',
+  },
+];
 
 describe('AuthService', () => {
   let service: AuthService;
@@ -46,4 +68,23 @@ describe('AuthService', () => {
   it('should be created `auth-service`', () => {
     expect(service).toBeTruthy();
   });
+
+  it('should login with email:r@ndom.com | password:123456 and call SignIn() which will store userData on localStorage', (done) => {
+    const m = 'r@ndom.com', p = '123456';
+    setTimeout(() => {
+      let spy = spyOn(service, 'SignIn').and.callFake(async function(mail:string, pass:string){
+        if(mail == m && pass == p){
+          service.userData = mockUsers[0];
+          localStorage.setItem('user', JSON.stringify(service.userData));
+        }
+        return;
+      });
+      service.SignIn(m, p);
+      expect(spy).toHaveBeenCalled();
+      expect(service.userData).toBeDefined();
+      expect(service.userData).toEqual(mockUsers[0]);
+      done();
+    }, 1000);
+  });
+
 });

@@ -99,19 +99,20 @@ describe('AdminFlightsComponent', () => {
     expect(await component.flights).not.toBeNull();
   });
 
-  it('should commit flight data to firebase when setFlightToDB method is called', async () => {
-    component.flightForm.value.origin = 'Cebu, Philippines';
-    component.flightForm.value.destination = 'Tokyo, Japan';
-    component.flightForm.value.departureDate = '06/12/2022';
-    component.flightForm.value.departureTime = '12:00';
-    component.flightForm.value.arivalDate = '06/12/2022';
-    component.flightForm.value.arivalTime = '13:00';
+  //DSIABLE SA NI KAY MAOY GA POPULATE SA FLIGHTS XD
+  // it('should commit flight data to firebase when setFlightToDB method is called', async () => {
+  //   component.flightForm.value.origin = 'Cebu, Philippines';
+  //   component.flightForm.value.destination = 'Tokyo, Japan';
+  //   component.flightForm.value.departureDate = '06/12/2022';
+  //   component.flightForm.value.departureTime = '12:00';
+  //   component.flightForm.value.arivalDate = '06/12/2022';
+  //   component.flightForm.value.arivalTime = '13:00';
 
-    const app = component;
-    await app['setFlightToDB']();
+  //   const app = component;
+  //   await app['setFlightToDB']();
 
-    expect(await component.errorFormInput).toBe('');
-  });
+  //   expect(await component.errorFormInput).toBe('');
+  // });
   it('should commit flight data to firebase when setFlightToDB method is called', async () => {
     const app = component;
     await app['setFlightToDB']();

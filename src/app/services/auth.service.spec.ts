@@ -1,4 +1,4 @@
-import { TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 
 import { SETTINGS as FS_SETTINGS } from '@angular/fire/compat/firestore';
@@ -41,7 +41,8 @@ describe('AuthService', () => {
   let mockRouter = {
     navigate: jasmine.createSpy('navigate'),
   };
-
+  let component: AuthService;
+  let fixture: ComponentFixture<AuthService>;
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [
@@ -64,6 +65,7 @@ describe('AuthService', () => {
         { provide: Router, useValue: mockRouter},
       ],
     }).compileComponents();
+
     service = TestBed.get(AuthService);
   });
 

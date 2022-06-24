@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { AngularFireModule, FIREBASE_OPTIONS } from '@angular/fire/compat';
-import { AngularFirestoreModule, SETTINGS as FS_SETTINGS } from '@angular/fire/compat/firestore';
+import { AngularFireModule } from '@angular/fire/compat';
+import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
 import { RouterTestingModule } from '@angular/router/testing';
 import { environment } from 'src/environments/environment';
 import {
@@ -12,22 +12,9 @@ import {
 } from '@angular/forms';
 
 import { AdminFlightsComponent } from './admin-flights.component';
-import { Flights } from 'src/app/models/flights.model';
 import { By } from '@angular/platform-browser';
-import { Observable, of } from 'rxjs';
-
-
-var mockFlights: Flights[] = [
-  {
-    flight_code: 'CODE',
-    origin_name: 'Cebu',
-    dest_name: 'Japan',
-    depart_time: '2:00',
-    arrival_time: '3:00',
-    status: 'Available',
-  },
-];
-
+import { not } from '@angular/compiler/src/output/output_ast';
+// 3 1 7 2
 describe('AdminFlightsComponent', () => {
   let component: AdminFlightsComponent;
   let fixture: ComponentFixture<AdminFlightsComponent>;
@@ -43,25 +30,12 @@ describe('AdminFlightsComponent', () => {
     await TestBed.configureTestingModule({
       declarations: [AdminFlightsComponent],
       imports: [
-        RouterTestingModule.withRoutes([]),
+        RouterTestingModule,
         AngularFireModule.initializeApp(environment.firebase),
         AngularFirestoreModule,
 
         FormsModule,
         ReactiveFormsModule,
-      ],
-      providers: [
-        {
-          provide: FS_SETTINGS,
-          useValue: {
-            experimentalAutoDetectLongPolling: true,
-            useFetchStreams: false,
-          },
-        },
-        {
-          provide: FIREBASE_OPTIONS,
-          useValue: environment.firebase,
-        },
       ],
     }).compileComponents();
   });
@@ -126,28 +100,21 @@ describe('AdminFlightsComponent', () => {
     expect(await component.flights).not.toBeNull();
   });
 
-  //DSIABLE SA NI KAY MAOY GA POPULATE SA FLIGHTS XD
-  xit('should commit flight data to firebase when setFlightToDB method is called', async () => {
+  // DSIABLE SA NI KAY MAOY GA POPULATE SA FLIGHTS XD
+  it('should commit flight data to firebase when setFlightToDB method is called', async () => {
     component.flightForm.value.origin = 'Cebu, Philippines';
     component.flightForm.value.destination = 'Tokyo, Japan';
     component.flightForm.value.departureDate = '06/12/2022';
     component.flightForm.value.departureTime = '12:00';
     component.flightForm.value.arivalDate = '06/12/2022';
     component.flightForm.value.arivalTime = '13:00';
-    spyOn(component, 'addFlightToDB').and.callFake(function(){
-      component.errorFormInput = '';
-      return true
-    });
-    // component.flightForm.reset('a');
+
     const app = component;
     await app['setFlightToDB']();
-    
-    expect(component.addFlightToDB).toBeTruthy();
-    expect(component.errorFormInput).toBe('');
-    
 
-    
+    expect(await component.errorFormInput).toBe('');
   });
+
   it('should commit flight data to firebase when setFlightToDB method is called', async () => {
     const app = component;
     await app['setFlightToDB']();
@@ -170,16 +137,14 @@ describe('AdminFlightsComponent', () => {
   });
 
   it('should click `submit` flights button and call addFlightBtn() with empty fields', () => {
-    spyOn(component, 'addFlightToDB').and.callThrough();
-    
-
+    let spy = spyOn(component, 'addFlightToDB').and.callThrough();
     let btn: HTMLElement = fixture.debugElement.query(
       By.css('#addFlightBtn')
     ).nativeElement;
 
     btn.click();
     fixture.detectChanges();
-    expect(component.addFlightToDB).toHaveBeenCalled();
+    expect(spy).toHaveBeenCalled();
     expect(component.errorFormInput).toBe('fields should not be empty');
   });
 
@@ -231,19 +196,14 @@ describe('AdminFlightsComponent', () => {
     expect(spy).toHaveBeenCalled();
   });
 
-  it('should click `submit` cancel flight button and call cancelFlight() fields', () => {
-    const ret = true;
-    let spy = spyOn(component, 'cancelFlight').and.callFake( function(){
-        component.errorFormInput = '';
-        return true;
-    });
+  // it('should click `submit` cancel flight button and call cancelFlight() fields', () => {
+  //   // let spy = spyOn(component, 'cancelFlight').and.callThrough();
 
-    component.cancelFlight('CODE_DUMMY');
-    // fixture.detectChanges();
-    expect(spy).toHaveBeenCalled();
-    expect(spy).toBeTruthy();
-    expect(component.errorFormInput).toBe('');
-  });
+  //   component.cancelFlight('CI-1234');
+  //   // fixture.detectChanges();
+  //   // expect(spy).toHaveBeenCalled();
+  //   expect(component.errorFormInput).toBe('');
+  // });
 
   it('Should call mapToObject() and return a value', () => {
     let spy = spyOn(component, 'mapToObject').and.callThrough();

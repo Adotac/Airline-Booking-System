@@ -116,7 +116,6 @@ describe('AdminBookingsComponent', () => {
 
   it('should get user data when getUser() is called', (done) => {
     let spy = spyOn(service, 'getUser').and.returnValue(of(mockUsers));
-
     component.users = [];
     setTimeout(() => {
       let user: UserAccount[];
@@ -125,7 +124,6 @@ describe('AdminBookingsComponent', () => {
       });
 
       expect(spy).toHaveBeenCalled();
-
       expect(component.retrieveUsers$).toBeDefined();
 
       q$.unsubscribe();

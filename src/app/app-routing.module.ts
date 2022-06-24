@@ -12,6 +12,12 @@ import { UserBookingsComponent } from './screens/userpage/user-bookings/user-boo
 import { UserFlightsComponent } from './screens/userpage/user-flights/user-flights.component';
 
 const routes: Routes = [
+
+  // {path: '',
+  // component: AuthPageComponent,
+  // pathMatch: 'full'},
+  
+
   {
     path: '',
     component: AuthPageComponent,

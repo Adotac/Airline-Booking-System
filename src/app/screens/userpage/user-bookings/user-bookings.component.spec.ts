@@ -15,9 +15,37 @@ import { Observable, of} from 'rxjs';
 import { UserBookingsComponent } from './user-bookings.component';
 
 import { AuthService } from 'src/app/services/auth.service';
+import { Flights } from 'src/app/models/flights.model';
+import { UserAccount } from 'src/app/models/user-account.model';
 
+var mockFlights: Flights[] = [
+  {
+    flight_code: 'CODE',
+    origin_name: 'Cebu',
+    dest_name: 'Japan',
+    depart_time: '2:00',
+    arrival_time: '3:00',
+    status: 'Available',
+  },
+  {
+    flight_code: 'IW-82214',
+    origin_name: 'Cebu',
+    dest_name: 'Japan',
+    depart_time: '2:00',
+    arrival_time: '3:00',
+    status: 'Available',
+  },
+];
+var mockUsers: UserAccount[] = [
+  {
+    flightCode_bookings: ['IW-82214', 'HH-95575', 'GP-20441'],
+    userID: 'random',
+    username: 'pinakagwapo',
+    id: 'random',
+  },
+];
 
-xdescribe('UserBookingsComponent', () => {
+describe('UserBookingsComponent', () => {
   let component: UserBookingsComponent;
   let fixture: ComponentFixture<UserBookingsComponent>;
   let service: AuthService;
@@ -44,12 +72,12 @@ xdescribe('UserBookingsComponent', () => {
     }).compileComponents();
     rot = TestBed.inject(Router);
     service = TestBed.inject(AuthService);
-    service.SignIn('g@g.com', '123456');
+    // service.SignIn('g@g.com', '123456');
 
   });
 
   beforeEach(() => {
-
+    localStorage.setItem('user', JSON.stringify(mockUsers[0]))
     console.log(service.userData);
 
     rot.initialNavigation();
@@ -64,15 +92,10 @@ xdescribe('UserBookingsComponent', () => {
   });
 
   it('should create user-booking-component', (done) => {
-    setTimeout(() => {
-        service.SignIn('g@g.com', '123456');
-
-        fixture.detectChanges();
-        
-        done();
-    }, 1000);
-    expect(component).toBeTruthy();
-
+    setTimeout(()=>{
+      expect(component).toBeTruthy();
+      done();
+    },500);
   });
 
   it('should call retrieveFlights() when retrieveUser() is called and flights is not undefined', (done) => {
@@ -96,11 +119,15 @@ xdescribe('UserBookingsComponent', () => {
     }, 1000);
   });
 
-  it('should click `Cancel Booking` button and call deleteBookingUser()', (done) => {
-    let spy = spyOn(component, 'deleteBookingUser').and.callThrough();
+  xit('should click `Cancel Booking` button and call deleteBookingUser()', (done) => {
+    let spy = spyOn(component, 'deleteBookingUser').and.callFake(function(){
+      return true;
+    });
     // let btn:HTMLElement = fixture.debugElement.query(By.css('#bookFlightBtn')).nativeElement;
 
     setTimeout(() => {
+      component.flights = mockFlights;
+
       // component.retrieveFlights();
       fixture.detectChanges();
       // console.log(component.flights);
